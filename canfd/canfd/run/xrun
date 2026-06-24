@@ -33,6 +33,7 @@ class xrun(object):
         self.test_tb_list       =[]
         self.test_vip_list      =[]
         self.test_cmodel_list   =[]
+        self.vhdlkfile          =False
         self.resultlog          =""" """
         self.regressionlog      =""" """
         self.PrintLog("[xrun]: initial",False)
@@ -152,6 +153,7 @@ class xrun(object):
             __tbfile    = "%s/tb.f"         %group
             __vipfile   = "%s/vip.f"        %group
             __cmodelfile= "%s/cmodel.f"     %group
+            __vhdllfile = "%s/vhdl.f"       %group
             __testlist  = "%s/test.json"    %group
             assert os.path.exists(__rtlfile),   "no rtl.f in %s"    %group
             assert os.path.exists(__tbfile),    "no tb.f in %s"     %group
@@ -164,6 +166,7 @@ class xrun(object):
             self.testdb[__groupname]["tb"]      = __tbfile
             self.testdb[__groupname]["vip"]     = __vipfile
             self.testdb[__groupname]["cmodel"]  = __cmodelfile
+            self.testdb[__groupname]["vhdl"]    = __vhdllfile
             __testfile = open(__testlist, 'r')
             try:
                 __testjson = json.load(__testfile)
@@ -178,6 +181,7 @@ class xrun(object):
             # self.test_tb_list.append(__tbfile)
             # self.test_vip_list.append(__vipfile)
             # self.test_vcmodel_list.append(__cmodelfile)
+            # self.test_vhdl_list.append(__vhdllfile)
 
         for group in self.testgroup:
             gg = group.split("/")[-1]
@@ -258,6 +262,7 @@ group[%s]: %s'''%(groupnum,g)
             tb_file="%s"%self.testdb[groupname]["tb"]
             vip_file="%s"%self.testdb[groupname]["vip"]
             cmodel_file="%s"%self.testdb[groupname]["cmodel"]
+            vhdl_file="%s"%self.testdb[groupname].get("vhdl",None)
             Compile_dir="%s/%s/comp"%(self.build_home,TestName[0])
             coverageresultdir="%s/%s/cov.vdb"%(self.coverage_result_dir,groupname)
         # -g and no -t | -g and -t
@@ -267,6 +272,7 @@ group[%s]: %s'''%(groupnum,g)
             tb_file="%s"%self.testdb[GroupName[0]]["tb"]
             vip_file="%s"%self.testdb[GroupName[0]]["vip"]
             cmodel_file="%s"%self.testdb[GroupName[0]]["cmodel"]
+            vhdl_file="%s"%self.testdb[GroupName[0]].get("vhdl",None)
             Compile_dir="%s/%s/comp"%(self.build_home,GroupName[0])
             coverageresultdir="%s/%s/cov.vdb"%(self.coverage_result_dir,GroupName[0])
         
@@ -275,7 +281,7 @@ group[%s]: %s'''%(groupnum,g)
 
         self.RunCompCmd(Compile_dir,define_file,vip_file,rtl_file,tb_file,cmodel_file)
 
-    def RunCompCmd(self,Compile_dir,definefile,vipfile,rtlfile,tbfile,cmodelfile):
+    def RunCompCmd(self,Compile_dir,definefile,vipfile,rtlfile,tbfile,cmodelfile,vhdlfile=None):
         self.PrintLog("[xrun]:RunCompCmd",self.PrintEnable)
         self.WriteCfgFile(Compile_dir,CompSim="Comp")
         self.ReadKfile("%s"%self.filelist_home,Compile_dir+"/compile.opt",Compile_dir)
@@ -305,6 +311,18 @@ group[%s]: %s'''%(groupnum,g)
             Compile_CMD.append('-file %s/tb_new.f'%Compile_dir)
         else:
             Compile_CMD.append('-file %s'%tbfile)
+        # vhdl.k / vhdl.f (VHDL design files, optional)
+        if vhdlfile and os.path.isfile(vhdlfile):
+            self.PrintLog("[INFO] Adding VHDL files: %s" % vhdlfile, True)
+            if self.vhdlkfile==True:
+                Compile_CMD.append('-file %s/vhdl_new.f'%Compile_dir)
+            else:
+                Compile_CMD.append('-f %s'%vhdlfile)
+            # VHDL compile time options
+            Compile_CMD.append('-vhdl')
+        else:
+            if vhdlfile:
+                self.PrintLog("[INFO] VHDL filelist not found, skipped: %s" % vhdlfile, True)
         # cmodel.k
         if self.cmodelkfile==True:
             Compile_CMD.append('-file %s/cmodel_new.f'%Compile_dir)
@@ -412,7 +430,7 @@ group[%s]: %s'''%(groupnum,g)
             self.base_compile_opt.append('+v2k')
             self.base_compile_opt.append('+evalorder')
             self.base_compile_opt.append('+vcs+lic+wait')
-            self.base_compile_opt.append('+libext+.sv+.v+V+.vp+vlib')
+            self.base_compile_opt.append('+libext+.sv+.v+V+.vp+vlib+.vhd+.vhdl')
             self.base_compile_opt.append('+systemverilogext+.svh')
             self.base_compile_opt.append('+ntb_opts uvm-1.2')
             self.base_compile_opt.append('+lint=TFIPC-L +lint=PCWM')
@@ -705,11 +723,13 @@ group[%s]: %s'''%(groupnum,g)
         tb_kfile    ="%s/tb.k"  %self.filelist_home
         vip_kfile   ="%s/vip.k" %self.filelist_home
         cmodel_kfile="%s/cmodel.k" %self.filelist_home
+        vhdl_kfile  ="%s/vhdl.k"   %self.filelist_home
 
         rtl_newfile ="%s/rtl_new.f" %CompileDir
         tb_newfile  ="%s/tb_new.f"  %CompileDir
         vip_newfile ="%s/vip_new.f" %CompileDir
         cmodel_newfile ="%s/cmodel_new.f" %CompileDir
+        vhdl_newfile   ="%s/vhdl_new.f"   %CompileDir
 
         #rtl
         if not os.path.isfile(rtl_kfile):
@@ -734,7 +754,13 @@ group[%s]: %s'''%(groupnum,g)
             self.cmodelkfile=False
         else:
             self.cmodelkfile=True
-            self.gen_kf_ff_info(cmodel_kfile,cmodel_newfile,CfgFile,self.PrintEnable)  
+            self.gen_kf_ff_info(cmodel_kfile,cmodel_newfile,CfgFile,self.PrintEnable)
+        #vhdl (optional)
+        if not os.path.isfile(vhdl_kfile):
+            self.vhdlkfile=False
+        else:
+            self.vhdlkfile=True
+            self.gen_kf_ff_info(vhdl_kfile,vhdl_newfile,CfgFile,self.PrintEnable)  
 
     def GetDefineInfo(self,FilePath):
         self.PrintLog("[xrun]:GetDefineInfo",self.PrintEnable)
