@@ -80,13 +80,15 @@ class xrun(object):
 
     def GetEnv(self):
         self.PrintLog("[xrun]:GetEnv",self.PrintEnable)
+        # VERIFY_HOME = 脚本所在目录(run/)的父目录
+        _verify_home = os.path.dirname(script_path)
         # 环境变量: 改为 fallback 默认值，不再 assert 崩溃
         env_defaults = {
-            "VERIFY_HOME":    os.getcwd(),
-            "TESTPLAN_HOME":  os.path.join(os.getcwd(), "testplan"),
-            "TOOLS_HOME":     os.path.join(os.getcwd(), "tools"),
-            "VCS_HOME":       os.path.join(os.getcwd(), "vcs"),
-            "VERDI_HOME":     os.path.join(os.getcwd(), "verdi"),
+            "VERIFY_HOME":    _verify_home,
+            "TESTPLAN_HOME":  os.path.join(_verify_home, "testplan"),
+            "TOOLS_HOME":     os.path.join(_verify_home, "tools"),
+            "VCS_HOME":       os.path.join(_verify_home, "vcs"),
+            "VERDI_HOME":     os.path.join(_verify_home, "verdi"),
         }
         for var, default in env_defaults.items():
             if var not in os.environ:
@@ -844,4 +846,11 @@ group[%s]: %s'''%(groupnum,g)
         total = len(lines)
         kept = sum(1 for r in result if r.strip())
         self.PrintLog("[KFile] %s: %d/%d lines kept after ifdef expansion" % (FilePath, kept, total), Enable)
+
+# ========================================================================================
+# main process entry
+# ========================================================================================
+if __name__ == "__main__":
+    x = xrun()
+    x.XrunSim()
 
