@@ -1,0 +1,13 @@
+{
+"test9_test": {
+ "uvm_testname": "test9_test",
+  "sim_args": "+uvm_set_config_int=\"uvm_test_top.env.mpsoc_vseqr,c1,9\"",
+  "tcl": "$VERIFY_HOME/tcl/wave.tcl",
+  "timescale": "1ns/1ps"
+},
+"test10_test": {
+ "uvm_testname": "test10_test",
+  "sim_args": "+uvm_set_config_int=\"uvm_test_top.env.mpsoc_vseqr,c1,10\"",
+  "tcl": "$VERIFY_HOME/tcl/wave.tcl",
+  "timescale": "1ns/1ps"
+}}

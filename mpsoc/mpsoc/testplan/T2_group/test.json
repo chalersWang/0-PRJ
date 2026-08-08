@@ -1,0 +1,7 @@
+{
+"test4_test": {
+ "uvm_testname": "test4_test",
+  "sim_args": "+uvm_set_config_int=\"uvm_test_top.env.mpsoc_vseqr,c1,4\"",
+  "tcl": "$VERIFY_HOME/tcl/wave.tcl",
+  "timescale": "1ns/1ps"
+}}
