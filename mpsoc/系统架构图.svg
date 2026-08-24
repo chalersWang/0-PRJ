@@ -1,0 +1,83 @@
+<svg viewBox="0 0 680 580" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>SOC 完整系统架构图</title>
+<desc>RISC-V E906 双核 SOC 结构：CPU 区、AHB 高速主干、APB 低速外设、对外接口</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect x="40" y="40" width="600" height="520" rx="24" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text x="340" y="52" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">SOC</text>
+<rect x="64" y="64" width="552" height="140" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="84" y="80" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">RISC-V E906 双核</text>
+<rect x="190" y="70" width="64" height="22" rx="6" fill="#FFFFFF" stroke="#185FA5" stroke-width="0.5"/>
+<text x="222" y="81" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#0C447C">JTAG</text>
+<text x="342" y="84" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">核间中断</text>
+<text x="342" y="100" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">菊花链</text>
+<path d="M330 150 H354" fill="none" stroke="#185FA5" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<rect x="84" y="120" width="240" height="58" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="0.5"/>
+<text x="204" y="144" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#042C53">CPU0 · E906</text>
+<text x="204" y="162" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">IRAM 16K | DRAM 16K</text>
+<rect x="360" y="120" width="240" height="58" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="0.5"/>
+<text x="480" y="144" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#042C53">CPU1 · E906</text>
+<text x="480" y="162" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5F5E5A">IRAM 16K | DRAM 16K</text>
+<line x1="204" y1="178" x2="204" y2="228" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="420" y1="178" x2="420" y2="228" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="64" y="228" width="552" height="144" rx="12" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text x="84" y="244" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">AHB BUS（高速主干）</text>
+<g fill="#FFFFFF" stroke="#185FA5" stroke-width="0.5">
+<rect x="84" y="254" width="98" height="34" rx="6"/>
+<rect x="192" y="254" width="98" height="34" rx="6"/>
+<rect x="300" y="254" width="98" height="34" rx="6"/>
+<rect x="408" y="254" width="98" height="34" rx="6"/>
+<rect x="516" y="254" width="98" height="34" rx="6"/>
+<rect x="84" y="298" width="98" height="34" rx="6"/>
+<rect x="192" y="298" width="98" height="34" rx="6"/>
+<rect x="300" y="298" width="98" height="34" rx="6"/>
+<rect x="408" y="298" width="98" height="34" rx="6"/>
+<rect x="516" y="298" width="98" height="34" rx="6"/>
+</g>
+<g font-size="11" fill="#0C447C">
+<text x="133" y="271" text-anchor="middle" dominant-baseline="central">BOOT ROM</text>
+<text x="241" y="271" text-anchor="middle" dominant-baseline="central">SRAM(64K)</text>
+<text x="349" y="271" text-anchor="middle" dominant-baseline="central">SDRAM</text>
+<text x="457" y="271" text-anchor="middle" dominant-baseline="central">DMAC(X8)</text>
+<text x="565" y="271" text-anchor="middle" dominant-baseline="central">Security/OTP</text>
+<text x="133" y="315" text-anchor="middle" dominant-baseline="central">QSPI</text>
+<text x="241" y="315" text-anchor="middle" dominant-baseline="central">PN-IRT</text>
+<text x="349" y="315" text-anchor="middle" dominant-baseline="central">ESC0</text>
+<text x="457" y="315" text-anchor="middle" dominant-baseline="central">ESC1</text>
+<text x="565" y="315" text-anchor="middle" dominant-baseline="central">GMAC</text>
+</g>
+<text x="84" y="352" dominant-baseline="central" font-size="11" fill="#5F5E5A">高速总线上挂载存储、安全与全部网络控制器</text>
+<line x1="576" y1="372" x2="576" y2="396" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="588" y="384" dominant-baseline="central" font-size="11" fill="#085041">APB 桥</text>
+<rect x="64" y="396" width="552" height="104" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="84" y="412" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">APB BUS（低速外设）</text>
+<g fill="#FFFFFF" stroke="#0F6E56" stroke-width="0.5">
+<rect x="84" y="424" width="98" height="30" rx="6"/>
+<rect x="192" y="424" width="98" height="30" rx="6"/>
+<rect x="300" y="424" width="98" height="30" rx="6"/>
+<rect x="408" y="424" width="98" height="30" rx="6"/>
+<rect x="516" y="424" width="98" height="30" rx="6"/>
+<rect x="84" y="460" width="98" height="30" rx="6"/>
+<rect x="192" y="460" width="98" height="30" rx="6"/>
+<rect x="300" y="460" width="98" height="30" rx="6"/>
+<rect x="408" y="460" width="98" height="30" rx="6"/>
+<rect x="516" y="460" width="98" height="30" rx="6"/>
+</g>
+<g font-size="11" fill="#085041">
+<text x="133" y="439" text-anchor="middle" dominant-baseline="central">SYS CTL</text>
+<text x="241" y="439" text-anchor="middle" dominant-baseline="central">GPIO(48)</text>
+<text x="349" y="439" text-anchor="middle" dominant-baseline="central">I2C</text>
+<text x="457" y="439" text-anchor="middle" dominant-baseline="central">UART0/1/2</text>
+<text x="565" y="439" text-anchor="middle" dominant-baseline="central">WDT</text>
+<text x="133" y="475" text-anchor="middle" dominant-baseline="central">SPI Master</text>
+<text x="241" y="475" text-anchor="middle" dominant-baseline="central">SPI Slave</text>
+<text x="349" y="475" text-anchor="middle" dominant-baseline="central">uC Slave</text>
+<text x="457" y="475" text-anchor="middle" dominant-baseline="central">TIM0(x3)</text>
+<text x="565" y="475" text-anchor="middle" dominant-baseline="central">TIM1(x3)</text>
+</g>
+<rect x="64" y="512" width="552" height="34" rx="8" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text x="340" y="529" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#444441">对外接口：MII×4 / LVDS · QSPI / SDRAM · GPIO / UART / SPI / I2C · JTAG · uC Slave</text>
+</svg>
