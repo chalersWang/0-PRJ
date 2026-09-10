@@ -18,7 +18,7 @@
         string ``Signal``="``SignalPath";
 
 //<4> wait for rst release
-    `define %s_WAIT_RST_RELEASE()\
+    `define MPSOC_WAIT_RST_RELEASE()\
         @(posedge rstn);
 
 //<5> coonfigdb

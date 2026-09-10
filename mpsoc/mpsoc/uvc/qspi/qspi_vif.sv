@@ -1,5 +1,5 @@
 `ifndef _QSPI_VIF_SV_
-`define _%s_VIF_SV_
+`define _QSPI_VIF_SV_
 
 //=========================================================================
 // qspi_vif: qspi UVC 的 virtual interface

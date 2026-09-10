@@ -1,5 +1,5 @@
 `ifndef _GPIO_TRANS_SV_
-`define _%s_TRANS_SV_
+`define _GPIO_TRANS_SV_
 
 //=========================================================================
 // gpio_trans: gpio UVC 的 Transaction 类

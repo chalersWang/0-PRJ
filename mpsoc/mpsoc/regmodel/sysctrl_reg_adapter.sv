@@ -1,5 +1,5 @@
 `ifndef _SYSCTRL_REG_ADAPTER_SV_
-`define _%s_REG_ADAPTER_SV_
+`define _SYSCTRL_REG_ADAPTER_SV_
 
 //=========================================================================
 // sysctrl_reg_adapter: 寄存器访问总线适配器

@@ -1,5 +1,5 @@
 `ifndef _UART_TRANS_SV_
-`define _%s_TRANS_SV_
+`define _UART_TRANS_SV_
 
 //=========================================================================
 // uart_trans: uart UVC 的 Transaction 类

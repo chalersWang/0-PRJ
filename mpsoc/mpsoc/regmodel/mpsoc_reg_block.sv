@@ -55,18 +55,18 @@ class Offset_reg extends uvm_reg;
 endclass : Offset_reg
 
 //-------------------------------------------------------------------------
-// 寄存器: Generic Registers
+// 寄存器: Generic_Registers
 //   addr=0x08, width=1, access=RW
 //   Fields:
 //     WO[0:0]  RW  reset=1'h0
 //-------------------------------------------------------------------------
-class Generic Registers_reg extends uvm_reg;
+class Generic_Registers_reg extends uvm_reg;
 
     rand uvm_reg_field WO;
 
-    `uvm_object_utils(Generic Registers_reg)
+    `uvm_object_utils(Generic_Registers_reg)
 
-    function new(string name="Generic Registers_reg");
+    function new(string name="Generic_Registers_reg");
         super.new(name, 1, UVM_NO_COVERAGE);
     endfunction
 
@@ -75,21 +75,21 @@ class Generic Registers_reg extends uvm_reg;
         WO.configure(this, 1, 0, "RW", 0, 1'h0, 1, 1, 1);
     endfunction
 
-endclass : Generic Registers_reg
+endclass : Generic_Registers_reg
 
 //-------------------------------------------------------------------------
-// 寄存器: 0x0000
+// 寄存器: h0000
 //   addr=0x0C, width=2, access=RW
 //   Fields:
 //     RW[1:0]  RW  reset=2'h0
 //-------------------------------------------------------------------------
-class 0x0000_reg extends uvm_reg;
+class h0000_reg extends uvm_reg;
 
     rand uvm_reg_field RW;
 
-    `uvm_object_utils(0x0000_reg)
+    `uvm_object_utils(h0000_reg)
 
-    function new(string name="0x0000_reg");
+    function new(string name="h0000_reg");
         super.new(name, 2, UVM_NO_COVERAGE);
     endfunction
 
@@ -98,21 +98,21 @@ class 0x0000_reg extends uvm_reg;
         RW.configure(this, 2, 0, "RW", 0, 2'h0, 1, 1, 1);
     endfunction
 
-endclass : 0x0000_reg
+endclass : h0000_reg
 
 //-------------------------------------------------------------------------
-// 寄存器: 0x0040
+// 寄存器: h0040
 //   addr=0x10, width=3, access=RW
 //   Fields:
 //     WC[2:0]  RW  reset=3'h0
 //-------------------------------------------------------------------------
-class 0x0040_reg extends uvm_reg;
+class h0040_reg extends uvm_reg;
 
     rand uvm_reg_field WC;
 
-    `uvm_object_utils(0x0040_reg)
+    `uvm_object_utils(h0040_reg)
 
-    function new(string name="0x0040_reg");
+    function new(string name="h0040_reg");
         super.new(name, 3, UVM_NO_COVERAGE);
     endfunction
 
@@ -121,21 +121,21 @@ class 0x0040_reg extends uvm_reg;
         WC.configure(this, 3, 0, "RW", 0, 3'h0, 1, 1, 1);
     endfunction
 
-endclass : 0x0040_reg
+endclass : h0040_reg
 
 //-------------------------------------------------------------------------
-// 寄存器: 0x0080
+// 寄存器: h0080
 //   addr=0x14, width=32, access=RW
 //   Fields:
 //     RO[31:0]  RW  reset=32'h0
 //-------------------------------------------------------------------------
-class 0x0080_reg extends uvm_reg;
+class h0080_reg extends uvm_reg;
 
     rand uvm_reg_field RO;
 
-    `uvm_object_utils(0x0080_reg)
+    `uvm_object_utils(h0080_reg)
 
-    function new(string name="0x0080_reg");
+    function new(string name="h0080_reg");
         super.new(name, 32, UVM_NO_COVERAGE);
     endfunction
 
@@ -144,21 +144,21 @@ class 0x0080_reg extends uvm_reg;
         RO.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
     endfunction
 
-endclass : 0x0080_reg
+endclass : h0080_reg
 
 //-------------------------------------------------------------------------
-// 寄存器: Memory Info
+// 寄存器: Memory_Info
 //   addr=0x18, width=0, access=RW
 //   Fields:
 //     WO[-1:0]  RW  reset=0'h0
 //-------------------------------------------------------------------------
-class Memory Info_reg extends uvm_reg;
+class Memory_Info_reg extends uvm_reg;
 
     rand uvm_reg_field WO;
 
-    `uvm_object_utils(Memory Info_reg)
+    `uvm_object_utils(Memory_Info_reg)
 
-    function new(string name="Memory Info_reg");
+    function new(string name="Memory_Info_reg");
         super.new(name, 0, UVM_NO_COVERAGE);
     endfunction
 
@@ -167,7 +167,7 @@ class Memory Info_reg extends uvm_reg;
         WO.configure(this, 0, 0, "RW", 0, 0'h0, 1, 1, 1);
     endfunction
 
-endclass : Memory Info_reg
+endclass : Memory_Info_reg
 
 //-------------------------------------------------------------------------
 // 寄存器: name
@@ -246,11 +246,11 @@ class mpsoc_reg_block extends uvm_reg_block;
 
     rand BASE_ADDR_reg BASE_ADDR;
     rand Offset_reg Offset;
-    rand Generic Registers_reg Generic Registers;
-    rand 0x0000_reg 0x0000;
-    rand 0x0040_reg 0x0040;
-    rand 0x0080_reg 0x0080;
-    rand Memory Info_reg Memory Info;
+    rand Generic_Registers_reg Generic_Registers;
+    rand h0000_reg h0000;
+    rand h0040_reg h0040;
+    rand h0080_reg h0080;
+    rand Memory_Info_reg Memory_Info;
     rand name_reg name;
     rand crg_mem_reg crg_mem;
     rand dma_mem_reg dma_mem;
@@ -275,30 +275,30 @@ class mpsoc_reg_block extends uvm_reg_block;
         Offset.build();
         default_map.add_reg(Offset, 'h4, "RW");
 
-        Generic Registers = Generic Registers_reg::type_id::create("Generic Registers");
-        Generic Registers.configure(this, null, "");
-        Generic Registers.build();
-        default_map.add_reg(Generic Registers, 'h8, "RW");
+        Generic_Registers = Generic_Registers_reg::type_id::create("Generic_Registers");
+        Generic_Registers.configure(this, null, "");
+        Generic_Registers.build();
+        default_map.add_reg(Generic_Registers, 'h8, "RW");
 
-        0x0000 = 0x0000_reg::type_id::create("0x0000");
-        0x0000.configure(this, null, "");
-        0x0000.build();
-        default_map.add_reg(0x0000, 'hC, "RW");
+        h0000 = h0000_reg::type_id::create("h0000");
+        h0000.configure(this, null, "");
+        h0000.build();
+        default_map.add_reg(h0000, 'hC, "RW");
 
-        0x0040 = 0x0040_reg::type_id::create("0x0040");
-        0x0040.configure(this, null, "");
-        0x0040.build();
-        default_map.add_reg(0x0040, 'h10, "RW");
+        h0040 = h0040_reg::type_id::create("h0040");
+        h0040.configure(this, null, "");
+        h0040.build();
+        default_map.add_reg(h0040, 'h10, "RW");
 
-        0x0080 = 0x0080_reg::type_id::create("0x0080");
-        0x0080.configure(this, null, "");
-        0x0080.build();
-        default_map.add_reg(0x0080, 'h14, "RW");
+        h0080 = h0080_reg::type_id::create("h0080");
+        h0080.configure(this, null, "");
+        h0080.build();
+        default_map.add_reg(h0080, 'h14, "RW");
 
-        Memory Info = Memory Info_reg::type_id::create("Memory Info");
-        Memory Info.configure(this, null, "");
-        Memory Info.build();
-        default_map.add_reg(Memory Info, 'h18, "RW");
+        Memory_Info = Memory_Info_reg::type_id::create("Memory_Info");
+        Memory_Info.configure(this, null, "");
+        Memory_Info.build();
+        default_map.add_reg(Memory_Info, 'h18, "RW");
 
         name = name_reg::type_id::create("name");
         name.configure(this, null, "");

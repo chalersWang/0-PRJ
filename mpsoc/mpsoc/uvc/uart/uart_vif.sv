@@ -1,5 +1,5 @@
 `ifndef _UART_VIF_SV_
-`define _%s_VIF_SV_
+`define _UART_VIF_SV_
 
 //=========================================================================
 // uart_vif: uart UVC 的 virtual interface

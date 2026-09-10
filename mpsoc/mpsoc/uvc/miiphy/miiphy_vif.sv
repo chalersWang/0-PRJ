@@ -1,5 +1,5 @@
 `ifndef _MIIPHY_VIF_SV_
-`define _%s_VIF_SV_
+`define _MIIPHY_VIF_SV_
 
 //=========================================================================
 // miiphy_vif: miiphy UVC 的 virtual interface
@@ -9,10 +9,10 @@
 interface miiphy_vif(input logic clk, input logic rstn);
 
 	// ===== DUT 信号声明（logic 类型） =====
-	logic [3:0-1:0] phy_rxd_i;
+	logic [3:0] phy_rxd_i;
 	logic phy_rxdv_i;
 	logic phy_rxer_i;
-	logic [3:0-1:0] phy_txd_o;
+	logic [3:0] phy_txd_o;
 	logic phy_txen_o;
 	logic RGMIIRXC_i;
 	logic RGMIITXC_o;
@@ -25,10 +25,10 @@ interface miiphy_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-		output [3:0-1:0] phy_rxd_i;
+		output [3:0] phy_rxd_i;
 		output phy_rxdv_i;
 		output phy_rxer_i;
-		input  [3:0-1:0] phy_txd_o;
+		input  [3:0] phy_txd_o;
 		input  phy_txen_o;
 		output RGMIIRXC_i;
 		output RGMIITXC_o;
@@ -38,10 +38,10 @@ interface miiphy_vif(input logic clk, input logic rstn);
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-		input [3:0-1:0] phy_rxd_i;
+		input [3:0] phy_rxd_i;
 		input phy_rxdv_i;
 		input phy_rxer_i;
-		input [3:0-1:0] phy_txd_o;
+		input [3:0] phy_txd_o;
 		input phy_txen_o;
 		input RGMIIRXC_i;
 		input RGMIITXC_o;

@@ -1,5 +1,5 @@
 `ifndef _SYSCTRL_TRANS_SV_
-`define _%s_TRANS_SV_
+`define _SYSCTRL_TRANS_SV_
 
 //=========================================================================
 // sysctrl_trans: sysctrl UVC 的 Transaction 类
@@ -42,6 +42,13 @@ class sysctrl_trans extends uvm_sequence_item;
 	rand logic [3:0] o_pad_pn_sync;       // [3:0]
 	rand logic         i_pad_test_mode;     // 1-bit
 
+		// ===== 寄存器适配器总线字段（由 sysctrl_reg_adapter 使用） =====
+		typedef enum {READ, WRITE} cmd_e;
+		rand cmd_e       CFG;
+		rand logic [31:0] ADDR;
+		rand logic [31:0] WRDATA;
+		rand logic [31:0] RDDATA;
+
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
 	//     // 用户在此添加默认约束
@@ -56,6 +63,10 @@ class sysctrl_trans extends uvm_sequence_item;
 		`uvm_field_int(i_pad_bypass_secure, UVM_ALL_ON)
 		`uvm_field_int(o_pad_pn_sync, UVM_ALL_ON)
 		`uvm_field_int(i_pad_test_mode, UVM_ALL_ON)
+		`uvm_field_enum(cmd_e, CFG, UVM_ALL_ON)
+		`uvm_field_int(ADDR, UVM_ALL_ON)
+		`uvm_field_int(WRDATA, UVM_ALL_ON)
+		`uvm_field_int(RDDATA, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name="sysctrl_trans");

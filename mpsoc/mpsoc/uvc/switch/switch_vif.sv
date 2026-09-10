@@ -1,5 +1,5 @@
 `ifndef _SWITCH_VIF_SV_
-`define _%s_VIF_SV_
+`define _SWITCH_VIF_SV_
 
 //=========================================================================
 // switch_vif: switch UVC 的 virtual interface
@@ -12,18 +12,18 @@ interface switch_vif(input logic clk, input logic rstn);
 	logic switch_mii_p0_rxclock;
 	logic switch_mii_p0_rxerror;
 	logic switch_mii_p0_rxenable;
-	logic [3:0-1:0] switch_mii_p0_rx;
+	logic [3:0] switch_mii_p0_rx;
 	logic switch_mii_p0_txclock;
 	logic switch_mii_p0_txenable;
-	logic [3:0-1:0] switch_mii_p0_tx;
+	logic [3:0] switch_mii_p0_tx;
 	logic switch_mii_p0_link;
 	logic switch_mii_p1_rxclock;
 	logic switch_mii_p1_rxerror;
 	logic switch_mii_p1_rxenable;
-	logic [3:0-1:0] switch_mii_p1_rx;
+	logic [3:0] switch_mii_p1_rx;
 	logic switch_mii_p1_txclock;
 	logic switch_mii_p1_txenable;
-	logic [3:0-1:0] switch_mii_p1_tx;
+	logic [3:0] switch_mii_p1_tx;
 	logic switch_mii_p1_link;
 	logic switch_mdio_clock;
 	logic switch_mdio_data;
@@ -38,18 +38,18 @@ interface switch_vif(input logic clk, input logic rstn);
 		output switch_mii_p0_rxclock;
 		output switch_mii_p0_rxerror;
 		output switch_mii_p0_rxenable;
-		output [3:0-1:0] switch_mii_p0_rx;
+		output [3:0] switch_mii_p0_rx;
 		output switch_mii_p0_txclock;
 		input  switch_mii_p0_txenable;
-		input  [3:0-1:0] switch_mii_p0_tx;
+		input  [3:0] switch_mii_p0_tx;
 		output switch_mii_p0_link;
 		output switch_mii_p1_rxclock;
 		output switch_mii_p1_rxerror;
 		output switch_mii_p1_rxenable;
-		output [3:0-1:0] switch_mii_p1_rx;
+		output [3:0] switch_mii_p1_rx;
 		output switch_mii_p1_txclock;
 		input  switch_mii_p1_txenable;
-		input  [3:0-1:0] switch_mii_p1_tx;
+		input  [3:0] switch_mii_p1_tx;
 		output switch_mii_p1_link;
 		input  switch_mdio_clock;
 		inout  switch_mdio_data;
@@ -61,18 +61,18 @@ interface switch_vif(input logic clk, input logic rstn);
 		input switch_mii_p0_rxclock;
 		input switch_mii_p0_rxerror;
 		input switch_mii_p0_rxenable;
-		input [3:0-1:0] switch_mii_p0_rx;
+		input [3:0] switch_mii_p0_rx;
 		input switch_mii_p0_txclock;
 		input switch_mii_p0_txenable;
-		input [3:0-1:0] switch_mii_p0_tx;
+		input [3:0] switch_mii_p0_tx;
 		input switch_mii_p0_link;
 		input switch_mii_p1_rxclock;
 		input switch_mii_p1_rxerror;
 		input switch_mii_p1_rxenable;
-		input [3:0-1:0] switch_mii_p1_rx;
+		input [3:0] switch_mii_p1_rx;
 		input switch_mii_p1_txclock;
 		input switch_mii_p1_txenable;
-		input [3:0-1:0] switch_mii_p1_tx;
+		input [3:0] switch_mii_p1_tx;
 		input switch_mii_p1_link;
 		input switch_mdio_clock;
 		input switch_mdio_data;

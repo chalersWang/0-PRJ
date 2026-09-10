@@ -23,6 +23,7 @@ export LIB_PATH=/network/project/public/uvm_vip
 ##=======================	[RTL/TB path setting]	=================##
 export VERIFY_HOME=$PWD
 export NPU_PRJ_PATH=${VERIFY_HOME}/../../..
+export PRJ_HOME=${VERIFY_HOME}/../..
 export RTL_HOME=${PRJ_HOME}/rtl
 export TESTPLAN_HOME=${VERIFY_HOME}/testplan
 export JSON_HOME=${VERIFY_HOME}/json

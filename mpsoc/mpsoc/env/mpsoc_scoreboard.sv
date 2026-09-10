@@ -12,6 +12,8 @@ class mpsoc_scoreboard extends uvm_scoreboard;
 
 	// 配置和事件
 	mpsoc_config   mpsoc_cfg;
+	virtual mpsoc_vif mpsoc_vif;
+
 
 	// ===== UVC Subscriber 声明 =====
 	// 每个 UVC 一个 subscriber，接收其 monitor 的 transaction
@@ -44,6 +46,9 @@ class mpsoc_scoreboard extends uvm_scoreboard;
 		switch_scb_imp = new("switch_scb_imp", this);
 		miiphy_scb_imp = new("miiphy_scb_imp", this);
 		efuse_scb_imp = new("efuse_scb_imp", this);
+			if(!uvm_config_db#(virtual mpsoc_vif)::get(this, "", "mpsoc_vif", mpsoc_vif))
+			    `uvm_fatal(get_type_name(), "failed to get mpsoc_vif from config_db")
+
 		`uvm_info(get_full_name(),"build_phase end ...",UVM_LOW)
 	endfunction
 
