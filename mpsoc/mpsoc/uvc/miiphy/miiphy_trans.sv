@@ -1,5 +1,5 @@
 `ifndef _MIIPHY_TRANS_SV_
-`define _%s_TRANS_SV_
+`define _MIIPHY_TRANS_SV_
 
 //=========================================================================
 // miiphy_trans: miiphy UVC 的 Transaction 类

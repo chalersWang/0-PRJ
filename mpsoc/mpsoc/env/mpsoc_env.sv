@@ -57,14 +57,14 @@ class mpsoc_env extends uvm_env;
 	virtual function void connect_phase(uvm_phase phase);
 		super.connect_phase(phase);
 		`uvm_info(get_full_name(),"connect_phase begin ...",UVM_LOW)
-		sysctrl_agt.sysctrl_mon.mon_analysis_port.connect(mpsoc_scb.sysctrl_analysis_fifo.analysis_export);
-		jtag_agt.jtag_mon.mon_analysis_port.connect(mpsoc_scb.jtag_analysis_fifo.analysis_export);
-		uart_agt.uart_mon.mon_analysis_port.connect(mpsoc_scb.uart_analysis_fifo.analysis_export);
-		gpio_agt.gpio_mon.mon_analysis_port.connect(mpsoc_scb.gpio_analysis_fifo.analysis_export);
-		qspi_agt.qspi_mon.mon_analysis_port.connect(mpsoc_scb.qspi_analysis_fifo.analysis_export);
-		switch_agt.switch_mon.mon_analysis_port.connect(mpsoc_scb.switch_analysis_fifo.analysis_export);
-		miiphy_agt.miiphy_mon.mon_analysis_port.connect(mpsoc_scb.miiphy_analysis_fifo.analysis_export);
-		efuse_agt.efuse_mon.mon_analysis_port.connect(mpsoc_scb.efuse_analysis_fifo.analysis_export);
+		sysctrl_agt.sysctrl_mon.mon_analysis_port.connect(mpsoc_scb.sysctrl_scb_imp);
+		jtag_agt.jtag_mon.mon_analysis_port.connect(mpsoc_scb.jtag_scb_imp);
+		uart_agt.uart_mon.mon_analysis_port.connect(mpsoc_scb.uart_scb_imp);
+		gpio_agt.gpio_mon.mon_analysis_port.connect(mpsoc_scb.gpio_scb_imp);
+		qspi_agt.qspi_mon.mon_analysis_port.connect(mpsoc_scb.qspi_scb_imp);
+		switch_agt.switch_mon.mon_analysis_port.connect(mpsoc_scb.switch_scb_imp);
+		miiphy_agt.miiphy_mon.mon_analysis_port.connect(mpsoc_scb.miiphy_scb_imp);
+		efuse_agt.efuse_mon.mon_analysis_port.connect(mpsoc_scb.efuse_scb_imp);
 		
 		mpsoc_vseqr.sysctrl_seqr=sysctrl_agt.sysctrl_seqr;
 		mpsoc_vseqr.jtag_seqr=jtag_agt.jtag_seqr;

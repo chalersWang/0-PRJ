@@ -31,8 +31,10 @@ package mpsoc_EnvTop;
 	`include "mpsoc_scoreboard.sv"
 	`include "mpsoc_virtual_sequencer.sv"
 	`include "mpsoc_env.sv"
-	`include "mpsoc_reg_adapter.sv"
+	`ifdef REG_MODEL
+	`include "sysctrl_reg_adapter.sv"
 	`include "mpsoc_reg_block.sv"
+	`endif
 
 endpackage
 `endif

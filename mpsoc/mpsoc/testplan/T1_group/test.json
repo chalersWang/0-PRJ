@@ -1,18 +1,18 @@
 {
-"test1_test": {
- "uvm_testname": "test1_test",
+"mpsoc_demo_test_1": {
+ "uvm_testname": "mpsoc_demo_test",
   "sim_args": "+uvm_set_config_int=\"uvm_test_top.env.mpsoc_vseqr,c1,1\"",
   "tcl": "$VERIFY_HOME/tcl/wave.tcl",
   "timescale": "1ns/1ps"
 },
-"test2_test": {
- "uvm_testname": "test2_test",
+"mpsoc_demo_test_2": {
+ "uvm_testname": "mpsoc_demo_test",
   "sim_args": "+uvm_set_config_int=\"uvm_test_top.env.mpsoc_vseqr,c1,2\"",
   "tcl": "$VERIFY_HOME/tcl/wave.tcl",
   "timescale": "1ns/1ps"
 },
-"test3_test": {
- "uvm_testname": "test3_test",
+"mpsoc_demo_test_3": {
+ "uvm_testname": "mpsoc_demo_test",
   "sim_args": "+uvm_set_config_int=\"uvm_test_top.env.mpsoc_vseqr,c1,3\"",
   "tcl": "$VERIFY_HOME/tcl/wave.tcl",
   "timescale": "1ns/1ps"

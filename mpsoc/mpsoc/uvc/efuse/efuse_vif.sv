@@ -1,5 +1,5 @@
 `ifndef _EFUSE_VIF_SV_
-`define _%s_VIF_SV_
+`define _EFUSE_VIF_SV_
 
 //=========================================================================
 // efuse_vif: efuse UVC 的 virtual interface
@@ -9,8 +9,8 @@
 interface efuse_vif(input logic clk, input logic rstn);
 
 	// ===== DUT 信号声明（logic 类型） =====
-	logic [3:0-1:0] o_efuse_dout;
-	logic [3:0-1:0] i_efuse_pgm;
+	logic [3:0] o_efuse_dout;
+	logic [3:0] i_efuse_pgm;
 	logic i_efuse_sclk;
 	logic i_efuse_cs;
 	logic i_efuse_wr;
@@ -22,8 +22,8 @@ interface efuse_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-		input  [3:0-1:0] o_efuse_dout;
-		output [3:0-1:0] i_efuse_pgm;
+		input  [3:0] o_efuse_dout;
+		output [3:0] i_efuse_pgm;
 		output i_efuse_sclk;
 		output i_efuse_cs;
 		output i_efuse_wr;
@@ -32,8 +32,8 @@ interface efuse_vif(input logic clk, input logic rstn);
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-		input [3:0-1:0] o_efuse_dout;
-		input [3:0-1:0] i_efuse_pgm;
+		input [3:0] o_efuse_dout;
+		input [3:0] i_efuse_pgm;
 		input i_efuse_sclk;
 		input i_efuse_cs;
 		input i_efuse_wr;

@@ -1,5 +1,5 @@
 `ifndef _JTAG_VIF_SV_
-`define _%s_VIF_SV_
+`define _JTAG_VIF_SV_
 
 //=========================================================================
 // jtag_vif: jtag UVC 的 virtual interface

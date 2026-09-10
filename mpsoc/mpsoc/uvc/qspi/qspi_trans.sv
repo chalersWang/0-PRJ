@@ -1,5 +1,5 @@
 `ifndef _QSPI_TRANS_SV_
-`define _%s_TRANS_SV_
+`define _QSPI_TRANS_SV_
 
 //=========================================================================
 // qspi_trans: qspi UVC 的 Transaction 类

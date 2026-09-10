@@ -1,5 +1,5 @@
 `ifndef _EFUSE_TRANS_SV_
-`define _%s_TRANS_SV_
+`define _EFUSE_TRANS_SV_
 
 //=========================================================================
 // efuse_trans: efuse UVC 的 Transaction 类
