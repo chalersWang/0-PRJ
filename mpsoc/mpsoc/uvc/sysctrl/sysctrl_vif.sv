@@ -26,10 +26,10 @@ interface sysctrl_vif(input logic clk, input logic rstn);
 		default input #1step output #0;
 		output i_pad_clk;
 		output i_pad_rst_b;
-		output [1:0] i_pad_boot_mode;
+		output i_pad_boot_mode;
 		output i_pad_host_if_mode;
 		output i_pad_bypass_secure;
-		input  [3:0] o_pad_pn_sync;
+		input o_pad_pn_sync;
 		output i_pad_test_mode;
 	endclocking : dcb
 
@@ -38,10 +38,10 @@ interface sysctrl_vif(input logic clk, input logic rstn);
 		default input #1step;
 		input i_pad_clk;
 		input i_pad_rst_b;
-		input [1:0] i_pad_boot_mode;
+		input i_pad_boot_mode;
 		input i_pad_host_if_mode;
 		input i_pad_bypass_secure;
-		input [3:0] o_pad_pn_sync;
+		input o_pad_pn_sync;
 		input i_pad_test_mode;
 	endclocking : mcb
 

@@ -19,15 +19,15 @@ interface gpio_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-		inout  [31:0] b_pad_gpio_porta;
-		inout  [15:0] b_pad_gpio_portb;
+		inout b_pad_gpio_porta;
+		inout b_pad_gpio_portb;
 	endclocking : dcb
 
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-		input [31:0] b_pad_gpio_porta;
-		input [15:0] b_pad_gpio_portb;
+		input b_pad_gpio_porta;
+		input b_pad_gpio_portb;
 	endclocking : mcb
 
 	// ===== Modports（可选） =====

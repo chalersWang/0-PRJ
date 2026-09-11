@@ -24,10 +24,10 @@ interface gmac_vif(input logic clk, input logic rstn);
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
 			input gmac_rgmii_txc;
-			input [3:0] gmac_rgmii_txd;
+			input gmac_rgmii_txd;
 			input gmac_rgmii_tx_ctl;
 			output gmac_rgmii_rxc;
-			output [3:0] gmac_rgmii_rxd;
+			output gmac_rgmii_rxd;
 			output gmac_rgmii_rx_ctl;
 	endclocking : dcb
 
@@ -35,10 +35,10 @@ interface gmac_vif(input logic clk, input logic rstn);
 	clocking mcb @(posedge clk);
 		default input #1step;
 			input gmac_rgmii_txc;
-			input [3:0] gmac_rgmii_txd;
+			input gmac_rgmii_txd;
 			input gmac_rgmii_tx_ctl;
 			input gmac_rgmii_rxc;
-			input [3:0] gmac_rgmii_rxd;
+			input gmac_rgmii_rxd;
 			input gmac_rgmii_rx_ctl;
 	endclocking : mcb
 

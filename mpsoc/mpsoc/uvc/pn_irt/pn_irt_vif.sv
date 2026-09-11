@@ -19,15 +19,15 @@ interface pn_irt_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-			input [3:0] pn_sync;
-			input [3:0] pn_irq;
+			input pn_sync;
+			input pn_irq;
 	endclocking : dcb
 
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-			input [3:0] pn_sync;
-			input [3:0] pn_irq;
+			input pn_sync;
+			input pn_irq;
 	endclocking : mcb
 
 	// ===== Modports（可选） =====

@@ -33,10 +33,10 @@ interface sdram_vif(input logic clk, input logic rstn);
 			input sdram_ras_n;
 			input sdram_cas_n;
 			input sdram_we_n;
-			input [1:0] sdram_ba;
-			input [12:0] sdram_addr;
-			inout [15:0] sdram_dq;
-			input [1:0] sdram_dqm;
+			input sdram_ba;
+			input sdram_addr;
+			inout sdram_dq;
+			input sdram_dqm;
 	endclocking : dcb
 
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
@@ -48,10 +48,10 @@ interface sdram_vif(input logic clk, input logic rstn);
 			input sdram_ras_n;
 			input sdram_cas_n;
 			input sdram_we_n;
-			input [1:0] sdram_ba;
-			input [12:0] sdram_addr;
-			input [15:0] sdram_dq;
-			input [1:0] sdram_dqm;
+			input sdram_ba;
+			input sdram_addr;
+			input sdram_dq;
+			input sdram_dqm;
 	endclocking : mcb
 
 	// ===== Modports（可选） =====

@@ -23,8 +23,8 @@ interface uc_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-			inout [13:0] uc_addr;
-			inout [11:0] uc_data;
+			inout uc_addr;
+			inout uc_data;
 			input uc_busy;
 			output uc_cs;
 			output uc_wr;
@@ -34,8 +34,8 @@ interface uc_vif(input logic clk, input logic rstn);
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-			input [13:0] uc_addr;
-			input [11:0] uc_data;
+			input uc_addr;
+			input uc_data;
 			input uc_busy;
 			input uc_cs;
 			input uc_wr;

@@ -22,8 +22,8 @@ interface efuse_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-		input  [3:0] o_efuse_dout;
-		output [3:0] i_efuse_pgm;
+		input o_efuse_dout;
+		output i_efuse_pgm;
 		output i_efuse_sclk;
 		output i_efuse_cs;
 		output i_efuse_wr;
@@ -32,8 +32,8 @@ interface efuse_vif(input logic clk, input logic rstn);
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-		input [3:0] o_efuse_dout;
-		input [3:0] i_efuse_pgm;
+		input o_efuse_dout;
+		input i_efuse_pgm;
 		input i_efuse_sclk;
 		input i_efuse_cs;
 		input i_efuse_wr;

@@ -25,7 +25,7 @@ interface spi_vif(input logic clk, input logic rstn);
 			input sclk;
 			input mosi;
 			output miso;
-			input [3:0] ss_n;
+			input ss_n;
 			input ssi_intr;
 	endclocking : dcb
 
@@ -35,7 +35,7 @@ interface spi_vif(input logic clk, input logic rstn);
 			input sclk;
 			input mosi;
 			input miso;
-			input [3:0] ss_n;
+			input ss_n;
 			input ssi_intr;
 	endclocking : mcb
 

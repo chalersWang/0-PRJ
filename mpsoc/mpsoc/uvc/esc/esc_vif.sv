@@ -27,10 +27,10 @@ interface esc_vif(input logic clk, input logic rstn);
 		default input #1step output #0;
 			output ecat_mii_rx_clk;
 			output ecat_mii_rx_dv;
-			output [3:0] ecat_mii_rxd;
+			output ecat_mii_rxd;
 			output ecat_mii_tx_clk;
 			input ecat_mii_tx_en;
-			input [3:0] ecat_mii_txd;
+			input ecat_mii_txd;
 			input ecat_sync0;
 			input ecat_sync1;
 	endclocking : dcb
@@ -40,10 +40,10 @@ interface esc_vif(input logic clk, input logic rstn);
 		default input #1step;
 			input ecat_mii_rx_clk;
 			input ecat_mii_rx_dv;
-			input [3:0] ecat_mii_rxd;
+			input ecat_mii_rxd;
 			input ecat_mii_tx_clk;
 			input ecat_mii_tx_en;
-			input [3:0] ecat_mii_txd;
+			input ecat_mii_txd;
 			input ecat_sync0;
 			input ecat_sync1;
 	endclocking : mcb
