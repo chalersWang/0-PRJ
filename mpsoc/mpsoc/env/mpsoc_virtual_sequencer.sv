@@ -13,6 +13,17 @@ class mpsoc_virtual_sequencer extends uvm_sequencer;
 	switch_sequencer         switch_seqr;
 	miiphy_sequencer         miiphy_seqr;
 	efuse_sequencer         efuse_seqr;
+	i2c_sequencer         i2c_seqr;
+	spi_sequencer         spi_seqr;
+	wdt_sequencer         wdt_seqr;
+	tim_sequencer         tim_seqr;
+	uc_sequencer         uc_seqr;
+	sdram_sequencer         sdram_seqr;
+	security_sequencer         security_seqr;
+	dma_sequencer         dma_seqr;
+	pn_irt_sequencer         pn_irt_seqr;
+	esc_sequencer         esc_seqr;
+	gmac_sequencer         gmac_seqr;
 
 	//You can add some parameters that you want to pass through the json table here;
 	rand bit[1:0]aa;
@@ -27,6 +38,17 @@ class mpsoc_virtual_sequencer extends uvm_sequencer;
 		`uvm_field_object(switch_seqr,UVM_ALL_ON);
 		`uvm_field_object(miiphy_seqr,UVM_ALL_ON);
 		`uvm_field_object(efuse_seqr,UVM_ALL_ON);
+		`uvm_field_object(i2c_seqr,UVM_ALL_ON);
+		`uvm_field_object(spi_seqr,UVM_ALL_ON);
+		`uvm_field_object(wdt_seqr,UVM_ALL_ON);
+		`uvm_field_object(tim_seqr,UVM_ALL_ON);
+		`uvm_field_object(uc_seqr,UVM_ALL_ON);
+		`uvm_field_object(sdram_seqr,UVM_ALL_ON);
+		`uvm_field_object(security_seqr,UVM_ALL_ON);
+		`uvm_field_object(dma_seqr,UVM_ALL_ON);
+		`uvm_field_object(pn_irt_seqr,UVM_ALL_ON);
+		`uvm_field_object(esc_seqr,UVM_ALL_ON);
+		`uvm_field_object(gmac_seqr,UVM_ALL_ON);
 
 		//parameters of json
 		`uvm_field_int(aa,UVM_ALL_ON);

@@ -2,7 +2,7 @@
 
 > MPSoC UVM Verification Environment
 >
-> 8 外设 UVC 覆盖 | SystemVerilog | UVM 1.2 | VCS/Verdi | MyUvmGen v2.0
+> 19 外设 UVC 覆盖 | SystemVerilog | UVM 1.2 | VCS/Verdi | MyUvmGen v2.0
 >
 > 日期: 2026-08-08
 
@@ -10,7 +10,7 @@
 
 ## 1. 概述
 
-本验证环境用于验证 **MPSoC (Multi-Processor System-on-Chip)** 的外设子系统，包含 **8 个 UVC 组件**，覆盖 SoC 常见外设接口：系统控制、JTAG、UART、GPIO、QSPI、Switch、MII PHY、eFuse。
+本验证环境用于验证 **MPSoC (Multi-Processor System-on-Chip)** 的外设子系统，包含 **19 个 UVC 组件**，覆盖 SoC 常见外设接口：系统控制、JTAG、UART、GPIO、QSPI、Switch、MII PHY、eFuse、I2C、SPI、WDT、TIM、uC、SDRAM、Security、DMA、PN-IRT、ESC、GMAC。
 
 环境由 [MyUvmGen_v2.0](https://github.com/chalersWang/MyUvmGen) 自动生成基础框架，采用标准 UVM 分层架构，支持覆盖率驱动验证（CDV）。
 
@@ -50,14 +50,14 @@ mpsoc/
 │
 ├── env/                      ← 环境层
 │   ├── mpsoc_EnvTop.svh      ← EnvTop Package
-│   ├── mpsoc_env.sv          ← UVM env (8 个 Agent + Scoreboard)
+│   ├── mpsoc_env.sv          ← UVM env (19 个 Agent + Scoreboard)
 │   ├── mpsoc_config.sv       ← 全局配置对象
 │   ├── mpsoc_event.sv        ← 全局事件同步
 │   ├── mpsoc_scoreboard.sv   ← 计分板 (uvm_analysis_imp 回调模式)
 │   ├── mpsoc_virtual_sequencer.sv ← 虚拟 Sequencer
 │   └── mpsoc_function_coverage.sv  ← 功能覆盖率封装
 │
-├── uvc/                      ← UVC 组件层 (8 个, 各 9 文件)
+├── uvc/                      ← UVC 组件层 (19 个, 各 9 文件)
 │   ├── sysctrl/              ← 系统控制器 UVC
 │   ├── jtag/                 ← JTAG 调试接口 UVC
 │   ├── uart/                 ← UART 串口 UVC
@@ -65,7 +65,18 @@ mpsoc/
 │   ├── qspi/                 ← Quad-SPI Flash UVC
 │   ├── switch/               ← 交换/互联模块 UVC
 │   ├── miiphy/               ← MII 以太网 PHY UVC
-│   └── efuse/                ← eFuse 熔丝 UVC
+│   ├── efuse/                ← eFuse 熔丝 UVC
+│   ├── i2c/                  ← I2C UVC
+│   ├── spi/                  ← SPI (Master/Slave) UVC
+│   ├── wdt/                  ← 看门狗 UVC
+│   ├── tim/                  ← 定时器 (TIMOx3/TIMIx3) UVC
+│   ├── uc/                   ← uC Slave 接口 UVC
+│   ├── sdram/                ← SDRAM/SRAM 内存控制器 UVC
+│   ├── security/             ← Security/OTP UVC
+│   ├── dma/                  ← DMAC (x8) UVC
+│   ├── pn_irt/               ← PROFINET IRT UVC
+│   ├── esc/                  ← EtherCAT ESC0/ESC1 UVC
+│   └── gmac/                 ← 千兆以太网 GMAC UVC
 │   每个 UVC: UvcTop / agent / driver / monitor / sequencer / sequence_lib / trans / config / vif
 │
 ├── regmodel/                 ← 寄存器模型层 (MyUvmGen 自动生成)
@@ -73,8 +84,8 @@ mpsoc/
 │   ├── mpsoc_reg_sequence.sv ← 寄存器访问 Sequence
 │   └── sysctrl_reg_adapter.sv← 寄存器 Adapter
 │
-├── sva/                      ← SVA 断言层 (8 接口 + 顶层)
-│   ├── mpsoc_vif.sv          ← 顶层 Virtual Interface (含 8 个子 vif)
+├── sva/                      ← SVA 断言层 (19 接口 + 顶层)
+│   ├── mpsoc_vif.sv          ← 顶层 Virtual Interface (含 19 个子 vif)
 │   ├── define_lib.v          ← 宏定义库
 │   ├── VifMacroDefine.v      ← Interface 宏定义
 │   └── code/
@@ -246,7 +257,7 @@ mpsoc_env (uvm_env)
 
 > ⚠️ **当前状态**：所有 `write_xxx()` 函数均为占位桩（只打印 `uvm_info`，标注 TODO），比对逻辑待实现。
 
-### 4.4 UVC 层 — 8 个外设组件
+### 4.4 UVC 层 — 19 个外设组件
 
 | UVC | 接口 | 方向 | 关键功能 |
 |-----|------|------|----------|
@@ -258,6 +269,17 @@ mpsoc_env (uvm_env)
 | **switch** | 交换矩阵 | Monitor | 路由配置、端口连接状态 |
 | **miiphy** | MII (Ethernet PHY) | Master/Slave | MDIO 寄存器访问、RMII/RGMII |
 | **efuse** | eFuse 控制器 | Master | 熔丝编程/读取、锁定控制 |
+| **i2c** | I2C (DW_apb_i2c) | Master/Slave | 主从通信、SCL/SDA 时序 |
+| **spi** | SPI (DW_apb_ssi) | Master/Slave | Master/Slave、4 线模式 |
+| **wdt** | 看门狗 (DW_apb_wdt) | Monitor | 超时中断/复位 |
+| **tim** | 定时器 (DW_apb_timers) | Master/Slave | 定时中断、PWM、输入捕获 |
+| **uc** | uC Slave 接口 | Slave | HOST 接口通信 |
+| **sdram** | SDRAM/SRAM (DW_memctl) | Master | 内存控制器读写/刷新 |
+| **security** | Security/OTP | Monitor | OTP 编程/读取、安全启动 |
+| **dma** | DMAC (DW_ahb_dmac) | Master | 8 通道内存/外设搬运 |
+| **pn_irt** | PROFINET IRT | Monitor | IRT 实时同步、脉冲事件 |
+| **esc** | EtherCAT ESC0/ESC1 | Master/Slave | MII 通信、Sync0/1 |
+| **gmac** | 千兆以太网 GMAC | Master | RGMII 收发 |
 
 每个 UVC 标准 9 文件结构：
 

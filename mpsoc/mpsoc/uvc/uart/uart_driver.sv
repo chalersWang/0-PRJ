@@ -10,7 +10,7 @@ class uart_driver extends uvm_driver#(uart_trans);
 
 	virtual uart_vif    vif;
 	// driver callback 池，允许用户注册回调扩展 driver 行为
-	`uvm_register_cb(uart_driver, uart_driver_callback)
+//	`uvm_register_cb(uart_driver, uart_driver_callback)
 
 	`uvm_component_utils(uart_driver)
 
@@ -90,12 +90,12 @@ class uart_driver extends uvm_driver#(uart_trans);
 			end
 			else begin
 				// 调用回调：pre_driver
-				`uvm_do_callbacks(uart_driver, uart_driver_callback, pre_driver(this, req))
+//				`uvm_do_callbacks(uart_driver, uart_driver_callback, pre_driver(this, req))
 				// --- 驱动 transaction ---
 				driver_one_pkt(req);
 				// --- 驱动完成 ---
 				// 调用回调：post_driver
-				`uvm_do_callbacks(uart_driver, uart_driver_callback, post_driver(this, req))
+//				`uvm_do_callbacks(uart_driver, uart_driver_callback, post_driver(this, req))
 				seq_item_port.item_done();
 			end
 		end
@@ -184,6 +184,7 @@ endclass : uart_driver
 	//     endclass
 	//     uart_driver_callback::add(drv, my_cb);
 	//=========================================================================
+/*
 	class uart_driver_callback extends uvm_callback;
 		`uvm_object_utils(uart_driver_callback)
 		function new(string name="uart_driver_callback");
@@ -198,5 +199,6 @@ endclass : uart_driver
 		virtual function void post_driver(uart_driver drv, uart_trans tr);
 		endfunction
 	endclass : uart_driver_callback
+*/
 
 `endif

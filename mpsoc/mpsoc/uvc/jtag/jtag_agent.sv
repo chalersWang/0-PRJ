@@ -18,7 +18,7 @@ class jtag_agent extends uvm_agent;
 	jtag_monitor   jtag_mon;
 
 	// agent callback 池（供用户注册扩展）
-	`uvm_register_cb(jtag_agent, jtag_agent_callback)
+//	`uvm_register_cb(jtag_agent, jtag_agent_callback)
 
 	`uvm_component_utils_begin(jtag_agent)
 		`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
@@ -130,11 +130,13 @@ endclass : jtag_agent
 	// jtag_agent_callback: Agent 回调基类
 	//   当需要在 agent 层面注入行为（如全局错误注入、协议拦截等）时使用
 	//=========================================================================
+/*
 	class jtag_agent_callback extends uvm_callback;
 		`uvm_object_utils(jtag_agent_callback)
 		function new(string name="jtag_agent_callback");
 			super.new(name);
 		endfunction
 	endclass : jtag_agent_callback
+*/
 
 `endif

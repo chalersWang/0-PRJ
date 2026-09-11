@@ -12,7 +12,7 @@ class gpio_monitor extends uvm_monitor;
 	gpio_trans             gpio_tr;
 
 	uvm_analysis_port #(gpio_trans)    mon_analysis_port;
-	`uvm_register_cb(gpio_monitor, gpio_monitor_callback)
+//	`uvm_register_cb(gpio_monitor, gpio_monitor_callback)
 
 	`uvm_component_utils(gpio_monitor)
 
@@ -97,13 +97,13 @@ class gpio_monitor extends uvm_monitor;
 			gpio_tr.b_pad_gpio_portb = vif.b_pad_gpio_portb;
 
 			// --- 4. 调用回调：pre_collect ---
-			`uvm_do_callbacks(gpio_monitor, gpio_monitor_callback, pre_collect(this, gpio_tr))
+//			`uvm_do_callbacks(gpio_monitor, gpio_monitor_callback, pre_collect(this, gpio_tr))
 
 			// --- 5. 广播 transaction（始终执行，不依赖宏） ---
 			mon_analysis_port.write(gpio_tr);
 
 			// --- 6. 调用回调：post_collect ---
-			`uvm_do_callbacks(gpio_monitor, gpio_monitor_callback, post_collect(this, gpio_tr))
+//			`uvm_do_callbacks(gpio_monitor, gpio_monitor_callback, post_collect(this, gpio_tr))
 		end
 		`uvm_info(get_type_name(), "run_phase end", UVM_MEDIUM)
 	endtask : run_phase
@@ -150,6 +150,7 @@ endclass : gpio_monitor
 	// gpio_monitor_callback: Monitor 回调基类
 	//   用户可继承此类扩展 monitor 行为（如注入错误、修改采集数据等）
 	//=========================================================================
+/*
 	class gpio_monitor_callback extends uvm_callback;
 		`uvm_object_utils(gpio_monitor_callback)
 		function new(string name="gpio_monitor_callback");
@@ -164,5 +165,6 @@ endclass : gpio_monitor
 		virtual function void post_collect(gpio_monitor mon, gpio_trans tr);
 		endfunction
 	endclass : gpio_monitor_callback
+*/
 
 `endif

@@ -18,7 +18,7 @@ class miiphy_agent extends uvm_agent;
 	miiphy_monitor   miiphy_mon;
 
 	// agent callback 池（供用户注册扩展）
-	`uvm_register_cb(miiphy_agent, miiphy_agent_callback)
+//	`uvm_register_cb(miiphy_agent, miiphy_agent_callback)
 
 	`uvm_component_utils_begin(miiphy_agent)
 		`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
@@ -130,11 +130,13 @@ endclass : miiphy_agent
 	// miiphy_agent_callback: Agent 回调基类
 	//   当需要在 agent 层面注入行为（如全局错误注入、协议拦截等）时使用
 	//=========================================================================
+/*
 	class miiphy_agent_callback extends uvm_callback;
 		`uvm_object_utils(miiphy_agent_callback)
 		function new(string name="miiphy_agent_callback");
 			super.new(name);
 		endfunction
 	endclass : miiphy_agent_callback
+*/
 
 `endif

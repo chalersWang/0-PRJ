@@ -19,6 +19,17 @@ package mpsoc_EnvTop;
 	import switch_UvcTop::*;
 	import miiphy_UvcTop::*;
 	import efuse_UvcTop::*;
+	import i2c_UvcTop::*;
+	import spi_UvcTop::*;
+	import wdt_UvcTop::*;
+	import tim_UvcTop::*;
+	import uc_UvcTop::*;
+	import sdram_UvcTop::*;
+	import security_UvcTop::*;
+	import dma_UvcTop::*;
+	import pn_irt_UvcTop::*;
+	import esc_UvcTop::*;
+	import gmac_UvcTop::*;
 
 	typedef class mpsoc_config;
 	typedef class mpsoc_event;

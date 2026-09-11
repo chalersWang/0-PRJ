@@ -12,7 +12,7 @@ class qspi_monitor extends uvm_monitor;
 	qspi_trans             qspi_tr;
 
 	uvm_analysis_port #(qspi_trans)    mon_analysis_port;
-	`uvm_register_cb(qspi_monitor, qspi_monitor_callback)
+//	`uvm_register_cb(qspi_monitor, qspi_monitor_callback)
 
 	`uvm_component_utils(qspi_monitor)
 
@@ -118,13 +118,13 @@ class qspi_monitor extends uvm_monitor;
 			qspi_tr.QSPI_SCLK_o = vif.QSPI_SCLK_o;
 
 			// --- 4. 调用回调：pre_collect ---
-			`uvm_do_callbacks(qspi_monitor, qspi_monitor_callback, pre_collect(this, qspi_tr))
+//			`uvm_do_callbacks(qspi_monitor, qspi_monitor_callback, pre_collect(this, qspi_tr))
 
 			// --- 5. 广播 transaction（始终执行，不依赖宏） ---
 			mon_analysis_port.write(qspi_tr);
 
 			// --- 6. 调用回调：post_collect ---
-			`uvm_do_callbacks(qspi_monitor, qspi_monitor_callback, post_collect(this, qspi_tr))
+//			`uvm_do_callbacks(qspi_monitor, qspi_monitor_callback, post_collect(this, qspi_tr))
 		end
 		`uvm_info(get_type_name(), "run_phase end", UVM_MEDIUM)
 	endtask : run_phase
@@ -171,6 +171,7 @@ endclass : qspi_monitor
 	// qspi_monitor_callback: Monitor 回调基类
 	//   用户可继承此类扩展 monitor 行为（如注入错误、修改采集数据等）
 	//=========================================================================
+/*
 	class qspi_monitor_callback extends uvm_callback;
 		`uvm_object_utils(qspi_monitor_callback)
 		function new(string name="qspi_monitor_callback");
@@ -185,5 +186,6 @@ endclass : qspi_monitor
 		virtual function void post_collect(qspi_monitor mon, qspi_trans tr);
 		endfunction
 	endclass : qspi_monitor_callback
+*/
 
 `endif

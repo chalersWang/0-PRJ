@@ -12,7 +12,7 @@ class miiphy_monitor extends uvm_monitor;
 	miiphy_trans             miiphy_tr;
 
 	uvm_analysis_port #(miiphy_trans)    mon_analysis_port;
-	`uvm_register_cb(miiphy_monitor, miiphy_monitor_callback)
+//	`uvm_register_cb(miiphy_monitor, miiphy_monitor_callback)
 
 	`uvm_component_utils(miiphy_monitor)
 
@@ -115,13 +115,13 @@ class miiphy_monitor extends uvm_monitor;
 			miiphy_tr.phy_link_i = vif.phy_link_i;
 
 			// --- 4. 调用回调：pre_collect ---
-			`uvm_do_callbacks(miiphy_monitor, miiphy_monitor_callback, pre_collect(this, miiphy_tr))
+//			`uvm_do_callbacks(miiphy_monitor, miiphy_monitor_callback, pre_collect(this, miiphy_tr))
 
 			// --- 5. 广播 transaction（始终执行，不依赖宏） ---
 			mon_analysis_port.write(miiphy_tr);
 
 			// --- 6. 调用回调：post_collect ---
-			`uvm_do_callbacks(miiphy_monitor, miiphy_monitor_callback, post_collect(this, miiphy_tr))
+//			`uvm_do_callbacks(miiphy_monitor, miiphy_monitor_callback, post_collect(this, miiphy_tr))
 		end
 		`uvm_info(get_type_name(), "run_phase end", UVM_MEDIUM)
 	endtask : run_phase
@@ -168,6 +168,7 @@ endclass : miiphy_monitor
 	// miiphy_monitor_callback: Monitor 回调基类
 	//   用户可继承此类扩展 monitor 行为（如注入错误、修改采集数据等）
 	//=========================================================================
+/*
 	class miiphy_monitor_callback extends uvm_callback;
 		`uvm_object_utils(miiphy_monitor_callback)
 		function new(string name="miiphy_monitor_callback");
@@ -182,5 +183,6 @@ endclass : miiphy_monitor
 		virtual function void post_collect(miiphy_monitor mon, miiphy_trans tr);
 		endfunction
 	endclass : miiphy_monitor_callback
+*/
 
 `endif

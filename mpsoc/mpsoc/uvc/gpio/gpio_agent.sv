@@ -18,7 +18,7 @@ class gpio_agent extends uvm_agent;
 	gpio_monitor   gpio_mon;
 
 	// agent callback 池（供用户注册扩展）
-	`uvm_register_cb(gpio_agent, gpio_agent_callback)
+//	`uvm_register_cb(gpio_agent, gpio_agent_callback)
 
 	`uvm_component_utils_begin(gpio_agent)
 		`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
@@ -130,11 +130,13 @@ endclass : gpio_agent
 	// gpio_agent_callback: Agent 回调基类
 	//   当需要在 agent 层面注入行为（如全局错误注入、协议拦截等）时使用
 	//=========================================================================
+/*
 	class gpio_agent_callback extends uvm_callback;
 		`uvm_object_utils(gpio_agent_callback)
 		function new(string name="gpio_agent_callback");
 			super.new(name);
 		endfunction
 	endclass : gpio_agent_callback
+*/
 
 `endif

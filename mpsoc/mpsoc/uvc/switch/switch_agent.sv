@@ -18,7 +18,7 @@ class switch_agent extends uvm_agent;
 	switch_monitor   switch_mon;
 
 	// agent callback 池（供用户注册扩展）
-	`uvm_register_cb(switch_agent, switch_agent_callback)
+//	`uvm_register_cb(switch_agent, switch_agent_callback)
 
 	`uvm_component_utils_begin(switch_agent)
 		`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
@@ -130,11 +130,13 @@ endclass : switch_agent
 	// switch_agent_callback: Agent 回调基类
 	//   当需要在 agent 层面注入行为（如全局错误注入、协议拦截等）时使用
 	//=========================================================================
+/*
 	class switch_agent_callback extends uvm_callback;
 		`uvm_object_utils(switch_agent_callback)
 		function new(string name="switch_agent_callback");
 			super.new(name);
 		endfunction
 	endclass : switch_agent_callback
+*/
 
 `endif

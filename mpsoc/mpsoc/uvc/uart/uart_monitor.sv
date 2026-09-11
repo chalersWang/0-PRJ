@@ -12,7 +12,7 @@ class uart_monitor extends uvm_monitor;
 	uart_trans             uart_tr;
 
 	uvm_analysis_port #(uart_trans)    mon_analysis_port;
-	`uvm_register_cb(uart_monitor, uart_monitor_callback)
+//	`uvm_register_cb(uart_monitor, uart_monitor_callback)
 
 	`uvm_component_utils(uart_monitor)
 
@@ -97,13 +97,13 @@ class uart_monitor extends uvm_monitor;
 			uart_tr.o_pad_uart0_sout = vif.o_pad_uart0_sout;
 
 			// --- 4. 调用回调：pre_collect ---
-			`uvm_do_callbacks(uart_monitor, uart_monitor_callback, pre_collect(this, uart_tr))
+//			`uvm_do_callbacks(uart_monitor, uart_monitor_callback, pre_collect(this, uart_tr))
 
 			// --- 5. 广播 transaction（始终执行，不依赖宏） ---
 			mon_analysis_port.write(uart_tr);
 
 			// --- 6. 调用回调：post_collect ---
-			`uvm_do_callbacks(uart_monitor, uart_monitor_callback, post_collect(this, uart_tr))
+//			`uvm_do_callbacks(uart_monitor, uart_monitor_callback, post_collect(this, uart_tr))
 		end
 		`uvm_info(get_type_name(), "run_phase end", UVM_MEDIUM)
 	endtask : run_phase
@@ -150,6 +150,7 @@ endclass : uart_monitor
 	// uart_monitor_callback: Monitor 回调基类
 	//   用户可继承此类扩展 monitor 行为（如注入错误、修改采集数据等）
 	//=========================================================================
+/*
 	class uart_monitor_callback extends uvm_callback;
 		`uvm_object_utils(uart_monitor_callback)
 		function new(string name="uart_monitor_callback");
@@ -164,5 +165,6 @@ endclass : uart_monitor
 		virtual function void post_collect(uart_monitor mon, uart_trans tr);
 		endfunction
 	endclass : uart_monitor_callback
+*/
 
 `endif

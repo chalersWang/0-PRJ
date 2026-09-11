@@ -10,7 +10,7 @@ class miiphy_driver extends uvm_driver#(miiphy_trans);
 
 	virtual miiphy_vif    vif;
 	// driver callback 池，允许用户注册回调扩展 driver 行为
-	`uvm_register_cb(miiphy_driver, miiphy_driver_callback)
+//	`uvm_register_cb(miiphy_driver, miiphy_driver_callback)
 
 	`uvm_component_utils(miiphy_driver)
 
@@ -96,12 +96,12 @@ class miiphy_driver extends uvm_driver#(miiphy_trans);
 			end
 			else begin
 				// 调用回调：pre_driver
-				`uvm_do_callbacks(miiphy_driver, miiphy_driver_callback, pre_driver(this, req))
+//				`uvm_do_callbacks(miiphy_driver, miiphy_driver_callback, pre_driver(this, req))
 				// --- 驱动 transaction ---
 				driver_one_pkt(req);
 				// --- 驱动完成 ---
 				// 调用回调：post_driver
-				`uvm_do_callbacks(miiphy_driver, miiphy_driver_callback, post_driver(this, req))
+//				`uvm_do_callbacks(miiphy_driver, miiphy_driver_callback, post_driver(this, req))
 				seq_item_port.item_done();
 			end
 		end
@@ -190,6 +190,7 @@ endclass : miiphy_driver
 	//     endclass
 	//     miiphy_driver_callback::add(drv, my_cb);
 	//=========================================================================
+/*
 	class miiphy_driver_callback extends uvm_callback;
 		`uvm_object_utils(miiphy_driver_callback)
 		function new(string name="miiphy_driver_callback");
@@ -204,5 +205,6 @@ endclass : miiphy_driver
 		virtual function void post_driver(miiphy_driver drv, miiphy_trans tr);
 		endfunction
 	endclass : miiphy_driver_callback
+*/
 
 `endif

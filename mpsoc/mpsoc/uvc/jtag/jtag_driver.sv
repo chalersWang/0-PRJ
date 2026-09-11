@@ -10,7 +10,7 @@ class jtag_driver extends uvm_driver#(jtag_trans);
 
 	virtual jtag_vif    vif;
 	// driver callback 池，允许用户注册回调扩展 driver 行为
-	`uvm_register_cb(jtag_driver, jtag_driver_callback)
+//	`uvm_register_cb(jtag_driver, jtag_driver_callback)
 
 	`uvm_component_utils(jtag_driver)
 
@@ -94,12 +94,12 @@ class jtag_driver extends uvm_driver#(jtag_trans);
 			end
 			else begin
 				// 调用回调：pre_driver
-				`uvm_do_callbacks(jtag_driver, jtag_driver_callback, pre_driver(this, req))
+//				`uvm_do_callbacks(jtag_driver, jtag_driver_callback, pre_driver(this, req))
 				// --- 驱动 transaction ---
 				driver_one_pkt(req);
 				// --- 驱动完成 ---
 				// 调用回调：post_driver
-				`uvm_do_callbacks(jtag_driver, jtag_driver_callback, post_driver(this, req))
+//				`uvm_do_callbacks(jtag_driver, jtag_driver_callback, post_driver(this, req))
 				seq_item_port.item_done();
 			end
 		end
@@ -188,6 +188,7 @@ endclass : jtag_driver
 	//     endclass
 	//     jtag_driver_callback::add(drv, my_cb);
 	//=========================================================================
+/*
 	class jtag_driver_callback extends uvm_callback;
 		`uvm_object_utils(jtag_driver_callback)
 		function new(string name="jtag_driver_callback");
@@ -202,5 +203,6 @@ endclass : jtag_driver
 		virtual function void post_driver(jtag_driver drv, jtag_trans tr);
 		endfunction
 	endclass : jtag_driver_callback
+*/
 
 `endif

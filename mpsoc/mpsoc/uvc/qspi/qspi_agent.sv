@@ -18,7 +18,7 @@ class qspi_agent extends uvm_agent;
 	qspi_monitor   qspi_mon;
 
 	// agent callback 池（供用户注册扩展）
-	`uvm_register_cb(qspi_agent, qspi_agent_callback)
+//	`uvm_register_cb(qspi_agent, qspi_agent_callback)
 
 	`uvm_component_utils_begin(qspi_agent)
 		`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
@@ -130,11 +130,13 @@ endclass : qspi_agent
 	// qspi_agent_callback: Agent 回调基类
 	//   当需要在 agent 层面注入行为（如全局错误注入、协议拦截等）时使用
 	//=========================================================================
+/*
 	class qspi_agent_callback extends uvm_callback;
 		`uvm_object_utils(qspi_agent_callback)
 		function new(string name="qspi_agent_callback");
 			super.new(name);
 		endfunction
 	endclass : qspi_agent_callback
+*/
 
 `endif

@@ -10,7 +10,7 @@ class switch_driver extends uvm_driver#(switch_trans);
 
 	virtual switch_vif    vif;
 	// driver callback 池，允许用户注册回调扩展 driver 行为
-	`uvm_register_cb(switch_driver, switch_driver_callback)
+//	`uvm_register_cb(switch_driver, switch_driver_callback)
 
 	`uvm_component_utils(switch_driver)
 
@@ -106,12 +106,12 @@ class switch_driver extends uvm_driver#(switch_trans);
 			end
 			else begin
 				// 调用回调：pre_driver
-				`uvm_do_callbacks(switch_driver, switch_driver_callback, pre_driver(this, req))
+//				`uvm_do_callbacks(switch_driver, switch_driver_callback, pre_driver(this, req))
 				// --- 驱动 transaction ---
 				driver_one_pkt(req);
 				// --- 驱动完成 ---
 				// 调用回调：post_driver
-				`uvm_do_callbacks(switch_driver, switch_driver_callback, post_driver(this, req))
+//				`uvm_do_callbacks(switch_driver, switch_driver_callback, post_driver(this, req))
 				seq_item_port.item_done();
 			end
 		end
@@ -200,6 +200,7 @@ endclass : switch_driver
 	//     endclass
 	//     switch_driver_callback::add(drv, my_cb);
 	//=========================================================================
+/*
 	class switch_driver_callback extends uvm_callback;
 		`uvm_object_utils(switch_driver_callback)
 		function new(string name="switch_driver_callback");
@@ -214,5 +215,6 @@ endclass : switch_driver
 		virtual function void post_driver(switch_driver drv, switch_trans tr);
 		endfunction
 	endclass : switch_driver_callback
+*/
 
 `endif

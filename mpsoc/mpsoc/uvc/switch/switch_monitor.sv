@@ -12,7 +12,7 @@ class switch_monitor extends uvm_monitor;
 	switch_trans             switch_tr;
 
 	uvm_analysis_port #(switch_trans)    mon_analysis_port;
-	`uvm_register_cb(switch_monitor, switch_monitor_callback)
+//	`uvm_register_cb(switch_monitor, switch_monitor_callback)
 
 	`uvm_component_utils(switch_monitor)
 
@@ -145,13 +145,13 @@ class switch_monitor extends uvm_monitor;
 			switch_tr.switch_mdio_data = vif.switch_mdio_data;
 
 			// --- 4. 调用回调：pre_collect ---
-			`uvm_do_callbacks(switch_monitor, switch_monitor_callback, pre_collect(this, switch_tr))
+//			`uvm_do_callbacks(switch_monitor, switch_monitor_callback, pre_collect(this, switch_tr))
 
 			// --- 5. 广播 transaction（始终执行，不依赖宏） ---
 			mon_analysis_port.write(switch_tr);
 
 			// --- 6. 调用回调：post_collect ---
-			`uvm_do_callbacks(switch_monitor, switch_monitor_callback, post_collect(this, switch_tr))
+//			`uvm_do_callbacks(switch_monitor, switch_monitor_callback, post_collect(this, switch_tr))
 		end
 		`uvm_info(get_type_name(), "run_phase end", UVM_MEDIUM)
 	endtask : run_phase
@@ -198,6 +198,7 @@ endclass : switch_monitor
 	// switch_monitor_callback: Monitor 回调基类
 	//   用户可继承此类扩展 monitor 行为（如注入错误、修改采集数据等）
 	//=========================================================================
+/*
 	class switch_monitor_callback extends uvm_callback;
 		`uvm_object_utils(switch_monitor_callback)
 		function new(string name="switch_monitor_callback");
@@ -212,5 +213,6 @@ endclass : switch_monitor
 		virtual function void post_collect(switch_monitor mon, switch_trans tr);
 		endfunction
 	endclass : switch_monitor_callback
+*/
 
 `endif

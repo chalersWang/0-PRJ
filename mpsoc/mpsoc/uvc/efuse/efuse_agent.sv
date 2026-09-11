@@ -18,7 +18,7 @@ class efuse_agent extends uvm_agent;
 	efuse_monitor   efuse_mon;
 
 	// agent callback 池（供用户注册扩展）
-	`uvm_register_cb(efuse_agent, efuse_agent_callback)
+//	`uvm_register_cb(efuse_agent, efuse_agent_callback)
 
 	`uvm_component_utils_begin(efuse_agent)
 		`uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
@@ -130,11 +130,13 @@ endclass : efuse_agent
 	// efuse_agent_callback: Agent 回调基类
 	//   当需要在 agent 层面注入行为（如全局错误注入、协议拦截等）时使用
 	//=========================================================================
+/*
 	class efuse_agent_callback extends uvm_callback;
 		`uvm_object_utils(efuse_agent_callback)
 		function new(string name="efuse_agent_callback");
 			super.new(name);
 		endfunction
 	endclass : efuse_agent_callback
+*/
 
 `endif
