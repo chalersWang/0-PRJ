@@ -52,3 +52,11 @@ alias openfsdb="bsub -Is -q rca.q verdi -ssf sim.fsdb&"
 alias showcoverage_dve="dve -full64 -cov -dir cov_merge.vdb&"
 alias showcoverage_verdi="verdi -cov -covdir cov_merge.vdb&"
 echo "Bootenv Finish"
+
+##=======================	[Sub Core RISCV Tools (E906)]	=======================##
+# E906 交叉编译工具链:供 testcase/cpu/ 下 C 程序编译成 elf/pat/bin 使用
+# 用法:source ${VERIFY_HOME}/testcase/sw/setup/setup_env.sh [工具链 bin 目录]
+# 默认路径 /tools/riscv/riscv64-elf-x86_64/bin,可在服务器上按需覆盖
+if [ -f ${VERIFY_HOME}/testcase/sw/setup/setup_env.sh ]; then
+    source ${VERIFY_HOME}/testcase/sw/setup/setup_env.sh
+fi
