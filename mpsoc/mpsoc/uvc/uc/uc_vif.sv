@@ -9,8 +9,8 @@
 interface uc_vif(input logic clk, input logic rstn);
 
 	// ===== DUT 信号声明（logic 类型） =====
-		logic [13:0] uc_addr;
-		logic [11:0] uc_data;
+		wire [13:0] uc_addr;
+		wire [11:0] uc_data;
 		logic uc_busy;
 		logic uc_cs;
 		logic uc_wr;

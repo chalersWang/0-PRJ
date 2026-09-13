@@ -17,7 +17,7 @@ interface sdram_vif(input logic clk, input logic rstn);
 		logic sdram_we_n;
 		logic [1:0] sdram_ba;
 		logic [12:0] sdram_addr;
-		logic [15:0] sdram_dq;
+		wire [15:0] sdram_dq;
 		logic [1:0] sdram_dqm;
 
 	// ===== Clocking Blocks =====

@@ -9,8 +9,8 @@
 interface i2c_vif(input logic clk, input logic rstn);
 
 	// ===== DUT 信号声明（logic 类型） =====
-		logic scl;
-		logic sda;
+		wire scl;
+		wire sda;
 		logic ic_intr;
 
 	// ===== Clocking Blocks =====

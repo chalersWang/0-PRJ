@@ -9,8 +9,8 @@
 interface gpio_vif(input logic clk, input logic rstn);
 
 	// ===== DUT 信号声明（logic 类型） =====
-	logic [31:0] b_pad_gpio_porta;
-	logic [15:0] b_pad_gpio_portb;
+	wire [31:0] b_pad_gpio_porta;
+	wire [15:0] b_pad_gpio_portb;
 
 	// ===== Clocking Blocks =====
 	// dcb: Driver 视角的 clocking block

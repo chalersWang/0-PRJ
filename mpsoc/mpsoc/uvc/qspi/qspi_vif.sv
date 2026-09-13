@@ -13,10 +13,10 @@ interface qspi_vif(input logic clk, input logic rstn);
 	logic QSPI_CS1N_o;
 	logic QSPI_CS2N_o;
 	logic QSPI_CS3N_o;
-	logic QSPI_DAT0;
-	logic QSPI_DAT1;
-	logic QSPI_DAT2;
-	logic QSPI_DAT3;
+	wire QSPI_DAT0;
+	wire QSPI_DAT1;
+	wire QSPI_DAT2;
+	wire QSPI_DAT3;
 	logic QSPI_SCLK_o;
 
 	// ===== Clocking Blocks =====

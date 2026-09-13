@@ -26,7 +26,7 @@ interface switch_vif(input logic clk, input logic rstn);
 	logic [3:0] switch_mii_p1_tx;
 	logic switch_mii_p1_link;
 	logic switch_mdio_clock;
-	logic switch_mdio_data;
+	wire switch_mdio_data;
 
 	// ===== Clocking Blocks =====
 	// dcb: Driver 视角的 clocking block
