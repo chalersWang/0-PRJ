@@ -13,7 +13,7 @@ package sysctrl_UvcTop;
 	typedef   class sysctrl_monitor;
 	typedef   class sysctrl_sequencer;
 	typedef   class sysctrl_agent;
-	typedef   class sysctrl_sequence_lib;
+	// typedef   class sysctrl_sequence_lib;
 
 	`include "sysctrl_config.sv"
 	`include "sysctrl_trans.sv"

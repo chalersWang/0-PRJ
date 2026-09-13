@@ -4,7 +4,7 @@
 //=========================================================================
 // security_config: 全局验证环境配置类
 //   集中管理所有子组件的配置参数
-//   通过 uvm_config_db#security_config::set/get 在层次间传递
+//   通过 uvm_config_db#(security_config)::set/get 在层次间传递
 //=========================================================================
 class security_config extends uvm_object;
 

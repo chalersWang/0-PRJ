@@ -22,7 +22,7 @@ class pn_irt_base_sequence extends uvm_sequence#(pn_irt_trans);
 		if (starting_phase != null)
 			starting_phase.raise_objection(this, get_type_name());
 		// 获取 config（若不需要可注释）
-		if (!uvm_config_db#pn_irt_config::get(null, get_full_name(), "pn_irt_config", pn_irt_cfg))
+		if (!uvm_config_db#(pn_irt_config)::get(null, get_full_name(), "pn_irt_config", pn_irt_cfg))
 			`uvm_fatal(get_type_name(), "can not get pn_irt_config object !!!")
 		`uvm_info(get_type_name(), "pre_body end", UVM_HIGH)
 	endtask : pre_body

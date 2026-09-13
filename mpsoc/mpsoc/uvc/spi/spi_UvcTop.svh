@@ -13,7 +13,7 @@ package spi_UvcTop;
 	typedef   class spi_monitor;
 	typedef   class spi_sequencer;
 	typedef   class spi_agent;
-	typedef   class spi_sequence_lib;
+	// typedef   class spi_sequence_lib;
 
 	`include "spi_config.sv"
 	`include "spi_trans.sv"

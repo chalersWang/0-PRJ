@@ -13,7 +13,7 @@ package tim_UvcTop;
 	typedef   class tim_monitor;
 	typedef   class tim_sequencer;
 	typedef   class tim_agent;
-	typedef   class tim_sequence_lib;
+	// typedef   class tim_sequence_lib;
 
 	`include "tim_config.sv"
 	`include "tim_trans.sv"

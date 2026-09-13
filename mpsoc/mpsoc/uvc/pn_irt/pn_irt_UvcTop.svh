@@ -13,7 +13,7 @@ package pn_irt_UvcTop;
 	typedef   class pn_irt_monitor;
 	typedef   class pn_irt_sequencer;
 	typedef   class pn_irt_agent;
-	typedef   class pn_irt_sequence_lib;
+	// typedef   class pn_irt_sequence_lib;
 
 	`include "pn_irt_config.sv"
 	`include "pn_irt_trans.sv"

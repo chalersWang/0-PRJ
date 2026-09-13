@@ -13,7 +13,7 @@ package security_UvcTop;
 	typedef   class security_monitor;
 	typedef   class security_sequencer;
 	typedef   class security_agent;
-	typedef   class security_sequence_lib;
+	// typedef   class security_sequence_lib;
 
 	`include "security_config.sv"
 	`include "security_trans.sv"

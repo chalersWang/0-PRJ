@@ -13,7 +13,7 @@ package efuse_UvcTop;
 	typedef   class efuse_monitor;
 	typedef   class efuse_sequencer;
 	typedef   class efuse_agent;
-	typedef   class efuse_sequence_lib;
+	// typedef   class efuse_sequence_lib;
 
 	`include "efuse_config.sv"
 	`include "efuse_trans.sv"

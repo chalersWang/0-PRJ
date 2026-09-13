@@ -13,7 +13,7 @@ package i2c_UvcTop;
 	typedef   class i2c_monitor;
 	typedef   class i2c_sequencer;
 	typedef   class i2c_agent;
-	typedef   class i2c_sequence_lib;
+	// typedef   class i2c_sequence_lib;
 
 	`include "i2c_config.sv"
 	`include "i2c_trans.sv"

@@ -13,7 +13,7 @@ package esc_UvcTop;
 	typedef   class esc_monitor;
 	typedef   class esc_sequencer;
 	typedef   class esc_agent;
-	typedef   class esc_sequence_lib;
+	// typedef   class esc_sequence_lib;
 
 	`include "esc_config.sv"
 	`include "esc_trans.sv"

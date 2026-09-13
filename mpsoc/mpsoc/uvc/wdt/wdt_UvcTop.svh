@@ -13,7 +13,7 @@ package wdt_UvcTop;
 	typedef   class wdt_monitor;
 	typedef   class wdt_sequencer;
 	typedef   class wdt_agent;
-	typedef   class wdt_sequence_lib;
+	// typedef   class wdt_sequence_lib;
 
 	`include "wdt_config.sv"
 	`include "wdt_trans.sv"

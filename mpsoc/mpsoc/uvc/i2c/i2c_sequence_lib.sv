@@ -22,7 +22,7 @@ class i2c_base_sequence extends uvm_sequence#(i2c_trans);
 		if (starting_phase != null)
 			starting_phase.raise_objection(this, get_type_name());
 		// 获取 config（若不需要可注释）
-		if (!uvm_config_db#i2c_config::get(null, get_full_name(), "i2c_config", i2c_cfg))
+		if (!uvm_config_db#(i2c_config)::get(null, get_full_name(), "i2c_config", i2c_cfg))
 			`uvm_fatal(get_type_name(), "can not get i2c_config object !!!")
 		`uvm_info(get_type_name(), "pre_body end", UVM_HIGH)
 	endtask : pre_body

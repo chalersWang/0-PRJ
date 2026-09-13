@@ -13,7 +13,7 @@ package uc_UvcTop;
 	typedef   class uc_monitor;
 	typedef   class uc_sequencer;
 	typedef   class uc_agent;
-	typedef   class uc_sequence_lib;
+	// typedef   class uc_sequence_lib;
 
 	`include "uc_config.sv"
 	`include "uc_trans.sv"

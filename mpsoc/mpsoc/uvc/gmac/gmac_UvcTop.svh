@@ -13,7 +13,7 @@ package gmac_UvcTop;
 	typedef   class gmac_monitor;
 	typedef   class gmac_sequencer;
 	typedef   class gmac_agent;
-	typedef   class gmac_sequence_lib;
+	// typedef   class gmac_sequence_lib;
 
 	`include "gmac_config.sv"
 	`include "gmac_trans.sv"

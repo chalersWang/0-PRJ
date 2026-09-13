@@ -13,7 +13,7 @@ package sdram_UvcTop;
 	typedef   class sdram_monitor;
 	typedef   class sdram_sequencer;
 	typedef   class sdram_agent;
-	typedef   class sdram_sequence_lib;
+	// typedef   class sdram_sequence_lib;
 
 	`include "sdram_config.sv"
 	`include "sdram_trans.sv"

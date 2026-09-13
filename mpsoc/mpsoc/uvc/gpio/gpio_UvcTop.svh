@@ -13,7 +13,7 @@ package gpio_UvcTop;
 	typedef   class gpio_monitor;
 	typedef   class gpio_sequencer;
 	typedef   class gpio_agent;
-	typedef   class gpio_sequence_lib;
+	// typedef   class gpio_sequence_lib;
 
 	`include "gpio_config.sv"
 	`include "gpio_trans.sv"

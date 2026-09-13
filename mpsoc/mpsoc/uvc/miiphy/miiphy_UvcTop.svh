@@ -13,7 +13,7 @@ package miiphy_UvcTop;
 	typedef   class miiphy_monitor;
 	typedef   class miiphy_sequencer;
 	typedef   class miiphy_agent;
-	typedef   class miiphy_sequence_lib;
+	// typedef   class miiphy_sequence_lib;
 
 	`include "miiphy_config.sv"
 	`include "miiphy_trans.sv"

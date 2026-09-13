@@ -13,7 +13,7 @@ package qspi_UvcTop;
 	typedef   class qspi_monitor;
 	typedef   class qspi_sequencer;
 	typedef   class qspi_agent;
-	typedef   class qspi_sequence_lib;
+	// typedef   class qspi_sequence_lib;
 
 	`include "qspi_config.sv"
 	`include "qspi_trans.sv"

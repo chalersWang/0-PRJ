@@ -13,7 +13,7 @@ package dma_UvcTop;
 	typedef   class dma_monitor;
 	typedef   class dma_sequencer;
 	typedef   class dma_agent;
-	typedef   class dma_sequence_lib;
+	// typedef   class dma_sequence_lib;
 
 	`include "dma_config.sv"
 	`include "dma_trans.sv"

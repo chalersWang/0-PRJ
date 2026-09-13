@@ -13,7 +13,7 @@ package uart_UvcTop;
 	typedef   class uart_monitor;
 	typedef   class uart_sequencer;
 	typedef   class uart_agent;
-	typedef   class uart_sequence_lib;
+	// typedef   class uart_sequence_lib;
 
 	`include "uart_config.sv"
 	`include "uart_trans.sv"

@@ -13,7 +13,7 @@ package jtag_UvcTop;
 	typedef   class jtag_monitor;
 	typedef   class jtag_sequencer;
 	typedef   class jtag_agent;
-	typedef   class jtag_sequence_lib;
+	// typedef   class jtag_sequence_lib;
 
 	`include "jtag_config.sv"
 	`include "jtag_trans.sv"

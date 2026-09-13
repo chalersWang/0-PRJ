@@ -13,7 +13,7 @@ package switch_UvcTop;
 	typedef   class switch_monitor;
 	typedef   class switch_sequencer;
 	typedef   class switch_agent;
-	typedef   class switch_sequence_lib;
+	// typedef   class switch_sequence_lib;
 
 	`include "switch_config.sv"
 	`include "switch_trans.sv"
