@@ -32,7 +32,7 @@ class canfd_B_03_02_fd_brs_test_seq extends canfd_virtual_seq_lib;
 
                 canfd_tx_fd_frame(11'h100 + i, 1'b0, 1'b1, test_dlcs[i], data_buf);
                 canfd_wait_txok(5000);
-                canfd_clear_int(32'h04);
+                canfd_clear_int(32'h02);
                 pass++;
             end
         end
@@ -42,7 +42,7 @@ class canfd_B_03_02_fd_brs_test_seq extends canfd_virtual_seq_lib;
         foreach (data_buf[i]) data_buf[i] = 8'hAA;
         canfd_tx_fd_frame(11'h200, 1'b0, 1'b0, 4'h8, data_buf);
         canfd_wait_txok(5000);
-        canfd_clear_int(32'h04);
+        canfd_clear_int(32'h02);
         pass++;
 
         `uvm_info(get_type_name(), $sformatf("===== B-03-02 Done: %0d frames tested =====", pass), UVM_LOW)

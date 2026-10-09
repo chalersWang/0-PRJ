@@ -18,7 +18,7 @@ class canfd_R_01_04_fifo_wm_test_seq extends uvm_sequence;
 
         // FSR/WMR水印中断
         `ifdef REG_MODEL
-        rm.SRR.write(st,0,UVM_FRONTDOOR); rm.IER.write(st,32'h1000,UVM_FRONTDOOR); // RXFWMFLL
+        rm.SRR.write(st,0,UVM_FRONTDOOR); rm.IER0.write(st,32'h1000,UVM_FRONTDOOR); // RXFWMFLL
         rm.WMR.write(st,32'h4,UVM_FRONTDOOR); // 水印=4
         rm.BRPR.write(st,4,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         repeat(500) @(posedge canfdvif.clk);

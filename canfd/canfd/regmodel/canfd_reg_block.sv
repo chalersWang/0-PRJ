@@ -2,9 +2,9 @@
 `define _CANFD_REG_BLOCK_SV_
 
 //=========================================================================
-// canfd_reg_block: CAN FD Controller Register Block (PG223 v3.0)
-//   基于 AMD/Xilinx PG223 CANFD Controller 寄存器手册生成
-//   包含 27 个寄存器
+// canfd_reg_block: CAN FD Controller Register Block (寄存器描述 v2.0)
+//   基于寄存器描述 v2.0（实际自定义设计）同步更新，PG223 v3.0 为基线
+//   包含 37 个寄存器（IER 拆为 IER0/1/2，ICR/TSR 移位，新增 IMCR/TS32/TXTS/RXTS/ECC0~3/IERBF1）
 //=========================================================================
 `include "uvm_macros.svh"
 import uvm_pkg::*;
@@ -37,7 +37,8 @@ endclass : SRR_reg
 
 //-------------------------------------------------------------------------
 // MSR: addr=0x0004, width=32, access=RW
-//   [31:16] RSVD
+//   [31:17] RSVD
+//   [16:16] RX_MODE          RW    reset=1'b0   (v2.0: 0=FIFO/1=Mailbox, 仅 CEN=0 可写)
 //   [15:8] ITO               RW    reset=8'h0
 //   [7:7] ABR               RW    reset=1'b0
 //   [6:6] SBR               RW    reset=1'b0
@@ -50,6 +51,7 @@ endclass : SRR_reg
 //-------------------------------------------------------------------------
 class MSR_reg extends uvm_reg;
 
+    rand uvm_reg_field RX_MODE;
     rand uvm_reg_field ITO;
     rand uvm_reg_field ABR;
     rand uvm_reg_field SBR;
@@ -67,6 +69,8 @@ class MSR_reg extends uvm_reg;
     endfunction
 
     virtual function void build();
+        RX_MODE = uvm_reg_field::type_id::create("RX_MODE");
+        RX_MODE.configure(this, 1, 16, "RW", 0, 1'b0, 1, 1, 1);
         ITO = uvm_reg_field::type_id::create("ITO");
         ITO.configure(this, 8, 8, "RW", 0, 8'h0, 1, 1, 1);
         ABR = uvm_reg_field::type_id::create("ABR");
@@ -170,7 +174,8 @@ endclass : ECR_reg
 
 //-------------------------------------------------------------------------
 // ESR: addr=0x0014, width=32, access=RW
-//   [31:12] RSVD
+//   [31:20] RSVD
+//   [19:12] ECCERR           W1C   reset=8'h0  (v2.0: TX/RX BRAM ECC 错误)
 //   [11:11] F_BERR            W1C   reset=1'b0
 //   [10:10] F_STER            W1C   reset=1'b0
 //   [9:9] F_FMER            W1C   reset=1'b0
@@ -184,6 +189,7 @@ endclass : ECR_reg
 //-------------------------------------------------------------------------
 class ESR_reg extends uvm_reg;
 
+    rand uvm_reg_field ECCERR;
     rand uvm_reg_field F_BERR;
     rand uvm_reg_field F_STER;
     rand uvm_reg_field F_FMER;
@@ -201,6 +207,8 @@ class ESR_reg extends uvm_reg;
     endfunction
 
     virtual function void build();
+        ECCERR = uvm_reg_field::type_id::create("ECCERR");
+        ECCERR.configure(this, 8, 12, "W1C", 0, 8'h0, 1, 1, 1);
         F_BERR = uvm_reg_field::type_id::create("F_BERR");
         F_BERR.configure(this, 1, 11, "W1C", 0, 1'b0, 1, 1, 1);
         F_STER = uvm_reg_field::type_id::create("F_STER");
@@ -394,7 +402,7 @@ class ISR_reg extends uvm_reg;
 endclass : ISR_reg
 
 //-------------------------------------------------------------------------
-// IER: addr=0x0020, width=32, access=RW
+// IER0: addr=0x0020, width=32, access=RW (v2.0: 原 IER 拆为 IER0/IER1/IER2)
 //   [31:31] ETXEWMFLL         RW    reset=1'b0
 //   [30:30] ETXEOFLW          RW    reset=1'b0
 //   [29:18] RSVD
@@ -417,7 +425,7 @@ endclass : ISR_reg
 //   [1:1] ETXOK             RW    reset=1'b0
 //   [0:0] EARBLOST          RW    reset=1'b0
 //-------------------------------------------------------------------------
-class IER_reg extends uvm_reg;
+class IER0_reg extends uvm_reg;
 
     rand uvm_reg_field ETXEWMFLL;
     rand uvm_reg_field ETXEOFLW;
@@ -439,9 +447,9 @@ class IER_reg extends uvm_reg;
     rand uvm_reg_field ETXOK;
     rand uvm_reg_field EARBLOST;
 
-    `uvm_object_utils(IER_reg)
+    `uvm_object_utils(IER0_reg)
 
-    function new(string name="IER_reg");
+    function new(string name="IER0_reg");
         super.new(name, 32, UVM_NO_COVERAGE);
     endfunction
 
@@ -486,10 +494,53 @@ class IER_reg extends uvm_reg;
         EARBLOST.configure(this, 1, 0, "RW", 0, 1'b0, 1, 1, 1);
     endfunction
 
-endclass : IER_reg
+endclass : IER0_reg
 
 //-------------------------------------------------------------------------
-// ICR: addr=0x0024, width=32, access=WO
+// IER1: addr=0x0024, width=32, access=RW (v2.0 新增)
+//   附加中断使能寄存器。文档注明「字段定义参见 IER0」但未给出具体位域清单，
+//   疑似用于 ECC 错误等新增中断源 —— 位域待设计确认，暂以 32 位占位字段建模。
+//-------------------------------------------------------------------------
+class IER1_reg extends uvm_reg;
+
+    rand uvm_reg_field IER1;
+
+    `uvm_object_utils(IER1_reg)
+
+    function new(string name="IER1_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        IER1 = uvm_reg_field::type_id::create("IER1");
+        IER1.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : IER1_reg
+
+//-------------------------------------------------------------------------
+// IER2: addr=0x0028, width=32, access=RW (v2.0 新增)
+//   附加中断使能寄存器。位域待设计确认，暂以 32 位占位字段建模（同 IER1）。
+//-------------------------------------------------------------------------
+class IER2_reg extends uvm_reg;
+
+    rand uvm_reg_field IER2;
+
+    `uvm_object_utils(IER2_reg)
+
+    function new(string name="IER2_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        IER2 = uvm_reg_field::type_id::create("IER2");
+        IER2.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : IER2_reg
+
+//-------------------------------------------------------------------------
+// ICR: addr=0x002C, width=32, access=WO (v2.0 移位：原 0x24 → 0x2C)
 //   [31:31] CTXEWMFLL         WO    reset=1'b0
 //   [30:30] CTXEOFLW          WO    reset=1'b0
 //   [29:18] RSVD
@@ -584,14 +635,16 @@ class ICR_reg extends uvm_reg;
 endclass : ICR_reg
 
 //-------------------------------------------------------------------------
-// TSR: addr=0x0028, width=32, access=RW
+// TSR: addr=0x0034, width=32, access=RW (v2.0 移位：原 0x28 → 0x34)
 //   [31:16] TIMESTAMP_CNT     RO    reset=16'h0
-//   [15:1] RSVD
-//   [0:0] CTS               WO    reset=1'b0
+//   [15:8]  DIV_CLK_RATIO     RW    reset=8'h0F (v2.0 时间戳时钟分频，/16)
+//   [7:1]   RSVD
+//   [0:0]   CTS               WO    reset=1'b0
 //-------------------------------------------------------------------------
 class TSR_reg extends uvm_reg;
 
     rand uvm_reg_field TIMESTAMP_CNT;
+    rand uvm_reg_field DIV_CLK_RATIO;
     rand uvm_reg_field CTS;
 
     `uvm_object_utils(TSR_reg)
@@ -603,11 +656,224 @@ class TSR_reg extends uvm_reg;
     virtual function void build();
         TIMESTAMP_CNT = uvm_reg_field::type_id::create("TIMESTAMP_CNT");
         TIMESTAMP_CNT.configure(this, 16, 16, "RO", 0, 16'h0, 1, 1, 1);
+        DIV_CLK_RATIO = uvm_reg_field::type_id::create("DIV_CLK_RATIO");
+        DIV_CLK_RATIO.configure(this, 8, 8, "RW", 0, 8'h0F, 1, 1, 1);
         CTS = uvm_reg_field::type_id::create("CTS");
         CTS.configure(this, 1, 0, "WO", 0, 1'b0, 1, 1, 1);
     endfunction
 
 endclass : TSR_reg
+
+//-------------------------------------------------------------------------
+// IMCR: addr=0x0030, width=32, access=RW (v2.0 新增)
+//   [31:29] RSVD
+//   [28:24] PULSE_INTERVAL     RW    reset=5'h0
+//   [23:21] RSVD1
+//   [20:16] PULSE_WIDTH        RW    reset=5'h0
+//   [15:9]  RSVD2
+//   [8:8]   POLARITY           RW    reset=1'b0
+//   [7:1]   RSVD3
+//   [0:0]   MODE               RW    reset=1'b0
+//-------------------------------------------------------------------------
+class IMCR_reg extends uvm_reg;
+
+    rand uvm_reg_field PULSE_INTERVAL;
+    rand uvm_reg_field PULSE_WIDTH;
+    rand uvm_reg_field POLARITY;
+    rand uvm_reg_field MODE;
+
+    `uvm_object_utils(IMCR_reg)
+
+    function new(string name="IMCR_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        PULSE_INTERVAL = uvm_reg_field::type_id::create("PULSE_INTERVAL");
+        PULSE_INTERVAL.configure(this, 5, 24, "RW", 0, 5'h0, 1, 1, 1);
+        PULSE_WIDTH = uvm_reg_field::type_id::create("PULSE_WIDTH");
+        PULSE_WIDTH.configure(this, 5, 16, "RW", 0, 5'h0, 1, 1, 1);
+        POLARITY = uvm_reg_field::type_id::create("POLARITY");
+        POLARITY.configure(this, 1, 8, "RW", 0, 1'b0, 1, 1, 1);
+        MODE = uvm_reg_field::type_id::create("MODE");
+        MODE.configure(this, 1, 0, "RW", 0, 1'b0, 1, 1, 1);
+    endfunction
+
+endclass : IMCR_reg
+
+//-------------------------------------------------------------------------
+// TS32: addr=0x0038, width=32, access=RO (v2.0 新增：32 位时间戳计数器)
+//   [31:0] TS32                RO    reset=32'h0
+//-------------------------------------------------------------------------
+class TS32_reg extends uvm_reg;
+
+    rand uvm_reg_field TS32;
+
+    `uvm_object_utils(TS32_reg)
+
+    function new(string name="TS32_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        TS32 = uvm_reg_field::type_id::create("TS32");
+        TS32.configure(this, 32, 0, "RO", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : TS32_reg
+
+//-------------------------------------------------------------------------
+// TXTS: addr=0x003C, width=32, access=RO (v2.0 新增：最近发送 SOF 时间戳)
+//   [31:0] TXTS                RO    reset=32'h0
+//-------------------------------------------------------------------------
+class TXTS_reg extends uvm_reg;
+
+    rand uvm_reg_field TXTS;
+
+    `uvm_object_utils(TXTS_reg)
+
+    function new(string name="TXTS_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        TXTS = uvm_reg_field::type_id::create("TXTS");
+        TXTS.configure(this, 32, 0, "RO", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : TXTS_reg
+
+//-------------------------------------------------------------------------
+// RXTS: addr=0x0040, width=32, access=RO (v2.0 新增：最近接收 SOF 时间戳)
+//   [31:0] RXTS                RO    reset=32'h0
+//-------------------------------------------------------------------------
+class RXTS_reg extends uvm_reg;
+
+    rand uvm_reg_field RXTS;
+
+    `uvm_object_utils(RXTS_reg)
+
+    function new(string name="RXTS_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        RXTS = uvm_reg_field::type_id::create("RXTS");
+        RXTS.configure(this, 32, 0, "RO", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : RXTS_reg
+
+//-------------------------------------------------------------------------
+// ECC0: addr=0x0044, width=32, access=RW (v2.0 新增：ECC 解码使能 + 校验位错误注入)
+//   [31:24] CHK_ERR_INJ_RXC    RW    reset=8'h0
+//   [23:23] RSVD
+//   [22:16] CHK_ERR_INJ_RXH    RW    reset=7'h0
+//   [15:15] RSVD1
+//   [14:8]  CHK_ERR_INJ_TXH    RW    reset=7'h0
+//   [7:4]   RSVD2
+//   [3:3]   DECODE_EN_RXH      RW    reset=1'b0 (1=禁用, 低有效)
+//   [2:2]   DECODE_EN_RXC      RW    reset=1'b0
+//   [1:1]   DECODE_EN_TXH      RW    reset=1'b0
+//   [0:0]   DECODE_EN_TXC      RW    reset=1'b0
+//-------------------------------------------------------------------------
+class ECC0_reg extends uvm_reg;
+
+    rand uvm_reg_field CHK_ERR_INJ_RXC;
+    rand uvm_reg_field CHK_ERR_INJ_RXH;
+    rand uvm_reg_field CHK_ERR_INJ_TXH;
+    rand uvm_reg_field DECODE_EN_RXH;
+    rand uvm_reg_field DECODE_EN_RXC;
+    rand uvm_reg_field DECODE_EN_TXH;
+    rand uvm_reg_field DECODE_EN_TXC;
+
+    `uvm_object_utils(ECC0_reg)
+
+    function new(string name="ECC0_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        CHK_ERR_INJ_RXC = uvm_reg_field::type_id::create("CHK_ERR_INJ_RXC");
+        CHK_ERR_INJ_RXC.configure(this, 8, 24, "RW", 0, 8'h0, 1, 1, 1);
+        CHK_ERR_INJ_RXH = uvm_reg_field::type_id::create("CHK_ERR_INJ_RXH");
+        CHK_ERR_INJ_RXH.configure(this, 7, 16, "RW", 0, 7'h0, 1, 1, 1);
+        CHK_ERR_INJ_TXH = uvm_reg_field::type_id::create("CHK_ERR_INJ_TXH");
+        CHK_ERR_INJ_TXH.configure(this, 7, 8, "RW", 0, 7'h0, 1, 1, 1);
+        DECODE_EN_RXH = uvm_reg_field::type_id::create("DECODE_EN_RXH");
+        DECODE_EN_RXH.configure(this, 1, 3, "RW", 0, 1'b0, 1, 1, 1);
+        DECODE_EN_RXC = uvm_reg_field::type_id::create("DECODE_EN_RXC");
+        DECODE_EN_RXC.configure(this, 1, 2, "RW", 0, 1'b0, 1, 1, 1);
+        DECODE_EN_TXH = uvm_reg_field::type_id::create("DECODE_EN_TXH");
+        DECODE_EN_TXH.configure(this, 1, 1, "RW", 0, 1'b0, 1, 1, 1);
+        DECODE_EN_TXC = uvm_reg_field::type_id::create("DECODE_EN_TXC");
+        DECODE_EN_TXC.configure(this, 1, 0, "RW", 0, 1'b0, 1, 1, 1);
+    endfunction
+
+endclass : ECC0_reg
+
+//-------------------------------------------------------------------------
+// ECC1: addr=0x0048, width=32, access=RW (v2.0 新增：TX RAM 数据错误注入)
+//   [31:0] DATA_ERR_INJ_TXH    RW    reset=32'h0
+//-------------------------------------------------------------------------
+class ECC1_reg extends uvm_reg;
+
+    rand uvm_reg_field DATA_ERR_INJ_TXH;
+
+    `uvm_object_utils(ECC1_reg)
+
+    function new(string name="ECC1_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        DATA_ERR_INJ_TXH = uvm_reg_field::type_id::create("DATA_ERR_INJ_TXH");
+        DATA_ERR_INJ_TXH.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : ECC1_reg
+
+//-------------------------------------------------------------------------
+// ECC2: addr=0x004C, width=32, access=RW (v2.0 新增：RX RAM 数据错误注入)
+//   [31:0] DATA_ERR_INJ_RXH    RW    reset=32'h0
+//-------------------------------------------------------------------------
+class ECC2_reg extends uvm_reg;
+
+    rand uvm_reg_field DATA_ERR_INJ_RXH;
+
+    `uvm_object_utils(ECC2_reg)
+
+    function new(string name="ECC2_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        DATA_ERR_INJ_RXH = uvm_reg_field::type_id::create("DATA_ERR_INJ_RXH");
+        DATA_ERR_INJ_RXH.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : ECC2_reg
+
+//-------------------------------------------------------------------------
+// ECC3: addr=0x0050, width=32, access=RW (v2.0 新增：内核路径 RX RAM 数据错误注入)
+//   [31:0] DATA_ERR_INJ_RXC    RW    reset=32'h0
+//-------------------------------------------------------------------------
+class ECC3_reg extends uvm_reg;
+
+    rand uvm_reg_field DATA_ERR_INJ_RXC;
+
+    `uvm_object_utils(ECC3_reg)
+
+    function new(string name="ECC3_reg");
+        super.new(name, 32, UVM_NO_COVERAGE);
+    endfunction
+
+    virtual function void build();
+        DATA_ERR_INJ_RXC = uvm_reg_field::type_id::create("DATA_ERR_INJ_RXC");
+        DATA_ERR_INJ_RXC.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
+    endfunction
+
+endclass : ECC3_reg
 
 //-------------------------------------------------------------------------
 // DP_BRPR: addr=0x0088, width=32, access=RW
@@ -883,25 +1149,25 @@ class IERBF0_reg extends uvm_reg;
 endclass : IERBF0_reg
 
 //-------------------------------------------------------------------------
-// IEBRF1: addr=0x00C4, width=32, access=RW
-//   [31:0] IEBRF             RW    reset=32'h0
+// IERBF1: addr=0x00C4, width=32, access=RW (v2.0 新增：ERBF47~32，邮箱 32-47 满中断使能)
+//   [31:0] IERBF             RW    reset=32'h0
 //-------------------------------------------------------------------------
-class IEBRF1_reg extends uvm_reg;
+class IERBF1_reg extends uvm_reg;
 
-    rand uvm_reg_field IEBRF;
+    rand uvm_reg_field IERBF;
 
-    `uvm_object_utils(IEBRF1_reg)
+    `uvm_object_utils(IERBF1_reg)
 
-    function new(string name="IEBRF1_reg");
+    function new(string name="IERBF1_reg");
         super.new(name, 32, UVM_NO_COVERAGE);
     endfunction
 
     virtual function void build();
-        IEBRF = uvm_reg_field::type_id::create("IEBRF");
-        IEBRF.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
+        IERBF = uvm_reg_field::type_id::create("IERBF");
+        IERBF.configure(this, 32, 0, "RW", 0, 32'h0, 1, 1, 1);
     endfunction
 
-endclass : IEBRF1_reg
+endclass : IERBF1_reg
 
 //-------------------------------------------------------------------------
 // AFR: addr=0x00E0, width=32, access=RW
@@ -979,9 +1245,19 @@ class canfd_reg_block extends uvm_reg_block;
     rand ESR_reg ESR;
     rand SR_reg SR;
     rand ISR_reg ISR;
-    rand IER_reg IER;
+    rand IER0_reg IER0;
+    rand IER1_reg IER1;
+    rand IER2_reg IER2;
     rand ICR_reg ICR;
+    rand IMCR_reg IMCR;
     rand TSR_reg TSR;
+    rand TS32_reg TS32;
+    rand TXTS_reg TXTS;
+    rand RXTS_reg RXTS;
+    rand ECC0_reg ECC0;
+    rand ECC1_reg ECC1;
+    rand ECC2_reg ECC2;
+    rand ECC3_reg ECC3;
     rand DP_BRPR_reg DP_BRPR;
     rand DP_BTR_reg DP_BTR;
     rand TRR_reg TRR;
@@ -994,7 +1270,7 @@ class canfd_reg_block extends uvm_reg_block;
     rand RCS1_reg RCS1;
     rand RCS2_reg RCS2;
     rand IERBF0_reg IERBF0;
-    rand IEBRF1_reg IEBRF1;
+    rand IERBF1_reg IERBF1;
     rand AFR_reg AFR;
     rand FSR_reg FSR;
     rand WMR_reg WMR;
@@ -1049,20 +1325,70 @@ class canfd_reg_block extends uvm_reg_block;
         ISR.build();
         default_map.add_reg(ISR, 'h1C, "RO");
 
-        IER = IER_reg::type_id::create("IER");
-        IER.configure(this, null, "");
-        IER.build();
-        default_map.add_reg(IER, 'h20, "RW");
+        IER0 = IER0_reg::type_id::create("IER0");
+        IER0.configure(this, null, "");
+        IER0.build();
+        default_map.add_reg(IER0, 'h20, "RW");
+
+        IER1 = IER1_reg::type_id::create("IER1");
+        IER1.configure(this, null, "");
+        IER1.build();
+        default_map.add_reg(IER1, 'h24, "RW");
+
+        IER2 = IER2_reg::type_id::create("IER2");
+        IER2.configure(this, null, "");
+        IER2.build();
+        default_map.add_reg(IER2, 'h28, "RW");
 
         ICR = ICR_reg::type_id::create("ICR");
         ICR.configure(this, null, "");
         ICR.build();
-        default_map.add_reg(ICR, 'h24, "WO");
+        default_map.add_reg(ICR, 'h2C, "WO");
+
+        IMCR = IMCR_reg::type_id::create("IMCR");
+        IMCR.configure(this, null, "");
+        IMCR.build();
+        default_map.add_reg(IMCR, 'h30, "RW");
 
         TSR = TSR_reg::type_id::create("TSR");
         TSR.configure(this, null, "");
         TSR.build();
-        default_map.add_reg(TSR, 'h28, "RW");
+        default_map.add_reg(TSR, 'h34, "RW");
+
+        TS32 = TS32_reg::type_id::create("TS32");
+        TS32.configure(this, null, "");
+        TS32.build();
+        default_map.add_reg(TS32, 'h38, "RO");
+
+        TXTS = TXTS_reg::type_id::create("TXTS");
+        TXTS.configure(this, null, "");
+        TXTS.build();
+        default_map.add_reg(TXTS, 'h3C, "RO");
+
+        RXTS = RXTS_reg::type_id::create("RXTS");
+        RXTS.configure(this, null, "");
+        RXTS.build();
+        default_map.add_reg(RXTS, 'h40, "RO");
+
+        ECC0 = ECC0_reg::type_id::create("ECC0");
+        ECC0.configure(this, null, "");
+        ECC0.build();
+        default_map.add_reg(ECC0, 'h44, "RW");
+
+        ECC1 = ECC1_reg::type_id::create("ECC1");
+        ECC1.configure(this, null, "");
+        ECC1.build();
+        default_map.add_reg(ECC1, 'h48, "RW");
+
+        ECC2 = ECC2_reg::type_id::create("ECC2");
+        ECC2.configure(this, null, "");
+        ECC2.build();
+        default_map.add_reg(ECC2, 'h4C, "RW");
+
+        ECC3 = ECC3_reg::type_id::create("ECC3");
+        ECC3.configure(this, null, "");
+        ECC3.build();
+        default_map.add_reg(ECC3, 'h50, "RW");
 
         DP_BRPR = DP_BRPR_reg::type_id::create("DP_BRPR");
         DP_BRPR.configure(this, null, "");
@@ -1124,10 +1450,10 @@ class canfd_reg_block extends uvm_reg_block;
         IERBF0.build();
         default_map.add_reg(IERBF0, 'hC0, "RW");
 
-        IEBRF1 = IEBRF1_reg::type_id::create("IEBRF1");
-        IEBRF1.configure(this, null, "");
-        IEBRF1.build();
-        default_map.add_reg(IEBRF1, 'hC4, "RW");
+        IERBF1 = IERBF1_reg::type_id::create("IERBF1");
+        IERBF1.configure(this, null, "");
+        IERBF1.build();
+        default_map.add_reg(IERBF1, 'hC4, "RW");
 
         AFR = AFR_reg::type_id::create("AFR");
         AFR.configure(this, null, "");

@@ -18,7 +18,7 @@ class canfd_T_02_03_intr_clr_test_seq extends uvm_sequence;
 
         // 触发中断→ICR写1清除→ISR确认清除
         `ifdef REG_MODEL
-        rm.IER.write(st,32'hFFFFFFFF,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
+        rm.IER0.write(st,32'hFFFFFFFF,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         repeat(200) @(posedge canfdvif.clk);
         rm.ISR.read(st,v,UVM_FRONTDOOR);
         if(v!=0) begin

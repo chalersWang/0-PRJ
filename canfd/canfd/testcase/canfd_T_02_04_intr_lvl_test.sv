@@ -19,7 +19,7 @@ class canfd_T_02_04_intr_lvl_test_seq extends uvm_sequence;
         // 触发多中断→逐个清除→确认最后一个清除后中断线变低
         `ifdef REG_MODEL
         uvm_reg_data_t orig=0,clr=0;
-        rm.IER.write(st,32'hFFFFFFFF,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
+        rm.IER0.write(st,32'hFFFFFFFF,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         repeat(200) @(posedge canfdvif.clk);
         rm.ISR.read(st,orig,UVM_FRONTDOOR);
         if(orig!=0) begin
