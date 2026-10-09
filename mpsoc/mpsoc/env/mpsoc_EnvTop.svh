@@ -8,6 +8,18 @@ package mpsoc_EnvTop;
 	import uvm_pkg::*;
 	/** Import SVT UVM Package **/
 	//import svt_uvm_pkg::*;
+	// ===== Synopsys DesignWare VIP 封装 package(接入时取消注释) =====
+	//import svt_i2c_UvcTop::*;
+	//import svt_spi_UvcTop::*;
+	//import svt_uart_UvcTop::*;
+	//import svt_axi_UvcTop::*;
+	//import svt_ahb_UvcTop::*;
+	//import svt_apb_UvcTop::*;
+	//import svt_gpio_UvcTop::*;
+	//import svt_wdt_UvcTop::*;
+	//import svt_timer_UvcTop::*;
+	//import svt_qspi_UvcTop::*;
+	//import svt_jtag_UvcTop::*;
 
 	/** Import the custom config UVC Package **/
 
