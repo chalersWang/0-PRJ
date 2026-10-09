@@ -42,7 +42,7 @@ TEMPLATES = {
         foreach(data_buf[i]) data_buf[i] = $urandom;
         canfd_tx_std_frame(11'h{id}, {dlc}, data_buf);
         canfd_wait_txok(5000);
-        canfd_clear_int(32'h04);
+        canfd_clear_int(32'h02);
         pass++;''',
     "B-03": '''        // CAN FD 通信验证
         canfd_init();
@@ -50,7 +50,7 @@ TEMPLATES = {
         foreach(data_buf[i]) data_buf[i] = i;
         canfd_tx_fd_frame(11'h{id}, {is_ext}, {brs}, {dlc}, data_buf);
         canfd_wait_txok(5000);
-        canfd_clear_int(32'h04);
+        canfd_clear_int(32'h02);
         pass++;''',
     "B-04": '''        // 发送控制验证
         canfd_init();
@@ -103,9 +103,9 @@ TEMPLATES = {
         if (result) pass++; else fail++;''',
     "S-01": '''        // 时间戳验证
         canfd_init();
-        reg_read(16'h0028, tsr_val1);
+        reg_read(16'h0034, tsr_val1);
         repeat(100) @(posedge p_sequencer.clk);
-        reg_read(16'h0028, tsr_val2);
+        reg_read(16'h0034, tsr_val2);
         result = (tsr_val2 > tsr_val1);
         if (result) pass++; else fail++;''',
     "S-03": '''        // 发送器延迟补偿验证
@@ -120,7 +120,7 @@ TEMPLATES = {
             data_buf = new[8]; foreach(data_buf[i]) data_buf[i]=$urandom;
             canfd_tx_std_frame($urandom_range(0, 11'h7FF), 4'h8, data_buf);
             canfd_wait_txok(2000);
-            canfd_clear_int(32'h04);
+            canfd_clear_int(32'h02);
         end
         pass++;''',
     "C-02": '''        // 边界测试

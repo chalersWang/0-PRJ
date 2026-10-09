@@ -34,7 +34,7 @@ class canfd_B_02_01_tx_std_test_seq extends canfd_virtual_seq_lib;
                     canfd_wait_txok(2000);
 
                     // 检查中断
-                    canfd_clear_int(32'h04); // 清 TXOK
+                    canfd_clear_int(32'h02); // 清 TXOK
                     pass++;
                 end
             end
