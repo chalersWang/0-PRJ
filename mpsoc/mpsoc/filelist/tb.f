@@ -31,6 +31,7 @@
 +incdir+${VERIFY_HOME}/regmodel        
 +incdir+${VERIFY_HOME}/testcase        
 +incdir+${VERIFY_HOME}/testcase/sequence_lib
++incdir+${VERIFY_HOME}/testcase/register
 
 ${VERIFY_HOME}/sva/VifMacroDefine.v                  
 

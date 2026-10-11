@@ -5,26 +5,31 @@
 | 模块 | 基地址 | 用途 |
 | --- | --- | --- |
 | sys ctrl | 0x40017000 | 系统控制寄存器 |
-| GPIO | ？？？？ |  |
-| I2C | ？？？？ |  |
-| UART0 | ？？？？ |  |
-| UART1 | ？？？？ |  |
-| UART2 | ？？？？ |  |
-| WDT | ？？？？ |  |
-| TIMOx3 | ？？？？ |  |
-| TIMIx3 | ？？？？ |  |
-| uC Slave | ？？？？ |  |
-| SPI Master | ？？？？ |  |
-| SPI Slave | ？？？？ |  |
-| SRAM（64KB） | ？？？？ |  |
-| SDRAM（64KB） | ？？？？ |  |
+| GPIO | 0x40019000 |   |
+| I2C | 0x40021000 |   |
+| UART0 | 0x40015000 |   |
+| UART1 | 0x40026000 |   |
+| UART2 | 0x40025000 |   |
+| WDT | 0x4001A000 |   |
+| Timer0 | 0x40018000 |   |
+| Timer1 | 0x40011000 |   |
+| uC Slave | ？？？？ |   |
+| SPI Master | 0x40031000 |   |
+| SPI Slave | ？？？？ |   |
+| bootrom | 0x60000000 |   |
+| SDRAM_cfg | 0x54000000 |   |
+| SDRAM_MEM（64KB） | 0x50000000 |   |
+| SRAM（64KB） | 0x60010000 |   |
 | Security/OTP | 0x40012000 | 安全控制 |
-| DMACx8 | ？？？？ |  |
-| QSPI | ？？？？ |  |
-| PN-IRT | ？？？？ |  |
+| DMACx8 | 0x42000000 |   |
+| QSPI0_cfg | 0x48000000 |   |
+| QSPI_MEM | 0x44000000 |   |
+| PN-IRT | 0x43c90000 |   |
 | ESC0 | 0x44c80000 | 外部 EtherCAT 通信 |
-| GMAC | ？？？？ |  |
+| GMAC | 0x40040000 |   |
 | ESC1 | 0x44c00000 | 背板 SYNC 同步 |
+| IRAM | （未填写） |   |
+| DRAM | （未填写） |   |
 
 ## SYS_CTRL
 

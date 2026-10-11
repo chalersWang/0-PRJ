@@ -46,7 +46,7 @@ class mpsoc_base_test extends uvm_test;
 	gmac_config            gmac_cfg;
 
 	`ifdef REG_MODEL;
-		mpsoc_reg_top  RegModel;
+		mpsoc_reg_block  RegModel;
 	`endif
 
 
@@ -78,9 +78,6 @@ class mpsoc_base_test extends uvm_test;
 		gmac_cfg=gmac_config::type_id::create("gmac_cfg");
 		
 		env=mpsoc_env::type_id::create("env",this);
-		`ifdef REG_MODEL;
-			RegModel=env.RegModel;
-		`endif
 		//UCP=uvm_cmdline_processor::get_inst();
 		//UCP.get_arg_value("+UVM_TESTNAME",mpsocvif.TestCaseName);
 		`uvm_info(get_full_name(),"new() end ...",UVM_LOW)
@@ -144,6 +141,10 @@ class mpsoc_base_test extends uvm_test;
 		if(!uvm_config_db#(virtual mpsoc_vif)::get(this,"","mpsoc_vif",mpsocvif))
 			`uvm_fatal("mpsoc_vif","virtual interface must be set for it!!!");
 		
+		`ifdef REG_MODEL;
+			RegModel=env.RegModel;
+		`endif
+
 		/*Set the print redundancy threshold*/
 		/*typedef enum{UVM_NONE=0,UVM_LOW=100,UVM_MEDIUM=200,UVM_HIGH=300,UVM_FULL=400,UVM_DEBUG=500} uvm_verbosity;*/
 		//   $display("env.i_agt.drv.get_report_verbosity_level=%0d",env.i_agt.drv.get_report_verbosity_level());

@@ -30,7 +30,7 @@ class mpsoc_env extends uvm_env;
 
 	`ifdef REG_MODEL
 		string      hdl_path;
-		mpsoc_reg_top  RegModel;
+		mpsoc_reg_block  RegModel;
 	`endif
 
 	`uvm_component_utils(mpsoc_env);
@@ -72,6 +72,12 @@ class mpsoc_env extends uvm_env;
 		
 		uvm_config_db#(mpsoc_config)::set(null,"","mpsoc_config",mpsoc_cfg);
 		uvm_config_db#(mpsoc_event)::set(null,"","mpsoc_event",mpsoc_evt);
+
+		`ifdef REG_MODEL
+			RegModel = mpsoc_reg_block::type_id::create("RegModel");
+			RegModel.build();
+		`endif
+
 		`uvm_info(get_full_name(),"build_phase end ...",UVM_LOW)
 	endfunction
 

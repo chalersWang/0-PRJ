@@ -53,11 +53,32 @@ package mpsoc_EnvTop;
 	`include "mpsoc_event.sv"
 	`include "mpsoc_scoreboard.sv"
 	`include "mpsoc_virtual_sequencer.sv"
-	`include "mpsoc_env.sv"
 	`ifdef REG_MODEL
 	`include "sysctrl_reg_adapter.sv"
+	// ===== 外设寄存器模型(单 DATA 字段, 与 esc_reg_block 一致) =====
+	`include "sysctrl_reg_block.sv"
+	`include "gpio_reg_block.sv"
+	`include "i2c_reg_block.sv"
+	`include "spi_reg_block.sv"
+	`include "uart_reg_block.sv"
+	`include "wdt_reg_block.sv"
+	`include "tim_reg_block.sv"
+	`include "dma_reg_block.sv"
+	`include "gmac_reg_block.sv"
+	`include "qspi_reg_block.sv"
+	`include "sdram_reg_block.sv"
+	`include "esc_reg_block.sv"
+	// ===== 占位寄存器模型(无寄存器数据) =====
+	`include "jtag_reg_block.sv"
+	`include "switch_reg_block.sv"
+	`include "miiphy_reg_block.sv"
+	`include "efuse_reg_block.sv"
+	`include "uc_reg_block.sv"
+	`include "security_reg_block.sv"
+	`include "pn_irt_reg_block.sv"
 	`include "mpsoc_reg_block.sv"
 	`endif
+	`include "mpsoc_env.sv"
 
 endpackage
 `endif

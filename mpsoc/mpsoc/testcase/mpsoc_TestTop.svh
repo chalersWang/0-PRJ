@@ -50,6 +50,21 @@ import gmac_UvcTop::*;
 
 	`include "mpsoc_demo_test.sv"
 
+	// ===== ESC 寄存器后门读写 demo case =====
+	`include "esc0_reg_backdoor_test.sv"
+	`include "esc1_reg_backdoor_test.sv"
+	`include "sysctrl_reg_backdoor_test.sv"
+	`include "gpio_reg_backdoor_test.sv"
+	`include "i2c_reg_backdoor_test.sv"
+	`include "spi_reg_backdoor_test.sv"
+	`include "uart_reg_backdoor_test.sv"
+	`include "wdt_reg_backdoor_test.sv"
+	`include "tim_reg_backdoor_test.sv"
+	`include "dma_reg_backdoor_test.sv"
+	`include "gmac_reg_backdoor_test.sv"
+	`include "qspi_reg_backdoor_test.sv"
+	`include "sdram_reg_backdoor_test.sv"
+
 	// ===== Synopsys DesignWare VIP demo case(接入时取消注释) =====
 	//`include "testcase/vip/svt_i2c_demo_test.sv"
 	//`include "testcase/vip/svt_spi_demo_test.sv"
