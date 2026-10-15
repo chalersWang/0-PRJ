@@ -76,36 +76,30 @@ class dma_monitor extends uvm_monitor;
 	//=========================================================================
 		virtual task run_phase(uvm_phase phase);
 		dma_trans tr;
-		logic [7:0] prev_req, prev_ack, prev_int;
+		logic [7:0] prev_ack, prev_finish;
 		`uvm_info(get_type_name(), "run_phase begin", UVM_MEDIUM)
-		prev_req = vif.dma_req;
 		prev_ack = vif.dma_ack;
-		prev_int = vif.dma_int;
+		prev_finish = vif.dma_finish;
 		forever begin
 			@(posedge vif.clk);
 			for (int c = 0; c < 8; c++) begin
-				if (vif.dma_req[c] && !prev_req[c]) begin
-					tr = dma_trans::type_id::create("dma_tr");
-					tr.channel = c; tr.ack_seen = 0;
-					tr.dma_req = vif.dma_req; tr.dma_ack = vif.dma_ack; tr.dma_int = vif.dma_int;
-					mon_analysis_port.write(tr);
-				end
 				if (vif.dma_ack[c] && !prev_ack[c]) begin
 					tr = dma_trans::type_id::create("dma_tr");
 					tr.channel = c; tr.ack_seen = 1;
-					tr.dma_req = vif.dma_req; tr.dma_ack = vif.dma_ack; tr.dma_int = vif.dma_int;
+					tr.dma_ack = vif.dma_ack; tr.dma_finish = vif.dma_finish;
+					tr.int_combined = vif.int_combined;
 					mon_analysis_port.write(tr);
 				end
-				if (vif.dma_int[c] && !prev_int[c]) begin
+				if (vif.dma_finish[c] && !prev_finish[c]) begin
 					tr = dma_trans::type_id::create("dma_tr");
 					tr.channel = c; tr.ack_seen = 0;
-					tr.dma_req = vif.dma_req; tr.dma_ack = vif.dma_ack; tr.dma_int = vif.dma_int;
+					tr.dma_ack = vif.dma_ack; tr.dma_finish = vif.dma_finish;
+					tr.int_combined = vif.int_combined;
 					mon_analysis_port.write(tr);
 				end
 			end
-			prev_req = vif.dma_req;
 			prev_ack = vif.dma_ack;
-			prev_int = vif.dma_int;
+			prev_finish = vif.dma_finish;
 		end
 	endtask : run_phase
 

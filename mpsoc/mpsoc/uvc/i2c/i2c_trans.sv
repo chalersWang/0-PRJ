@@ -34,9 +34,30 @@
 class i2c_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic scl;
-		rand logic sda;
-		rand logic ic_intr;
+	// I2C Physical
+		rand logic        ic_clk;
+		rand logic        ic_clk_in_a;
+		rand logic        ic_data_in_a;
+		rand logic        ic_rst_n;
+	// DMA Handshake
+		rand logic        dma_tx_req;
+		rand logic        dma_tx_single;
+		rand logic        dma_rx_req;
+		rand logic        dma_rx_single;
+		rand logic        dma_tx_ack;
+		rand logic        dma_rx_ack;
+	// Interrupts
+		rand logic        ic_tx_over_intr;
+		rand logic        ic_rx_under_intr;
+		rand logic        ic_tx_abrt_intr;
+		rand logic        ic_rx_done_intr;
+		rand logic        ic_tx_empty_intr;
+		rand logic        ic_activity_intr;
+		rand logic        ic_stop_det_intr;
+		rand logic        ic_start_det_intr;
+		rand logic        ic_rd_req_intr;
+		rand logic        ic_rx_full_intr;
+		rand logic        ic_gen_call_intr;
 
 	// ===== 协议级字段（driver 驱动 / monitor 解析） =====
 		rand bit [6:0]  addr;      // 7-bit 从设备地址
@@ -51,9 +72,27 @@ class i2c_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(i2c_trans)
-		`uvm_field_int(scl, UVM_ALL_ON)
-		`uvm_field_int(sda, UVM_ALL_ON)
-		`uvm_field_int(ic_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_clk, UVM_ALL_ON)
+		`uvm_field_int(ic_clk_in_a, UVM_ALL_ON)
+		`uvm_field_int(ic_data_in_a, UVM_ALL_ON)
+		`uvm_field_int(ic_rst_n, UVM_ALL_ON)
+		`uvm_field_int(dma_tx_req, UVM_ALL_ON)
+		`uvm_field_int(dma_tx_single, UVM_ALL_ON)
+		`uvm_field_int(dma_rx_req, UVM_ALL_ON)
+		`uvm_field_int(dma_rx_single, UVM_ALL_ON)
+		`uvm_field_int(dma_tx_ack, UVM_ALL_ON)
+		`uvm_field_int(dma_rx_ack, UVM_ALL_ON)
+		`uvm_field_int(ic_tx_over_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_rx_under_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_tx_abrt_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_rx_done_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_tx_empty_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_activity_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_stop_det_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_start_det_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_rd_req_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_rx_full_intr, UVM_ALL_ON)
+		`uvm_field_int(ic_gen_call_intr, UVM_ALL_ON)
 		`uvm_field_int(addr, UVM_ALL_ON)
 		`uvm_field_int(rnw, UVM_ALL_ON)
 		`uvm_field_array_int(data, UVM_ALL_ON)

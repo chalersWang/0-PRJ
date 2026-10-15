@@ -84,16 +84,61 @@ class security_monitor extends uvm_monitor;
 
 			// --- 2. X/Z 检查（通过宏控制，不影响正常采集） ---
 			`ifdef CHECK_SIGNAL_XZ_SECURITY
-				if($isunknown(vif.sec_int)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:sec_int is X/Z at %0t", $time))
-				if($isunknown(vif.sec_boot_ok)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:sec_boot_ok is X/Z at %0t", $time))
+				if($isunknown(vif.i_clk)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_clk is X/Z at %0t", $time))
+				if($isunknown(vif.i_rst_n)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_rst_n is X/Z at %0t", $time))
+				if($isunknown(vif.o_irq)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_irq is X/Z at %0t", $time))
+				if($isunknown(vif.i_scan_mode)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_scan_mode is X/Z at %0t", $time))
+				if($isunknown(vif.i_skip_startup)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_skip_startup is X/Z at %0t", $time))
+				if($isunknown(vif.o_verify_vld)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_verify_vld is X/Z at %0t", $time))
+				if($isunknown(vif.o_verify_ok)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_verify_ok is X/Z at %0t", $time))
+				if($isunknown(vif.i_verify_ack)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_verify_ack is X/Z at %0t", $time))
+				if($isunknown(vif.o_ro_clk)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_ro_clk is X/Z at %0t", $time))
+				if($isunknown(vif.o_ro_out)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_ro_out is X/Z at %0t", $time))
+				if($isunknown(vif.o_chip_id)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_chip_id is X/Z at %0t", $time))
+				if($isunknown(vif.o_uid)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_uid is X/Z at %0t", $time))
+				if($isunknown(vif.o_efuse_dout)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:o_efuse_dout is X/Z at %0t", $time))
+				if($isunknown(vif.i_efuse_pgm)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_efuse_pgm is X/Z at %0t", $time))
+				if($isunknown(vif.i_efuse_sclk)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_efuse_sclk is X/Z at %0t", $time))
+				if($isunknown(vif.i_efuse_cs)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_efuse_cs is X/Z at %0t", $time))
+				if($isunknown(vif.i_efuse_wr)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:i_efuse_wr is X/Z at %0t", $time))
 			`endif
 
 			// --- 3. 创建 transaction 并采样接口信号 ---
 			security_tr = security_trans::type_id::create("security_tr");
-			security_tr.sec_int = vif.sec_int;
-			security_tr.sec_boot_ok = vif.sec_boot_ok;
+			security_tr.i_clk = vif.i_clk;
+			security_tr.i_rst_n = vif.i_rst_n;
+			security_tr.o_irq = vif.o_irq;
+			security_tr.i_scan_mode = vif.i_scan_mode;
+			security_tr.i_skip_startup = vif.i_skip_startup;
+			security_tr.o_verify_vld = vif.o_verify_vld;
+			security_tr.o_verify_ok = vif.o_verify_ok;
+			security_tr.i_verify_ack = vif.i_verify_ack;
+			security_tr.o_ro_clk = vif.o_ro_clk;
+			security_tr.o_ro_out = vif.o_ro_out;
+			security_tr.o_chip_id = vif.o_chip_id;
+			security_tr.o_uid = vif.o_uid;
+			security_tr.o_efuse_dout = vif.o_efuse_dout;
+			security_tr.i_efuse_pgm = vif.i_efuse_pgm;
+			security_tr.i_efuse_sclk = vif.i_efuse_sclk;
+			security_tr.i_efuse_cs = vif.i_efuse_cs;
+			security_tr.i_efuse_wr = vif.i_efuse_wr;
 
 			// --- 4. 调用回调：pre_collect ---
 //			`uvm_do_callbacks(security_monitor, security_monitor_callback, pre_collect(this, security_tr))

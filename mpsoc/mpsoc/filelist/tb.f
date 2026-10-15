@@ -75,8 +75,8 @@ ${VERIFY_HOME}/uvc/tim/tim_UvcTop.svh
 ${VERIFY_HOME}/uvc/uc/uc_vif.sv
 ${VERIFY_HOME}/uvc/uc/uc_UvcTop.svh
 
-${VERIFY_HOME}/uvc/sdram/sdram_vif.sv
-${VERIFY_HOME}/uvc/sdram/sdram_UvcTop.svh
+${VERIFY_HOME}/uvc/sdram/sdram_if.sv
+${VERIFY_HOME}/uvc/sdram/sdram_pkg.sv
 
 ${VERIFY_HOME}/uvc/security/security_vif.sv
 ${VERIFY_HOME}/uvc/security/security_UvcTop.svh

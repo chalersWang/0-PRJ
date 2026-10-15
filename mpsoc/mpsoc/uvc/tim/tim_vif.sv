@@ -5,13 +5,13 @@
 // tim_vif: tim UVC 的 virtual interface
 //   interface 端口：clk, rstn → 由 tb_top 传入
 //   内部信号：使用 logic 类型（非 input/output），由 DUT 和 driver 共驱
+//   信号来源：interface.md「timer」页（DW_apb_timers），剔除 APB
 //=========================================================================
 interface tim_vif(input logic clk, input logic rstn);
 
 	// ===== DUT 信号声明（logic 类型） =====
-		logic [2:0] tim_int;
-		logic [2:0] tim_pwm;
-		logic [2:0] tim_in;
+	// Interrupts（DUT 输出，4 通道）
+		logic [3:0] timer_int;   // 定时器中断
 
 	// ===== Clocking Blocks =====
 	// dcb: Driver 视角的 clocking block
@@ -20,17 +20,13 @@ interface tim_vif(input logic clk, input logic rstn);
 	//   output #0: 在时钟边沿后驱动（避免竞争）
 	default clocking dcb @(posedge clk);
 		default input #1step output #0;
-			input tim_int;
-			input tim_pwm;
-			output tim_in;
+			input timer_int;
 	endclocking : dcb
 
 	// mcb: Monitor 视角的 clocking block（纯观察，全部 input）
 	clocking mcb @(posedge clk);
 		default input #1step;
-			input tim_int;
-			input tim_pwm;
-			input tim_in;
+			input timer_int;
 	endclocking : mcb
 
 	// ===== Modports（可选） =====

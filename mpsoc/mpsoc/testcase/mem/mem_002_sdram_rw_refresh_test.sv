@@ -4,7 +4,7 @@
 // TST 编号 : TST-MEM-002
 // 测试项   : SDRAM 读写与刷新
 // 优先级   : 高
-// UVC 映射 : sdram_base_sequence -> env.mpsoc_vseqr.sdram_seqr
+// UVC 映射 : uvm_sequence#(sdram_seq_item) -> env.mpsoc_vseqr.sdram_seqr
 //
 // 飞书描述 : 外接 SDRAM 全容量读写,跨页/刷新长时间压力
 // 预期结果 : 长时间运行数据保持正确,无刷新丢失
@@ -19,7 +19,7 @@
 `ifndef _MEM_002_SDRAM_RW_REFRESH_TEST_
 `define _MEM_002_SDRAM_RW_REFRESH_TEST_
 
-class mem_002_sdram_rw_refresh_sequence extends sdram_base_sequence;
+class mem_002_sdram_rw_refresh_sequence extends uvm_sequence #(sdram_seq_item);
 
     `uvm_object_utils(mem_002_sdram_rw_refresh_sequence)
 
@@ -29,10 +29,11 @@ class mem_002_sdram_rw_refresh_sequence extends sdram_base_sequence;
 
     virtual task body();
         // SDRAM 读写与刷新
-        `uvm_do_with(req, { req.cmd == 4'b0011;
+        `uvm_do_with(req, { req.cmd == SDRAM_WRITE;
         req.bank == 2'b00;
-        req.addr == 13'h0000;
-        req.wdata == 16'h5A5A; })
+        req.col == 9'h000;
+        req.wdata.size() == 1;
+        req.wdata[0] == 32'h5A5A; })
         // TODO: 结果检查 —— RTL 就绪后依据 sdram_monitor / scoreboard 比对
     endtask : body
 

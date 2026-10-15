@@ -61,8 +61,7 @@ class tim_driver extends uvm_driver#(tim_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-		vif.tim_in = 'd0;
+		// 复位阶段：tim 无 DUT 输入信号（仅 timer_int 输出），无需驱动
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 
@@ -114,7 +113,7 @@ class tim_driver extends uvm_driver#(tim_trans);
 		end
 	endfunction
 
-	// tim_in 为定时器外部输入（可作时钟源/捕获触发），driver 产生脉冲激励
+	// tim 无外部输入引脚：定时配置经 APB 寄存器（超出信号级 UVC 范围），driver 仅被动观察 timer_int
 
 	//=========================================================================
 	// driver_one_pkt: 驱动单笔 transaction 到接口
@@ -127,14 +126,19 @@ class tim_driver extends uvm_driver#(tim_trans);
 	//     vif.valid = 1'b0;                             // 放下 valid
 	//=========================================================================
 		virtual task driver_one_pkt(tim_trans tr);
-		`uvm_info(get_type_name(), $sformatf("tim: ch=%0d pulses=%0d period=%0d",
-			tr.channel, tr.pulse_count, tr.pulse_period), UVM_HIGH)
-		for (int p = 0; p < tr.pulse_count; p++) begin
-			vif.tim_in[tr.channel] = 1'b1;
-			repeat(tr.pulse_period) @(posedge vif.clk);
-			vif.tim_in[tr.channel] = 1'b0;
-			repeat(tr.pulse_period) @(posedge vif.clk);
-		end
+		`uvm_info(get_type_name(), $sformatf("tim: ch=%0d 观察 timer_int 中断事件", tr.channel), UVM_HIGH)
+		tr.intr_seen = 0;
+		fork
+			begin
+				wait(vif.timer_int[tr.channel] === 1'b1);
+				tr.intr_seen = 1;
+			end
+			begin
+				repeat(1024) @(posedge vif.clk);
+			end
+		join_any
+		disable fork;
+		`uvm_info(get_type_name(), $sformatf("tim: intr_seen=%0b", tr.intr_seen), UVM_HIGH)
 		`uvm_info(get_type_name(),"driver_one_pkt end ...",UVM_HIGH)
 	endtask : driver_one_pkt
 

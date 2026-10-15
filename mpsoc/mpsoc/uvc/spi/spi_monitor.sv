@@ -79,27 +79,43 @@ class spi_monitor extends uvm_monitor;
 		int i;
 		`uvm_info(get_type_name(), "run_phase begin", UVM_MEDIUM)
 		forever begin
-			// 等待任一通道片选选中
-			@(vif.ss_n);
-			if (vif.ss_n === 4'hf) continue;
+			// 等待片选选中（SPI_SEL 拉低）
+			@(negedge vif.SPI_SEL);
 			tr = spi_trans::type_id::create("spi_tr");
-			tr.channel = 0;
-			for (int c = 0; c < 4; c++)
-				if (vif.ss_n[c] === 1'b0) tr.channel = c;
 			tr.rx_data = '0;
 			tr.tx_data = '0;
 			// 捕获直到片选拉高（帧结束），上限 32 bit
 			i = 0;
-			while (vif.ss_n[tr.channel] === 1'b0 && i < 32) begin
-				@(posedge vif.sclk);
-				tr.rx_data[i] = vif.mosi;
-				tr.tx_data[i] = vif.miso;
+			while (vif.SPI_SEL === 1'b0 && i < 32) begin
+				@(posedge vif.SPI_CLK);
+				tr.tx_data[i] = vif.SPI_DI;
+				tr.rx_data[i] = vif.SPI_DO;
 				i++;
 			end
 			tr.frame_size = i;
 			// 快照原始信号并广播
-			tr.sclk = vif.sclk; tr.mosi = vif.mosi; tr.miso = vif.miso;
-			tr.ss_n = vif.ss_n; tr.ssi_intr = vif.ssi_intr;
+			tr.NRESET = vif.NRESET;
+			tr.CLK_PDI_EXT = vif.CLK_PDI_EXT;
+			tr.CONFIG_REG = vif.CONFIG_REG;
+			tr.SPI_STATUS_REG = vif.SPI_STATUS_REG;
+			tr.IRQ_IN = vif.IRQ_IN;
+			tr.INT_REQ = vif.INT_REQ;
+			tr.READ_DATA_READY = vif.READ_DATA_READY;
+			tr.MEM_READ_EN = vif.MEM_READ_EN;
+			tr.RD_ADDR = vif.RD_ADDR;
+			tr.WR_ADDR = vif.WR_ADDR;
+			tr.MEM_DATA_OUT = vif.MEM_DATA_OUT;
+			tr.MEM_DATA_IN = vif.MEM_DATA_IN;
+			tr.SPI_SEL = vif.SPI_SEL;
+			tr.SPI_CLK = vif.SPI_CLK;
+			tr.SPI_DI = vif.SPI_DI;
+			tr.SPI_DO = vif.SPI_DO;
+			tr.SPI_DO_EN = vif.SPI_DO_EN;
+			tr.SPI_IRQ = vif.SPI_IRQ;
+			tr.SPI_IRQ_EN = vif.SPI_IRQ_EN;
+			tr.START_ADDR_PHASE = vif.START_ADDR_PHASE;
+			tr.SOF_ADDR_STATE_CLK_PDI = vif.SOF_ADDR_STATE_CLK_PDI;
+			tr.EOF_SPI_TX = vif.EOF_SPI_TX;
 			mon_analysis_port.write(tr);
 		end
 	endtask : run_phase

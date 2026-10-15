@@ -84,28 +84,109 @@ class uc_monitor extends uvm_monitor;
 
 			// --- 2. X/Z 检查（通过宏控制，不影响正常采集） ---
 			`ifdef CHECK_SIGNAL_XZ_UC
-				if($isunknown(vif.uc_addr)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:uc_addr is X/Z at %0t", $time))
-				if($isunknown(vif.uc_data)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:uc_data is X/Z at %0t", $time))
-				if($isunknown(vif.uc_busy)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:uc_busy is X/Z at %0t", $time))
-				if($isunknown(vif.uc_cs)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:uc_cs is X/Z at %0t", $time))
-				if($isunknown(vif.uc_wr)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:uc_wr is X/Z at %0t", $time))
-				if($isunknown(vif.uc_irq)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:uc_irq is X/Z at %0t", $time))
+				if($isunknown(vif.UC_CS)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_CS is X/Z at %0t", $time))
+				if($isunknown(vif.UC_RD)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_RD is X/Z at %0t", $time))
+				if($isunknown(vif.UC_WR)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_WR is X/Z at %0t", $time))
+				if($isunknown(vif.UC_ADDR)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_ADDR is X/Z at %0t", $time))
+				if($isunknown(vif.UC_DATA_IN)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_DATA_IN is X/Z at %0t", $time))
+				if($isunknown(vif.UC_DATA_OUT)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_DATA_OUT is X/Z at %0t", $time))
+				if($isunknown(vif.UC_DATA_ENA)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_DATA_ENA is X/Z at %0t", $time))
+				if($isunknown(vif.UC_BUSY)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_BUSY is X/Z at %0t", $time))
+				if($isunknown(vif.UC_IRQ_OUT_1)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_IRQ_OUT_1 is X/Z at %0t", $time))
+				if($isunknown(vif.UC_IRQ_OUT_2)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_IRQ_OUT_2 is X/Z at %0t", $time))
+				if($isunknown(vif.UC_ALE)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_ALE is X/Z at %0t", $time))
+				if($isunknown(vif.UC_NBHE)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_NBHE is X/Z at %0t", $time))
+				if($isunknown(vif.NRESET)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:NRESET is X/Z at %0t", $time))
+				if($isunknown(vif.CLK_PDI_EXT)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:CLK_PDI_EXT is X/Z at %0t", $time))
+				if($isunknown(vif.ADDR_MASK_EN_CFG)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:ADDR_MASK_EN_CFG is X/Z at %0t", $time))
+				if($isunknown(vif.BUS_WIDTH_CFG)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:BUS_WIDTH_CFG is X/Z at %0t", $time))
+				if($isunknown(vif.CONFIG_REG)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:CONFIG_REG is X/Z at %0t", $time))
+				if($isunknown(vif.IRQ_IN)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:IRQ_IN is X/Z at %0t", $time))
+				if($isunknown(vif.UC_IF_IRR)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_IF_IRR is X/Z at %0t", $time))
+				if($isunknown(vif.UC_IF_ACTIVE)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_IF_ACTIVE is X/Z at %0t", $time))
+				if($isunknown(vif.UC_IF_IRQ)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:UC_IF_IRQ is X/Z at %0t", $time))
+				if($isunknown(vif.READ_BYTE_SEL)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:READ_BYTE_SEL is X/Z at %0t", $time))
+				if($isunknown(vif.BUS_WIDTH_CODE)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:BUS_WIDTH_CODE is X/Z at %0t", $time))
+				if($isunknown(vif.WRITE_BYTE_ENA)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:WRITE_BYTE_ENA is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_ADDR_WRITE)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_ADDR_WRITE is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_DATA_OUT)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_DATA_OUT is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_WRITE_EN)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_WRITE_EN is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_WRITE_READY)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_WRITE_READY is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_ADDR_READ)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_ADDR_READ is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_DATA_IN)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_DATA_IN is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_READ_EN)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_READ_EN is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_READ_READY)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_READ_READY is X/Z at %0t", $time))
+				if($isunknown(vif.MEM_READ_ACK)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:MEM_READ_ACK is X/Z at %0t", $time))
 			`endif
 
 			// --- 3. 创建 transaction 并采样接口信号 ---
 			uc_tr = uc_trans::type_id::create("uc_tr");
-			uc_tr.uc_addr = vif.uc_addr;
-			uc_tr.uc_data = vif.uc_data;
-			uc_tr.uc_busy = vif.uc_busy;
-			uc_tr.uc_cs = vif.uc_cs;
-			uc_tr.uc_wr = vif.uc_wr;
-			uc_tr.uc_irq = vif.uc_irq;
+			uc_tr.UC_CS = vif.UC_CS;
+			uc_tr.UC_RD = vif.UC_RD;
+			uc_tr.UC_WR = vif.UC_WR;
+			uc_tr.UC_ADDR = vif.UC_ADDR;
+			uc_tr.UC_DATA_IN = vif.UC_DATA_IN;
+			uc_tr.UC_DATA_OUT = vif.UC_DATA_OUT;
+			uc_tr.UC_DATA_ENA = vif.UC_DATA_ENA;
+			uc_tr.UC_BUSY = vif.UC_BUSY;
+			uc_tr.UC_IRQ_OUT_1 = vif.UC_IRQ_OUT_1;
+			uc_tr.UC_IRQ_OUT_2 = vif.UC_IRQ_OUT_2;
+			uc_tr.UC_ALE = vif.UC_ALE;
+			uc_tr.UC_NBHE = vif.UC_NBHE;
+			uc_tr.NRESET = vif.NRESET;
+			uc_tr.CLK_PDI_EXT = vif.CLK_PDI_EXT;
+			uc_tr.ADDR_MASK_EN_CFG = vif.ADDR_MASK_EN_CFG;
+			uc_tr.BUS_WIDTH_CFG = vif.BUS_WIDTH_CFG;
+			uc_tr.CONFIG_REG = vif.CONFIG_REG;
+			uc_tr.IRQ_IN = vif.IRQ_IN;
+			uc_tr.UC_IF_IRR = vif.UC_IF_IRR;
+			uc_tr.UC_IF_ACTIVE = vif.UC_IF_ACTIVE;
+			uc_tr.UC_IF_IRQ = vif.UC_IF_IRQ;
+			uc_tr.READ_BYTE_SEL = vif.READ_BYTE_SEL;
+			uc_tr.BUS_WIDTH_CODE = vif.BUS_WIDTH_CODE;
+			uc_tr.WRITE_BYTE_ENA = vif.WRITE_BYTE_ENA;
+			uc_tr.MEM_ADDR_WRITE = vif.MEM_ADDR_WRITE;
+			uc_tr.MEM_DATA_OUT = vif.MEM_DATA_OUT;
+			uc_tr.MEM_WRITE_EN = vif.MEM_WRITE_EN;
+			uc_tr.MEM_WRITE_READY = vif.MEM_WRITE_READY;
+			uc_tr.MEM_ADDR_READ = vif.MEM_ADDR_READ;
+			uc_tr.MEM_DATA_IN = vif.MEM_DATA_IN;
+			uc_tr.MEM_READ_EN = vif.MEM_READ_EN;
+			uc_tr.MEM_READ_READY = vif.MEM_READ_READY;
+			uc_tr.MEM_READ_ACK = vif.MEM_READ_ACK;
 
 			// --- 4. 调用回调：pre_collect ---
 //			`uvm_do_callbacks(uc_monitor, uc_monitor_callback, pre_collect(this, uc_tr))

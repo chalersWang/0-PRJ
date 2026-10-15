@@ -35,7 +35,7 @@ import spi_UvcTop::*;
 import wdt_UvcTop::*;
 import tim_UvcTop::*;
 import uc_UvcTop::*;
-import sdram_UvcTop::*;
+import sdram_pkg::*;
 import security_UvcTop::*;
 import dma_UvcTop::*;
 import pn_irt_UvcTop::*;

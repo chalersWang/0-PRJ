@@ -22,7 +22,7 @@ initial begin
 	uvm_config_db#(virtual wdt_vif)::set(null,"*","wdt_vif",TopVif.wdtvif);
 	uvm_config_db#(virtual tim_vif)::set(null,"*","tim_vif",TopVif.timvif);
 	uvm_config_db#(virtual uc_vif)::set(null,"*","uc_vif",TopVif.ucvif);
-	uvm_config_db#(virtual sdram_vif)::set(null,"*","sdram_vif",TopVif.sdramvif);
+	uvm_config_db#(virtual sdram_if)::set(null,"*","sdram_vif",TopVif.sdramvif);
 	uvm_config_db#(virtual security_vif)::set(null,"*","security_vif",TopVif.securityvif);
 	uvm_config_db#(virtual dma_vif)::set(null,"*","dma_vif",TopVif.dmavif);
 	uvm_config_db#(virtual pn_irt_vif)::set(null,"*","pn_irt_vif",TopVif.pn_irtvif);

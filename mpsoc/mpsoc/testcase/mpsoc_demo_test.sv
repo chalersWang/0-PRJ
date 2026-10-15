@@ -340,7 +340,7 @@ class mpsoc_demo_dma_sequence extends dma_base_sequence;
 
 endclass
 
-class mpsoc_demo_sdram_sequence extends sdram_base_sequence;
+class mpsoc_demo_sdram_sequence extends uvm_sequence #(sdram_seq_item);
 
     integer status;
 
@@ -356,7 +356,7 @@ class mpsoc_demo_sdram_sequence extends sdram_base_sequence;
 		`uvm_info(get_full_name(),"body() begin ...",UVM_LOW)
 		     `uvm_create(req)
 		     //status=req.randomize();
-		     status=req.randomize with{ cmd == 4'b0101; bank == 2'b00; addr == 13'h100; };
+		     status=req.randomize with{ cmd == SDRAM_READ; bank == 2'b00; col == 9'h100; };
 		     if(!status)`uvm_fatal(get_full_name,"Can't randomize a trans!!!")
 		     `uvm_send(req)
 		     //req.print();
