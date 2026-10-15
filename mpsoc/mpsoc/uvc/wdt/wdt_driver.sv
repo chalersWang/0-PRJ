@@ -133,11 +133,11 @@ class wdt_driver extends uvm_driver#(wdt_trans);
 		tr.rst_seen = 0;
 		fork
 			begin
-				wait(vif.wdt_int === 1'b1);
+				wait(vif.wdt_intr === 1'b1);
 				tr.int_seen = 1;
 			end
 			begin
-				wait(vif.wdt_rst === 1'b1);
+				wait(vif.wdt_sys_rst === 1'b1);
 				tr.rst_seen = 1;
 			end
 			begin

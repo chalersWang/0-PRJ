@@ -18,7 +18,7 @@ interface mpsoc_vif(input clk,input rstn);
 	wdt_vif wdtvif(clk,rstn);
 	tim_vif timvif(clk,rstn);
 	uc_vif ucvif(clk,rstn);
-	sdram_vif sdramvif(clk,rstn);
+	sdram_if sdramvif(clk);
 	security_vif securityvif(clk,rstn);
 	dma_vif dmavif(clk,rstn);
 	pn_irt_vif pn_irtvif(clk,rstn);

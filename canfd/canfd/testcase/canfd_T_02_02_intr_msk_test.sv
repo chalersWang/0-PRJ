@@ -19,14 +19,14 @@ class canfd_T_02_02_intr_msk_test_seq extends uvm_sequence;
         // IER屏蔽→触发→确认不响应，逐一使能验证
         `ifdef REG_MODEL
         int ier_bits[] = '{1,2,4,8}; // TXOK,RXOK,BSFRD,PEE
-        rm.IER.write(st,32'h0,UVM_FRONTDOOR); // 屏蔽全部
+        rm.IER0.write(st,32'h0,UVM_FRONTDOOR); // 屏蔽全部
         rm.SRR.write(st,0,UVM_FRONTDOOR); rm.BRPR.write(st,4,UVM_FRONTDOOR);
         rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         repeat(200) @(posedge canfdvif.clk);
         rm.ISR.read(st,ev,UVM_FRONTDOOR);
         // 逐位使能并验证
         foreach(ier_bits[j]) begin
-            rm.IER.write(st,ier_bits[j],UVM_FRONTDOOR);
+            rm.IER0.write(st,ier_bits[j],UVM_FRONTDOOR);
             repeat(50) @(posedge canfdvif.clk);
             pass++;
         end

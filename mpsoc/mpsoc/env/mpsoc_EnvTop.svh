@@ -8,6 +8,18 @@ package mpsoc_EnvTop;
 	import uvm_pkg::*;
 	/** Import SVT UVM Package **/
 	//import svt_uvm_pkg::*;
+	// ===== Synopsys DesignWare VIP 封装 package(接入时取消注释) =====
+	//import svt_i2c_UvcTop::*;
+	//import svt_spi_UvcTop::*;
+	//import svt_uart_UvcTop::*;
+	//import svt_axi_UvcTop::*;
+	//import svt_ahb_UvcTop::*;
+	//import svt_apb_UvcTop::*;
+	//import svt_gpio_UvcTop::*;
+	//import svt_wdt_UvcTop::*;
+	//import svt_timer_UvcTop::*;
+	//import svt_qspi_UvcTop::*;
+	//import svt_jtag_UvcTop::*;
 
 	/** Import the custom config UVC Package **/
 
@@ -24,7 +36,7 @@ package mpsoc_EnvTop;
 	import wdt_UvcTop::*;
 	import tim_UvcTop::*;
 	import uc_UvcTop::*;
-	import sdram_UvcTop::*;
+	import sdram_pkg::*;
 	import security_UvcTop::*;
 	import dma_UvcTop::*;
 	import pn_irt_UvcTop::*;
@@ -41,11 +53,32 @@ package mpsoc_EnvTop;
 	`include "mpsoc_event.sv"
 	`include "mpsoc_scoreboard.sv"
 	`include "mpsoc_virtual_sequencer.sv"
-	`include "mpsoc_env.sv"
 	`ifdef REG_MODEL
 	`include "sysctrl_reg_adapter.sv"
+	// ===== 外设寄存器模型(单 DATA 字段, 与 esc_reg_block 一致) =====
+	`include "sysctrl_reg_block.sv"
+	`include "gpio_reg_block.sv"
+	`include "i2c_reg_block.sv"
+	`include "spi_reg_block.sv"
+	`include "uart_reg_block.sv"
+	`include "wdt_reg_block.sv"
+	`include "tim_reg_block.sv"
+	`include "dma_reg_block.sv"
+	`include "gmac_reg_block.sv"
+	`include "qspi_reg_block.sv"
+	`include "sdram_reg_block.sv"
+	`include "esc_reg_block.sv"
+	// ===== 占位寄存器模型(无寄存器数据) =====
+	`include "jtag_reg_block.sv"
+	`include "switch_reg_block.sv"
+	`include "miiphy_reg_block.sv"
+	`include "efuse_reg_block.sv"
+	`include "uc_reg_block.sv"
+	`include "security_reg_block.sv"
+	`include "pn_irt_reg_block.sv"
 	`include "mpsoc_reg_block.sv"
 	`endif
+	`include "mpsoc_env.sv"
 
 endpackage
 `endif

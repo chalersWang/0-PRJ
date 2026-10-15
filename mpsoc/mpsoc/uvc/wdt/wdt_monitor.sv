@@ -78,24 +78,24 @@ class wdt_monitor extends uvm_monitor;
 		wdt_trans tr;
 		logic prev_int, prev_rst;
 		`uvm_info(get_type_name(), "run_phase begin", UVM_MEDIUM)
-		prev_int = vif.wdt_int;
-		prev_rst = vif.wdt_rst;
+		prev_int = vif.wdt_intr;
+		prev_rst = vif.wdt_sys_rst;
 		forever begin
 			@(posedge vif.clk);
-			if (vif.wdt_int && !prev_int) begin
+			if (vif.wdt_intr && !prev_int) begin
 				tr = wdt_trans::type_id::create("wdt_tr");
 				tr.int_seen = 1; tr.rst_seen = 0;
-				tr.wdt_int = vif.wdt_int; tr.wdt_rst = vif.wdt_rst;
+				tr.wdt_intr = vif.wdt_intr; tr.wdt_sys_rst = vif.wdt_sys_rst;
 				mon_analysis_port.write(tr);
 			end
-			if (vif.wdt_rst && !prev_rst) begin
+			if (vif.wdt_sys_rst && !prev_rst) begin
 				tr = wdt_trans::type_id::create("wdt_tr");
 				tr.int_seen = 0; tr.rst_seen = 1;
-				tr.wdt_int = vif.wdt_int; tr.wdt_rst = vif.wdt_rst;
+				tr.wdt_intr = vif.wdt_intr; tr.wdt_sys_rst = vif.wdt_sys_rst;
 				mon_analysis_port.write(tr);
 			end
-			prev_int = vif.wdt_int;
-			prev_rst = vif.wdt_rst;
+			prev_int = vif.wdt_intr;
+			prev_rst = vif.wdt_sys_rst;
 		end
 	endtask : run_phase
 

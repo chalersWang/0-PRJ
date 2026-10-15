@@ -34,14 +34,92 @@
 class esc_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic ecat_mii_rx_clk;
-		rand logic ecat_mii_rx_dv;
-		rand logic [3:0] ecat_mii_rxd;
-		rand logic ecat_mii_tx_clk;
-		rand logic ecat_mii_tx_en;
-		rand logic [3:0] ecat_mii_txd;
-		rand logic ecat_sync0;
-		rand logic ecat_sync1;
+	// System Control
+		rand logic        NRESET;
+		rand logic        NRESET_DELAY7;
+		rand logic        CLK2S;
+		rand logic        CLK25_2NS;
+		rand logic        CLK50;
+		rand logic        CLK100;
+		rand logic        CLK125;
+		rand logic        CLK125_90;
+		rand logic        CLK_PDI_EXT;
+	// Security Device
+		rand logic        SEC_DEV_CLK;
+		rand logic        SEC_DEV_CHAL_VALID;
+		rand logic [7:0]  SEC_DEV_CHAL_DATA;
+		rand logic        SEC_DEV_RESP_VALID;
+		rand logic [7:0]  SEC_DEV_RESP_DATA;
+	// RGMII Port 0
+		rand logic        RGMII_LINK0;
+		rand logic        RGMII_RX_CLK0;
+		rand logic        RGMII_RX_CTL0;
+		rand logic [3:0]  RGMII_RX_DATA0;
+		rand logic        RGMII_TX_CLK0;
+		rand logic        RGMII_TX_CTL0;
+		rand logic [3:0]  RGMII_TX_DATA0;
+		rand logic        RGMII_RX_CTL_DATA_DDR_CLK0;
+		rand logic        RGMII_TX_CTL_DATA_DDR_CLK0;
+	// MII Port 0
+		rand logic        NMII_LINK0;
+		rand logic        MII_RX_CLK0;
+		rand logic        MII_RX_DV0;
+		rand logic [3:0]  MII_RX_DATA0;
+		rand logic        MII_RX_ERR0;
+		rand logic        MII_TX_CLK0;
+		rand logic        MII_TX_ENA0;
+		rand logic [3:0]  MII_TX_DATA0;
+		rand logic [1:0]  MII_TX_SHIFT0;
+	// RMII Port 0
+		rand logic        NRMII_LINK0;
+		rand logic        RMII_RX_DV0;
+		rand logic [1:0]  RMII_RX_DATA0;
+		rand logic        RMII_RX_ER0;
+		rand logic        RMII_TX_ENA0;
+		rand logic [1:0]  RMII_TX_DATA0;
+	// MDIO Interface
+		rand logic        MDIO;
+		rand logic        MDIO_DATA_IN;
+		rand logic        MDIO_DATA_OUT;
+		rand logic        MDIO_DATA_ENA;
+		rand logic        MCLK;
+	// LED Interface
+		rand logic        LED_LINK_ACT;
+		rand logic        LED_RX_ERROR;
+		rand logic        LED_RUN;
+		rand logic        LED_ERR;
+	// PROM/SPI
+		rand logic        PROM_CLK_IN;
+		rand logic        PROM_CLK_OUT;
+		rand logic        PROM_DATA_IN;
+		rand logic        PROM_DATA_OUT;
+		rand logic        PROM_SIZE;
+	// PDI SPI
+		rand logic        PDI_SPI_SEL;
+		rand logic        PDI_SPI_DO;
+		rand logic        PDI_SPI_DI;
+		rand logic        PDI_SPI_IRQ;
+	// Digital IO
+		rand logic [7:0]  PDI_DIGI_DATA_IN0;
+		rand logic [7:0]  PDI_DIGI_DATA_IN1;
+		rand logic [7:0]  PDI_DIGI_DATA_IN2;
+		rand logic [7:0]  PDI_DIGI_DATA_IN3;
+		rand logic [7:0]  PDI_DIGI_DATA_OUT0;
+		rand logic [7:0]  PDI_DIGI_DATA_OUT1;
+		rand logic [7:0]  PDI_DIGI_DATA_OUT2;
+		rand logic [7:0]  PDI_DIGI_DATA_OUT3;
+	// GPIO & Misc
+		rand logic [7:0]  PDI_GPI;
+		rand logic [7:0]  PDI_GPO;
+		rand logic        PROM_LOADED;
+		rand logic        PDI_SOF;
+		rand logic        PDI_EOF;
+		rand logic        PDI_WD_TRIGGER;
+	// Mode Config
+		rand logic [1:0]  P_MODE;
+		rand logic [3:0]  P_CONF;
+		rand logic        LINKPOL;
+		rand logic        Trans_Mode_Ena;
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -50,14 +128,80 @@ class esc_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(esc_trans)
-		`uvm_field_int(ecat_mii_rx_clk, UVM_ALL_ON)
-		`uvm_field_int(ecat_mii_rx_dv, UVM_ALL_ON)
-		`uvm_field_int(ecat_mii_rxd, UVM_ALL_ON)
-		`uvm_field_int(ecat_mii_tx_clk, UVM_ALL_ON)
-		`uvm_field_int(ecat_mii_tx_en, UVM_ALL_ON)
-		`uvm_field_int(ecat_mii_txd, UVM_ALL_ON)
-		`uvm_field_int(ecat_sync0, UVM_ALL_ON)
-		`uvm_field_int(ecat_sync1, UVM_ALL_ON)
+		`uvm_field_int(NRESET, UVM_ALL_ON)
+		`uvm_field_int(NRESET_DELAY7, UVM_ALL_ON)
+		`uvm_field_int(CLK2S, UVM_ALL_ON)
+		`uvm_field_int(CLK25_2NS, UVM_ALL_ON)
+		`uvm_field_int(CLK50, UVM_ALL_ON)
+		`uvm_field_int(CLK100, UVM_ALL_ON)
+		`uvm_field_int(CLK125, UVM_ALL_ON)
+		`uvm_field_int(CLK125_90, UVM_ALL_ON)
+		`uvm_field_int(CLK_PDI_EXT, UVM_ALL_ON)
+		`uvm_field_int(SEC_DEV_CLK, UVM_ALL_ON)
+		`uvm_field_int(SEC_DEV_CHAL_VALID, UVM_ALL_ON)
+		`uvm_field_int(SEC_DEV_CHAL_DATA, UVM_ALL_ON)
+		`uvm_field_int(SEC_DEV_RESP_VALID, UVM_ALL_ON)
+		`uvm_field_int(SEC_DEV_RESP_DATA, UVM_ALL_ON)
+		`uvm_field_int(RGMII_LINK0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_RX_CLK0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_RX_CTL0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_RX_DATA0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TX_CLK0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TX_CTL0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TX_DATA0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_RX_CTL_DATA_DDR_CLK0, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TX_CTL_DATA_DDR_CLK0, UVM_ALL_ON)
+		`uvm_field_int(NMII_LINK0, UVM_ALL_ON)
+		`uvm_field_int(MII_RX_CLK0, UVM_ALL_ON)
+		`uvm_field_int(MII_RX_DV0, UVM_ALL_ON)
+		`uvm_field_int(MII_RX_DATA0, UVM_ALL_ON)
+		`uvm_field_int(MII_RX_ERR0, UVM_ALL_ON)
+		`uvm_field_int(MII_TX_CLK0, UVM_ALL_ON)
+		`uvm_field_int(MII_TX_ENA0, UVM_ALL_ON)
+		`uvm_field_int(MII_TX_DATA0, UVM_ALL_ON)
+		`uvm_field_int(MII_TX_SHIFT0, UVM_ALL_ON)
+		`uvm_field_int(NRMII_LINK0, UVM_ALL_ON)
+		`uvm_field_int(RMII_RX_DV0, UVM_ALL_ON)
+		`uvm_field_int(RMII_RX_DATA0, UVM_ALL_ON)
+		`uvm_field_int(RMII_RX_ER0, UVM_ALL_ON)
+		`uvm_field_int(RMII_TX_ENA0, UVM_ALL_ON)
+		`uvm_field_int(RMII_TX_DATA0, UVM_ALL_ON)
+		`uvm_field_int(MDIO, UVM_ALL_ON)
+		`uvm_field_int(MDIO_DATA_IN, UVM_ALL_ON)
+		`uvm_field_int(MDIO_DATA_OUT, UVM_ALL_ON)
+		`uvm_field_int(MDIO_DATA_ENA, UVM_ALL_ON)
+		`uvm_field_int(MCLK, UVM_ALL_ON)
+		`uvm_field_int(LED_LINK_ACT, UVM_ALL_ON)
+		`uvm_field_int(LED_RX_ERROR, UVM_ALL_ON)
+		`uvm_field_int(LED_RUN, UVM_ALL_ON)
+		`uvm_field_int(LED_ERR, UVM_ALL_ON)
+		`uvm_field_int(PROM_CLK_IN, UVM_ALL_ON)
+		`uvm_field_int(PROM_CLK_OUT, UVM_ALL_ON)
+		`uvm_field_int(PROM_DATA_IN, UVM_ALL_ON)
+		`uvm_field_int(PROM_DATA_OUT, UVM_ALL_ON)
+		`uvm_field_int(PROM_SIZE, UVM_ALL_ON)
+		`uvm_field_int(PDI_SPI_SEL, UVM_ALL_ON)
+		`uvm_field_int(PDI_SPI_DO, UVM_ALL_ON)
+		`uvm_field_int(PDI_SPI_DI, UVM_ALL_ON)
+		`uvm_field_int(PDI_SPI_IRQ, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_IN0, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_IN1, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_IN2, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_IN3, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_OUT0, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_OUT1, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_OUT2, UVM_ALL_ON)
+		`uvm_field_int(PDI_DIGI_DATA_OUT3, UVM_ALL_ON)
+		`uvm_field_int(PDI_GPI, UVM_ALL_ON)
+		`uvm_field_int(PDI_GPO, UVM_ALL_ON)
+		`uvm_field_int(PROM_LOADED, UVM_ALL_ON)
+		`uvm_field_int(PDI_SOF, UVM_ALL_ON)
+		`uvm_field_int(PDI_EOF, UVM_ALL_ON)
+		`uvm_field_int(PDI_WD_TRIGGER, UVM_ALL_ON)
+		`uvm_field_int(P_MODE, UVM_ALL_ON)
+		`uvm_field_int(P_CONF, UVM_ALL_ON)
+		`uvm_field_int(LINKPOL, UVM_ALL_ON)
+		`uvm_field_int(Trans_Mode_Ena, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name="esc_trans");

@@ -34,8 +34,27 @@
 class security_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic sec_int;
-		rand logic sec_boot_ok;
+	// System & Debug
+		rand logic        i_clk;
+		rand logic        i_rst_n;
+		rand logic        o_irq;
+		rand logic        i_scan_mode;
+		rand logic        i_skip_startup;
+	// Verification
+		rand logic        o_verify_vld;
+		rand logic [7:0]  o_verify_ok;
+		rand logic        i_verify_ack;
+	// Clocks
+		rand logic [3:0]  o_ro_clk;
+		rand logic [3:0]  o_ro_out;
+	// eFuse Ctrl
+		rand logic [31:0] o_chip_id;
+		rand logic [31:0] o_uid;
+		rand logic [3:0]  o_efuse_dout;
+		rand logic [3:0]  i_efuse_pgm;
+		rand logic        i_efuse_sclk;
+		rand logic        i_efuse_cs;
+		rand logic        i_efuse_wr;
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -44,8 +63,23 @@ class security_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(security_trans)
-		`uvm_field_int(sec_int, UVM_ALL_ON)
-		`uvm_field_int(sec_boot_ok, UVM_ALL_ON)
+		`uvm_field_int(i_clk, UVM_ALL_ON)
+		`uvm_field_int(i_rst_n, UVM_ALL_ON)
+		`uvm_field_int(o_irq, UVM_ALL_ON)
+		`uvm_field_int(i_scan_mode, UVM_ALL_ON)
+		`uvm_field_int(i_skip_startup, UVM_ALL_ON)
+		`uvm_field_int(o_verify_vld, UVM_ALL_ON)
+		`uvm_field_int(o_verify_ok, UVM_ALL_ON)
+		`uvm_field_int(i_verify_ack, UVM_ALL_ON)
+		`uvm_field_int(o_ro_clk, UVM_ALL_ON)
+		`uvm_field_int(o_ro_out, UVM_ALL_ON)
+		`uvm_field_int(o_chip_id, UVM_ALL_ON)
+		`uvm_field_int(o_uid, UVM_ALL_ON)
+		`uvm_field_int(o_efuse_dout, UVM_ALL_ON)
+		`uvm_field_int(i_efuse_pgm, UVM_ALL_ON)
+		`uvm_field_int(i_efuse_sclk, UVM_ALL_ON)
+		`uvm_field_int(i_efuse_cs, UVM_ALL_ON)
+		`uvm_field_int(i_efuse_wr, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name="security_trans");

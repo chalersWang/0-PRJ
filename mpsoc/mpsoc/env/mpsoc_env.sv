@@ -30,7 +30,7 @@ class mpsoc_env extends uvm_env;
 
 	`ifdef REG_MODEL
 		string      hdl_path;
-		mpsoc_reg_top  RegModel;
+		mpsoc_reg_block  RegModel;
 	`endif
 
 	`uvm_component_utils(mpsoc_env);
@@ -72,6 +72,12 @@ class mpsoc_env extends uvm_env;
 		
 		uvm_config_db#(mpsoc_config)::set(null,"","mpsoc_config",mpsoc_cfg);
 		uvm_config_db#(mpsoc_event)::set(null,"","mpsoc_event",mpsoc_evt);
+
+		`ifdef REG_MODEL
+			RegModel = mpsoc_reg_block::type_id::create("RegModel");
+			RegModel.build();
+		`endif
+
 		`uvm_info(get_full_name(),"build_phase end ...",UVM_LOW)
 	endfunction
 
@@ -92,7 +98,7 @@ class mpsoc_env extends uvm_env;
 		wdt_agt.wdt_mon.mon_analysis_port.connect(mpsoc_scb.wdt_scb_imp);
 		tim_agt.tim_mon.mon_analysis_port.connect(mpsoc_scb.tim_scb_imp);
 		uc_agt.uc_mon.mon_analysis_port.connect(mpsoc_scb.uc_scb_imp);
-		sdram_agt.sdram_mon.mon_analysis_port.connect(mpsoc_scb.sdram_scb_imp);
+		sdram_agt.mon.ap.connect(mpsoc_scb.sdram_scb_imp);
 		security_agt.security_mon.mon_analysis_port.connect(mpsoc_scb.security_scb_imp);
 		dma_agt.dma_mon.mon_analysis_port.connect(mpsoc_scb.dma_scb_imp);
 		pn_irt_agt.pn_irt_mon.mon_analysis_port.connect(mpsoc_scb.pn_irt_scb_imp);
@@ -112,7 +118,7 @@ class mpsoc_env extends uvm_env;
 		mpsoc_vseqr.wdt_seqr=wdt_agt.wdt_seqr;
 		mpsoc_vseqr.tim_seqr=tim_agt.tim_seqr;
 		mpsoc_vseqr.uc_seqr=uc_agt.uc_seqr;
-		mpsoc_vseqr.sdram_seqr=sdram_agt.sdram_seqr;
+		mpsoc_vseqr.sdram_seqr=sdram_agt.sqr;
 		mpsoc_vseqr.security_seqr=security_agt.security_seqr;
 		mpsoc_vseqr.dma_seqr=dma_agt.dma_seqr;
 		mpsoc_vseqr.pn_irt_seqr=pn_irt_agt.pn_irt_seqr;

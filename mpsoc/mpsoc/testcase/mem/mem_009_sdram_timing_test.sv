@@ -4,7 +4,7 @@
 // TST 编号 : TST-MEM-009
 // 测试项   : SDRAM 时序配置与静态存储
 // 优先级   : 中
-// UVC 映射 : sdram_base_sequence -> env.mpsoc_vseqr.sdram_seqr
+// UVC 映射 : uvm_sequence#(sdram_seq_item) -> env.mpsoc_vseqr.sdram_seqr
 //
 // 飞书描述 : 配置 SCONR/STMG0R/STMG1R 时序参数(tRC/tRP/tRCD/CAS),验证 NOR/SRAM 静态存储访问
 // 预期结果 : 时序参数生效,SDRAM/静态存储读写正确
@@ -19,7 +19,7 @@
 `ifndef _MEM_009_SDRAM_TIMING_TEST_
 `define _MEM_009_SDRAM_TIMING_TEST_
 
-class mem_009_sdram_timing_sequence extends sdram_base_sequence;
+class mem_009_sdram_timing_sequence extends uvm_sequence #(sdram_seq_item);
 
     `uvm_object_utils(mem_009_sdram_timing_sequence)
 
@@ -29,9 +29,9 @@ class mem_009_sdram_timing_sequence extends sdram_base_sequence;
 
     virtual task body();
         // SDRAM 时序配置与静态存储
-        `uvm_do_with(req, { req.cmd == 4'b0101;
+        `uvm_do_with(req, { req.cmd == SDRAM_READ;
         req.bank == 2'b00;
-        req.addr == 13'h0100; })
+        req.col == 9'h100; })
         // TODO: 结果检查 —— RTL 就绪后依据 sdram_monitor / scoreboard 比对
     endtask : body
 

@@ -18,7 +18,7 @@ class canfd_B_04_06_txb_wm_test_seq extends uvm_sequence;
 
         // TXE_WMR水印中断
         `ifdef REG_MODEL
-        rm.SRR.write(st,0,UVM_FRONTDOOR); rm.IER.write(st,32'h80000000,UVM_FRONTDOOR); // TXEWMFLL
+        rm.SRR.write(st,0,UVM_FRONTDOOR); rm.IER0.write(st,32'h80000000,UVM_FRONTDOOR); // TXEWMFLL
         rm.TXE_WMR.write(st,32'h2,UVM_FRONTDOOR); // 水印=2
         rm.BRPR.write(st,4,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         repeat(200) @(posedge canfdvif.clk);

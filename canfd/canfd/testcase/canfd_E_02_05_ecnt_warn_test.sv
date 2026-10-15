@@ -18,7 +18,7 @@ class canfd_E_02_05_ecnt_warn_test_seq extends uvm_sequence;
 
         // TEC≥96或REC≥96→EWARN中断
         `ifdef REG_MODEL
-        rm.SRR.write(st,0,UVM_FRONTDOOR); rm.IER.write(st,32'h100,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
+        rm.SRR.write(st,0,UVM_FRONTDOOR); rm.IER0.write(st,32'h100,UVM_FRONTDOOR); rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         rm.ECR.read(st,ev,UVM_FRONTDOOR); rm.SR.read(st,v,UVM_FRONTDOOR);
         `uvm_info(get_type_name(),$sformatf("TEC=%0d REC=%0d ERRWRN=%0b (≥96 triggers warning)",(ev>>8)&255,ev&255,v[6]),UVM_MEDIUM)
         pass++;

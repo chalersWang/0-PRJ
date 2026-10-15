@@ -18,7 +18,7 @@ class mpsoc_virtual_sequencer extends uvm_sequencer;
 	wdt_sequencer         wdt_seqr;
 	tim_sequencer         tim_seqr;
 	uc_sequencer         uc_seqr;
-	sdram_sequencer         sdram_seqr;
+	uvm_sequencer#(sdram_seq_item)         sdram_seqr;
 	security_sequencer         security_seqr;
 	dma_sequencer         dma_seqr;
 	pn_irt_sequencer         pn_irt_seqr;

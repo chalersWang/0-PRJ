@@ -179,7 +179,7 @@ endtask
 
 // 清除中断
 task canfd_clear_int(input logic [31:0] mask);
-    reg_write(16'h0024, mask);
+    reg_write(16'h002C, mask);   // ICR (v2.0: 0x24 → 0x2C)
 endtask
 
 //-------------------------------------------------------------------------
@@ -263,7 +263,7 @@ task canfd_wait_txok(input int timeout_cycles = 5000);
     int i;
     for (i=0; i<timeout_cycles; i++) begin
         reg_read(16'h001C, isr_val);
-        if (isr_val[2]) return;  // TXOK
+        if (isr_val[1]) return;  // TXOK
         repeat(10) @(posedge p_sequencer.clk);
     end
     `uvm_error("WAIT_TXOK", $sformatf("No TXOK after %0d cycles", timeout_cycles))
@@ -275,7 +275,7 @@ task canfd_wait_rxok(input int timeout_cycles = 5000);
     int i;
     for (i=0; i<timeout_cycles; i++) begin
         reg_read(16'h001C, isr_val);
-        if (isr_val[3]) return;  // RXOK
+        if (isr_val[4]) return;  // RXOK
         repeat(10) @(posedge p_sequencer.clk);
     end
     `uvm_error("WAIT_RXOK", $sformatf("No RXOK after %0d cycles", timeout_cycles))

@@ -18,10 +18,10 @@ class canfd_T_01_02_srst_test_seq extends uvm_sequence;
 
         // Step1: 修改所有配置寄存器为非默认值
         `ifdef REG_MODEL
-        string ck[] = '{"BRPR","BTR","MSR","IER","DP_BRPR","DP_BTR"};
+        string ck[] = '{"BRPR","BTR","MSR","IER0","DP_BRPR","DP_BTR"};
         rm.SRR.write(st,0,UVM_FRONTDOOR);
         rm.BRPR.write(st,32'h55,UVM_FRONTDOOR); rm.BTR.write(st,32'h1234,UVM_FRONTDOOR);
-        rm.MSR.write(st,32'hAA,UVM_FRONTDOOR); rm.IER.write(st,32'hFFFFFFFF,UVM_FRONTDOOR);
+        rm.MSR.write(st,32'hAA,UVM_FRONTDOOR); rm.IER0.write(st,32'hFFFFFFFF,UVM_FRONTDOOR);
         rm.DP_BRPR.write(st,32'h33,UVM_FRONTDOOR); rm.DP_BTR.write(st,32'h567,UVM_FRONTDOOR);
         // Step2: 写 SRST=1
         rm.SRR.write(st,32'h1,UVM_FRONTDOOR);

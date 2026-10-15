@@ -84,28 +84,142 @@ class gmac_monitor extends uvm_monitor;
 
 			// --- 2. X/Z 检查（通过宏控制，不影响正常采集） ---
 			`ifdef CHECK_SIGNAL_XZ_GMAC
-				if($isunknown(vif.gmac_rgmii_txc)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:gmac_rgmii_txc is X/Z at %0t", $time))
-				if($isunknown(vif.gmac_rgmii_txd)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:gmac_rgmii_txd is X/Z at %0t", $time))
-				if($isunknown(vif.gmac_rgmii_tx_ctl)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:gmac_rgmii_tx_ctl is X/Z at %0t", $time))
-				if($isunknown(vif.gmac_rgmii_rxc)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:gmac_rgmii_rxc is X/Z at %0t", $time))
-				if($isunknown(vif.gmac_rgmii_rxd)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:gmac_rgmii_rxd is X/Z at %0t", $time))
-				if($isunknown(vif.gmac_rgmii_rx_ctl)==1)
-					`uvm_error(get_type_name(), $sformatf("signal:gmac_rgmii_rx_ctl is X/Z at %0t", $time))
+				if($isunknown(vif.RGMII_RXC_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:RGMII_RXC_i is X/Z at %0t", $time))
+				if($isunknown(vif.RGMII_TXC_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:RGMII_TXC_i is X/Z at %0t", $time))
+				if($isunknown(vif.RGMII_TXC_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:RGMII_TXC_o is X/Z at %0t", $time))
+				if($isunknown(vif.RGMII_TXC_oen)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:RGMII_TXC_oen is X/Z at %0t", $time))
+				if($isunknown(vif.gephy_ifsel)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gephy_ifsel is X/Z at %0t", $time))
+				if($isunknown(vif.gmac_ack)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmac_ack is X/Z at %0t", $time))
+				if($isunknown(vif.gmac_areset_n)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmac_areset_n is X/Z at %0t", $time))
+				if($isunknown(vif.gmac_clk)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmac_clk is X/Z at %0t", $time))
+				if($isunknown(vif.gmac_pclk)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmac_pclk is X/Z at %0t", $time))
+				if($isunknown(vif.gmac_preset_n)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmac_preset_n is X/Z at %0t", $time))
+				if($isunknown(vif.gmac_reset_n)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmac_reset_n is X/Z at %0t", $time))
+				if($isunknown(vif.gmii_mdc_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmii_mdc_o is X/Z at %0t", $time))
+				if($isunknown(vif.gmii_mdc_oen)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmii_mdc_oen is X/Z at %0t", $time))
+				if($isunknown(vif.gmii_mdi_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmii_mdi_i is X/Z at %0t", $time))
+				if($isunknown(vif.gmii_mdio_oen)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmii_mdio_oen is X/Z at %0t", $time))
+				if($isunknown(vif.gmii_mdo_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:gmii_mdo_o is X/Z at %0t", $time))
+				if($isunknown(vif.lpi_intr_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:lpi_intr_o is X/Z at %0t", $time))
+				if($isunknown(vif.pcs_acquired_sync_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pcs_acquired_sync_o is X/Z at %0t", $time))
+				if($isunknown(vif.pcs_en_cdet_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pcs_en_cdet_o is X/Z at %0t", $time))
+				if($isunknown(vif.pcs_ewrap_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pcs_ewrap_o is X/Z at %0t", $time))
+				if($isunknown(vif.pcs_lck_ref_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pcs_lck_ref_o is X/Z at %0t", $time))
+				if($isunknown(vif.phy_col_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_col_i is X/Z at %0t", $time))
+				if($isunknown(vif.phy_crs_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_crs_i is X/Z at %0t", $time))
+				if($isunknown(vif.phy_intr_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_intr_i is X/Z at %0t", $time))
+				if($isunknown(vif.phy_rxd_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_rxd_i is X/Z at %0t", $time))
+				if($isunknown(vif.phy_rxdv_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_rxdv_i is X/Z at %0t", $time))
+				if($isunknown(vif.phy_rxer_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_rxer_i is X/Z at %0t", $time))
+				if($isunknown(vif.phy_txd_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_txd_o is X/Z at %0t", $time))
+				if($isunknown(vif.phy_txd_oen)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_txd_oen is X/Z at %0t", $time))
+				if($isunknown(vif.phy_txen_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_txen_o is X/Z at %0t", $time))
+				if($isunknown(vif.phy_txen_oen)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_txen_oen is X/Z at %0t", $time))
+				if($isunknown(vif.phy_txer_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_txer_o is X/Z at %0t", $time))
+				if($isunknown(vif.phy_txerr_oen)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:phy_txerr_oen is X/Z at %0t", $time))
+				if($isunknown(vif.pmt_intr_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pmt_intr_o is X/Z at %0t", $time))
+				if($isunknown(vif.ptp_aux_ts_trig_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:ptp_aux_ts_trig_i is X/Z at %0t", $time))
+				if($isunknown(vif.ptp_pps_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:ptp_pps_o is X/Z at %0t", $time))
+				if($isunknown(vif.ptp_timestamp_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:ptp_timestamp_i is X/Z at %0t", $time))
+				if($isunknown(vif.pwr_clamp_ctrl_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pwr_clamp_ctrl_i is X/Z at %0t", $time))
+				if($isunknown(vif.pwr_down_ctrl_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pwr_down_ctrl_i is X/Z at %0t", $time))
+				if($isunknown(vif.pwr_isolate_i)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:pwr_isolate_i is X/Z at %0t", $time))
+				if($isunknown(vif.sbd_intr_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:sbd_intr_o is X/Z at %0t", $time))
+				if($isunknown(vif.sbd_pwr_down_ack_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:sbd_pwr_down_ack_o is X/Z at %0t", $time))
+				if($isunknown(vif.sbd_tx_clk_gating_ctrl_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:sbd_tx_clk_gating_ctrl_o is X/Z at %0t", $time))
+				if($isunknown(vif.sgmii_link_speed_o)==1)
+					`uvm_error(get_type_name(), $sformatf("signal:sgmii_link_speed_o is X/Z at %0t", $time))
 			`endif
 
 			// --- 3. 创建 transaction 并采样接口信号 ---
 			gmac_tr = gmac_trans::type_id::create("gmac_tr");
-			gmac_tr.gmac_rgmii_txc = vif.gmac_rgmii_txc;
-			gmac_tr.gmac_rgmii_txd = vif.gmac_rgmii_txd;
-			gmac_tr.gmac_rgmii_tx_ctl = vif.gmac_rgmii_tx_ctl;
-			gmac_tr.gmac_rgmii_rxc = vif.gmac_rgmii_rxc;
-			gmac_tr.gmac_rgmii_rxd = vif.gmac_rgmii_rxd;
-			gmac_tr.gmac_rgmii_rx_ctl = vif.gmac_rgmii_rx_ctl;
+			gmac_tr.RGMII_RXC_i = vif.RGMII_RXC_i;
+			gmac_tr.RGMII_TXC_i = vif.RGMII_TXC_i;
+			gmac_tr.RGMII_TXC_o = vif.RGMII_TXC_o;
+			gmac_tr.RGMII_TXC_oen = vif.RGMII_TXC_oen;
+			gmac_tr.gephy_ifsel = vif.gephy_ifsel;
+			gmac_tr.gmac_ack = vif.gmac_ack;
+			gmac_tr.gmac_areset_n = vif.gmac_areset_n;
+			gmac_tr.gmac_clk = vif.gmac_clk;
+			gmac_tr.gmac_pclk = vif.gmac_pclk;
+			gmac_tr.gmac_preset_n = vif.gmac_preset_n;
+			gmac_tr.gmac_reset_n = vif.gmac_reset_n;
+			gmac_tr.gmii_mdc_o = vif.gmii_mdc_o;
+			gmac_tr.gmii_mdc_oen = vif.gmii_mdc_oen;
+			gmac_tr.gmii_mdi_i = vif.gmii_mdi_i;
+			gmac_tr.gmii_mdio_oen = vif.gmii_mdio_oen;
+			gmac_tr.gmii_mdo_o = vif.gmii_mdo_o;
+			gmac_tr.lpi_intr_o = vif.lpi_intr_o;
+			gmac_tr.pcs_acquired_sync_o = vif.pcs_acquired_sync_o;
+			gmac_tr.pcs_en_cdet_o = vif.pcs_en_cdet_o;
+			gmac_tr.pcs_ewrap_o = vif.pcs_ewrap_o;
+			gmac_tr.pcs_lck_ref_o = vif.pcs_lck_ref_o;
+			gmac_tr.phy_col_i = vif.phy_col_i;
+			gmac_tr.phy_crs_i = vif.phy_crs_i;
+			gmac_tr.phy_intr_i = vif.phy_intr_i;
+			gmac_tr.phy_rxd_i = vif.phy_rxd_i;
+			gmac_tr.phy_rxdv_i = vif.phy_rxdv_i;
+			gmac_tr.phy_rxer_i = vif.phy_rxer_i;
+			gmac_tr.phy_txd_o = vif.phy_txd_o;
+			gmac_tr.phy_txd_oen = vif.phy_txd_oen;
+			gmac_tr.phy_txen_o = vif.phy_txen_o;
+			gmac_tr.phy_txen_oen = vif.phy_txen_oen;
+			gmac_tr.phy_txer_o = vif.phy_txer_o;
+			gmac_tr.phy_txerr_oen = vif.phy_txerr_oen;
+			gmac_tr.pmt_intr_o = vif.pmt_intr_o;
+			gmac_tr.ptp_aux_ts_trig_i = vif.ptp_aux_ts_trig_i;
+			gmac_tr.ptp_pps_o = vif.ptp_pps_o;
+			gmac_tr.ptp_timestamp_i = vif.ptp_timestamp_i;
+			gmac_tr.pwr_clamp_ctrl_i = vif.pwr_clamp_ctrl_i;
+			gmac_tr.pwr_down_ctrl_i = vif.pwr_down_ctrl_i;
+			gmac_tr.pwr_isolate_i = vif.pwr_isolate_i;
+			gmac_tr.sbd_intr_o = vif.sbd_intr_o;
+			gmac_tr.sbd_pwr_down_ack_o = vif.sbd_pwr_down_ack_o;
+			gmac_tr.sbd_tx_clk_gating_ctrl_o = vif.sbd_tx_clk_gating_ctrl_o;
+			gmac_tr.sgmii_link_speed_o = vif.sgmii_link_speed_o;
 
 			// --- 4. 调用回调：pre_collect ---
 //			`uvm_do_callbacks(gmac_monitor, gmac_monitor_callback, pre_collect(this, gmac_tr))

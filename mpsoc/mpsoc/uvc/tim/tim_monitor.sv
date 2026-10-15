@@ -76,28 +76,20 @@ class tim_monitor extends uvm_monitor;
 	//=========================================================================
 		virtual task run_phase(uvm_phase phase);
 		tim_trans tr;
-		logic [2:0] prev_int, prev_pwm;
+		logic [3:0] prev_int;
 		`uvm_info(get_type_name(), "run_phase begin", UVM_MEDIUM)
-		prev_int = vif.tim_int;
-		prev_pwm = vif.tim_pwm;
+		prev_int = vif.timer_int;
 		forever begin
 			@(posedge vif.clk);
-			for (int c = 0; c < 3; c++) begin
-				if (vif.tim_int[c] && !prev_int[c]) begin
+			for (int c = 0; c < 4; c++) begin
+				if (vif.timer_int[c] && !prev_int[c]) begin
 					tr = tim_trans::type_id::create("tim_tr");
 					tr.channel = c; tr.intr_seen = 1;
-					tr.tim_int = vif.tim_int; tr.tim_pwm = vif.tim_pwm; tr.tim_in = vif.tim_in;
-					mon_analysis_port.write(tr);
-				end
-				if (vif.tim_pwm[c] !== prev_pwm[c]) begin
-					tr = tim_trans::type_id::create("tim_tr");
-					tr.channel = c; tr.intr_seen = 0;
-					tr.tim_int = vif.tim_int; tr.tim_pwm = vif.tim_pwm; tr.tim_in = vif.tim_in;
+					tr.timer_int = vif.timer_int;
 					mon_analysis_port.write(tr);
 				end
 			end
-			prev_int = vif.tim_int;
-			prev_pwm = vif.tim_pwm;
+			prev_int = vif.timer_int;
 		end
 	endtask : run_phase
 

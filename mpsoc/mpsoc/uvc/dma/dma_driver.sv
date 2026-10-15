@@ -61,8 +61,7 @@ class dma_driver extends uvm_driver#(dma_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-		vif.dma_req = 'd0;
+		// 复位阶段：dma 无 DUT 输入信号（AHB/握手均为输出），无需驱动
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 
@@ -114,7 +113,7 @@ class dma_driver extends uvm_driver#(dma_trans);
 		end
 	endfunction
 
-	// DMA 单次传输 req/ack 握手：req 拉高 -> 等 ack -> 撤 req -> 等 ack 拉低
+	// DMA 无外部输入引脚：传输配置经 AHB 从机寄存器（超出信号级 UVC 范围），driver 仅被动观察 dma_ack/dma_finish
 
 	//=========================================================================
 	// driver_one_pkt: 驱动单笔 transaction 到接口
@@ -127,27 +126,18 @@ class dma_driver extends uvm_driver#(dma_trans);
 	//     vif.valid = 1'b0;                             // 放下 valid
 	//=========================================================================
 		virtual task driver_one_pkt(dma_trans tr);
-		`uvm_info(get_type_name(), $sformatf("dma: ch=%0d 发起传输请求", tr.channel), UVM_HIGH)
+		`uvm_info(get_type_name(), $sformatf("dma: ch=%0d 观察 ack/finish 事件", tr.channel), UVM_HIGH)
 		tr.ack_seen = 0;
-		vif.dma_req[tr.channel] = 1'b1;
 		fork
 			begin
 				wait(vif.dma_ack[tr.channel] === 1'b1);
 				tr.ack_seen = 1;
 			end
 			begin
-				repeat(tr.handshake_delay) @(posedge vif.clk);
-			end
-		join_any
-		disable fork;
-		vif.dma_req[tr.channel] = 1'b0;          // 撤销请求
-		// 等待握手完成（ack 拉低）；带超时，浮空 vif 下也能退出
-		fork
-			begin
-				wait(vif.dma_ack[tr.channel] === 1'b0);
+				wait(vif.dma_finish[tr.channel] === 1'b1);
 			end
 			begin
-				repeat(tr.handshake_delay) @(posedge vif.clk);
+				repeat(1024) @(posedge vif.clk);
 			end
 		join_any
 		disable fork;

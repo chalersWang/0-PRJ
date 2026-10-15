@@ -34,18 +34,39 @@
 class spi_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic sclk;
-		rand logic mosi;
-		rand logic miso;
-		rand logic [3:0] ss_n;
-		rand logic ssi_intr;
+	// 系统与控制
+		rand logic        NRESET;
+		rand logic        CLK_PDI_EXT;
+		rand logic [31:0] CONFIG_REG;
+		rand logic [31:0] SPI_STATUS_REG;
+	// 中断系统
+		rand logic        IRQ_IN;
+		rand logic [31:0] INT_REQ;
+	// 存储器/数据接口
+		rand logic        READ_DATA_READY;
+		rand logic        MEM_READ_EN;
+		rand logic [15:0] RD_ADDR;
+		rand logic [15:0] WR_ADDR;
+		rand logic [31:0] MEM_DATA_OUT;
+		rand logic [31:0] MEM_DATA_IN;
+	// SPI 物理接口（DUT 为 SPI 从机）
+		rand logic        SPI_SEL;
+		rand logic        SPI_CLK;
+		rand logic        SPI_DI;
+		rand logic        SPI_DO;
+		rand logic        SPI_DO_EN;
+		rand logic        SPI_IRQ;
+		rand logic        SPI_IRQ_EN;
+	// 其他控制
+		rand logic        START_ADDR_PHASE;
+		rand logic        SOF_ADDR_STATE_CLK_PDI;
+		rand logic        EOF_SPI_TX;
 
-	// ===== 协议级字段（slave BFM：DUT 为主机驱动 sclk/mosi/ss_n） =====
-		rand int         channel;    // 片选 0..3
+	// ===== 协议级字段（driver 为主机，驱动 SPI_SEL/SPI_CLK/SPI_DI） =====
 		rand int         frame_size; // 每帧 bit 数（默认 8）
-		rand bit [31:0]  tx_data;    // slave 经 miso 发送
-		bit [31:0]       rx_data;    // slave 从 mosi 接收（观察）
-		constraint c_spi { channel inside {[0:3]}; frame_size inside {[1:32]}; }
+		rand bit [31:0]  tx_data;    // 主机经 SPI_DI 发送
+		bit [31:0]       rx_data;    // 主机从 SPI_DO 接收（观察）
+		constraint c_spi { frame_size inside {[1:32]}; }
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -54,12 +75,28 @@ class spi_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(spi_trans)
-		`uvm_field_int(sclk, UVM_ALL_ON)
-		`uvm_field_int(mosi, UVM_ALL_ON)
-		`uvm_field_int(miso, UVM_ALL_ON)
-		`uvm_field_int(ss_n, UVM_ALL_ON)
-		`uvm_field_int(ssi_intr, UVM_ALL_ON)
-		`uvm_field_int(channel, UVM_ALL_ON)
+		`uvm_field_int(NRESET, UVM_ALL_ON)
+		`uvm_field_int(CLK_PDI_EXT, UVM_ALL_ON)
+		`uvm_field_int(CONFIG_REG, UVM_ALL_ON)
+		`uvm_field_int(SPI_STATUS_REG, UVM_ALL_ON)
+		`uvm_field_int(IRQ_IN, UVM_ALL_ON)
+		`uvm_field_int(INT_REQ, UVM_ALL_ON)
+		`uvm_field_int(READ_DATA_READY, UVM_ALL_ON)
+		`uvm_field_int(MEM_READ_EN, UVM_ALL_ON)
+		`uvm_field_int(RD_ADDR, UVM_ALL_ON)
+		`uvm_field_int(WR_ADDR, UVM_ALL_ON)
+		`uvm_field_int(MEM_DATA_OUT, UVM_ALL_ON)
+		`uvm_field_int(MEM_DATA_IN, UVM_ALL_ON)
+		`uvm_field_int(SPI_SEL, UVM_ALL_ON)
+		`uvm_field_int(SPI_CLK, UVM_ALL_ON)
+		`uvm_field_int(SPI_DI, UVM_ALL_ON)
+		`uvm_field_int(SPI_DO, UVM_ALL_ON)
+		`uvm_field_int(SPI_DO_EN, UVM_ALL_ON)
+		`uvm_field_int(SPI_IRQ, UVM_ALL_ON)
+		`uvm_field_int(SPI_IRQ_EN, UVM_ALL_ON)
+		`uvm_field_int(START_ADDR_PHASE, UVM_ALL_ON)
+		`uvm_field_int(SOF_ADDR_STATE_CLK_PDI, UVM_ALL_ON)
+		`uvm_field_int(EOF_SPI_TX, UVM_ALL_ON)
 		`uvm_field_int(frame_size, UVM_ALL_ON)
 		`uvm_field_int(tx_data, UVM_ALL_ON)
 		`uvm_field_int(rx_data, UVM_ALL_ON)

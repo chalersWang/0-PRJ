@@ -1,8 +1,8 @@
 # CANFD Register Model 说明文档
 
-> 基于 AMD/Xilinx PG223 v3.0 CANFD Controller 寄存器手册生成  
+> 基于寄存器描述 v2.0（实际自定义设计）同步更新；PG223 v3.0 为基线  
 > 生成工具：MyUvmGen_v2.0_macos / gen_regmodel  
-> 生成时间：2026-06-18
+> 生成时间：2026-06-18（2026-10 同步 v2.0）
 
 ---
 
@@ -10,30 +10,42 @@
 
 | 文件 | 说明 | 行数 |
 |------|------|------|
-| `canfd_reg_block.sv` | UVM Register Block（27 个寄存器 + field 定义） | 1152 |
+| `canfd_reg_block.sv` | UVM Register Block（37 个寄存器 + field 定义） | — |
 | `canfd_reg_adapter.sv` | APB 总线适配器（reg2bus / bus2reg） | 39 |
 | `canfd_reg_sequence.sv` | 寄存器自测试 Sequence 库（4 个） | 185 |
 | `canphy_reg_adapter.sv` | CAN PHY 寄存器适配器（原有） | — |
 
 ---
 
-## 寄存器列表（27 个）
+## 寄存器列表（37 个，寄存器描述 v2.0）
 
-### 控制/状态寄存器 (0x0000-0x0028)
+> ⚠️ v2.0 相对 PG223 v3.0 的差异：IER 拆为 IER0/IER1/IER2（0x20/0x24/0x28）；ICR 移位 0x24→0x2C；TSR 移位 0x28→0x34 并新增 DIV_CLK_RATIO[15:8]；MSR 增 RX_MODE[16]；ESR 增 ECCERR[19:12]；新增 IMCR/TS32/TXTS/RXTS/ECC0~ECC3/IERBF1。完整位域见 `CANFD_寄存器.md`。
+
+### 控制/状态寄存器 (0x0000-0x0050)
 
 | 地址 | 寄存器 | 宽度 | 访问 | 说明 |
 |------|--------|------|------|------|
 | 0x0000 | **SRR** | 32 | RW | Software Reset Register — CEN/SRST |
-| 0x0004 | **MSR** | 32 | RW | Mode Select Register — SNOOP/LBACK/SLEEP/ABR/SBR/DPEE/DAR/BRSD/ITO |
+| 0x0004 | **MSR** | 32 | RW | Mode Select — RX_MODE[16]/ITO/ABR/SBR/DPEE/DAR/BRSD/SNOOP/LBACK/SLEEP |
 | 0x0008 | **BRPR** | 32 | RW | Arbitration Phase Baud Rate Prescaler — BRP[7:0] |
 | 0x000C | **BTR** | 32 | RW | Arbitration Phase Bit Timing — SJW/TS2/TS1 |
 | 0x0010 | **ECR** | 32 | RO | Error Counter Register — REC[15:8]/TEC[7:0] |
-| 0x0014 | **ESR** | 32 | RW(W1C) | Error Status Register — 各类错误标志位 |
+| 0x0014 | **ESR** | 32 | W1C | Error Status Register — ECCERR[19:12]/F_BERR/F_STER/F_FMER/F_CRCER/ACKER/BERR/STER/FMER/CRCER |
 | 0x0018 | **SR** | 32 | RO | Status Register — 模式/状态指示 |
 | 0x001C | **ISR** | 32 | RO | Interrupt Status Register — 中断状态位 |
-| 0x0020 | **IER** | 32 | RW | Interrupt Enable Register — 中断使能 |
-| 0x0024 | **ICR** | 32 | WO | Interrupt Clear Register — 中断清除 |
-| 0x0028 | **TSR** | 32 | RW | Timestamp Register — 时间戳计数器 |
+| 0x0020 | **IER0** | 32 | RW | Interrupt Enable 0 — 与 ISR 一一对应的使能位（E 前缀） |
+| 0x0024 | **IER1** | 32 | RW | Interrupt Enable 1 — ⚠️ 位域待设计确认（32 位占位字段） |
+| 0x0028 | **IER2** | 32 | RW | Interrupt Enable 2 — ⚠️ 位域待设计确认（32 位占位字段） |
+| 0x002C | **ICR** | 32 | WO | Interrupt Clear Register — 中断清除（v2.0 移位） |
+| 0x0030 | **IMCR** | 32 | RW | Interrupt Mode Config — PULSE_INTERVAL/PULSE_WIDTH/POLARITY/MODE |
+| 0x0034 | **TSR** | 32 | RW | Timestamp Register — TIMESTAMP_CNT[31:16]/DIV_CLK_RATIO[15:8]/CTS（v2.0 移位） |
+| 0x0038 | **TS32** | 32 | RO | 32 位自由运行时间戳计数器（v2.0 新增） |
+| 0x003C | **TXTS** | 32 | RO | 最近发送 SOF 时间戳捕获（v2.0 新增） |
+| 0x0040 | **RXTS** | 32 | RO | 最近接收 SOF 时间戳捕获（v2.0 新增） |
+| 0x0044 | **ECC0** | 32 | RW | ECC 解码使能 + 校验位错误注入（v2.0 新增） |
+| 0x0048 | **ECC1** | 32 | RW | TX RAM 数据错误注入 DATA_ERR_INJ_TXH（v2.0 新增） |
+| 0x004C | **ECC2** | 32 | RW | RX RAM 数据错误注入 DATA_ERR_INJ_RXH（v2.0 新增） |
+| 0x0050 | **ECC3** | 32 | RW | 内核路径 RX RAM 数据错误注入 DATA_ERR_INJ_RXC（v2.0 新增） |
 
 ### 数据相位寄存器 (0x0088-0x008C)
 
@@ -66,7 +78,7 @@
 | 0x00B4 | **RCS1** | 32 | RW | RX Buffer Control Status 1 |
 | 0x00B8 | **RCS2** | 32 | RW | RX Buffer Control Status 2 |
 | 0x00C0 | **IERBF0** | 32 | RW | Interrupt Enable RX Buffer Full 0 |
-| 0x00C4 | **IEBRF1** | 32 | RW | Interrupt Enable RX Buffer Full 1 |
+| 0x00C4 | **IERBF1** | 32 | RW | Interrupt Enable RX Buffer Full 1 — ERBF47~32（v2.0 新增） |
 
 ### RX FIFO/滤波器 (0x00E0-0x00EC)
 

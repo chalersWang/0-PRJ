@@ -61,10 +61,28 @@ class gmac_driver extends uvm_driver#(gmac_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-		vif.gmac_rgmii_rxc = 'd0;
-		vif.gmac_rgmii_rxd = 'd0;
-		vif.gmac_rgmii_rx_ctl = 'd0;
+		// 复位阶段：驱动 DUT 输入为复位值（输出由 DUT 驱动）
+		vif.RGMII_RXC_i = 'd0;
+		vif.RGMII_TXC_i = 'd0;
+		vif.gephy_ifsel = 'd0;
+		vif.gmac_ack = 'd0;
+		vif.gmac_areset_n = 'd0;
+		vif.gmac_clk = 'd0;
+		vif.gmac_pclk = 'd0;
+		vif.gmac_preset_n = 'd0;
+		vif.gmac_reset_n = 'd0;
+		vif.gmii_mdi_i = 'd0;
+		vif.phy_col_i = 'd0;
+		vif.phy_crs_i = 'd0;
+		vif.phy_intr_i = 'd0;
+		vif.phy_rxd_i = 'd0;
+		vif.phy_rxdv_i = 'd0;
+		vif.phy_rxer_i = 'd0;
+		vif.ptp_aux_ts_trig_i = 'd0;
+		vif.ptp_timestamp_i = 'd0;
+		vif.pwr_clamp_ctrl_i = 'd0;
+		vif.pwr_down_ctrl_i = 'd0;
+		vif.pwr_isolate_i = 'd0;
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 
