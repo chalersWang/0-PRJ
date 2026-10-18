@@ -19,8 +19,10 @@
 
 class mem_001_sram_rw_test extends mpsoc_base_test;
 
-    string inst_pat = "mem_001_sram_rw/inst.pat";
-    string data_pat = "mem_001_sram_rw/data.pat";
+    string inst_pat0 = "mem_001_sram_rw/kcore0/inst.pat";
+    string data_pat0 = "mem_001_sram_rw/kcore0/data.pat";
+    string inst_pat1 = "mem_001_sram_rw/kcore1/inst.pat";
+    string data_pat1 = "mem_001_sram_rw/kcore1/data.pat";
 
     `uvm_component_utils(mem_001_sram_rw_test)
 
