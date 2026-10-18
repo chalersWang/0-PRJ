@@ -90,7 +90,7 @@ class mpsoc_base_test extends uvm_test;
 	localparam bit [31:0] KCORE1_IRAM_BASE = 32'h20000000;
 	localparam bit [31:0] KCORE1_DRAM_BASE = 32'h30000000;
 
-	// 内存层次路径（见 sva/VifMacroDefine.v, iram/dram 各 16KB: mem_array[4095:0][31:0]）
+	// 内存层次路径（见 addrmap/hierarchy.v, iram/dram 各 16KB: mem_array[4095:0][31:0]）
 	string kcore0_iram_hier = "tb_top.DUT.x_cpu_sub_system_ahb.x_iahb_mem_ctrl.mem_x256y16d32_inst.mem_array";
 	string kcore0_dram_hier = "tb_top.DUT.x_cpu_sub_system_ahb.x_dahb_mem_ctrl.mem_x256y16d32_inst.mem_array";
 	string kcore1_iram_hier = "tb_top.DUT.x_cpu_sub_system_ahb_c1.x_iahb_mem_ctrl.mem_x256y16d32_inst.mem_array";

@@ -21,7 +21,7 @@
 +incdir+${VERIFY_HOME}/testcase        
 +incdir+${VERIFY_HOME}/testcase/sequence_lib
 
-${VERIFY_HOME}/sva/VifMacroDefine.v                  
+${VERIFY_HOME}/addrmap/hierarchy.v                  
 
 //add the .svh of env/uvc/testcase     
 ${VERIFY_HOME}/uvc/sysctrl/sysctrl_vif.sv    

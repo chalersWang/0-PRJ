@@ -33,7 +33,9 @@
 +incdir+${VERIFY_HOME}/testcase/sequence_lib
 +incdir+${VERIFY_HOME}/testcase/register
 
-${VERIFY_HOME}/sva/VifMacroDefine.v                  
+${VCS_HOME}/etc/uvm-1.2/uvm_pkg.sv
+
+${VERIFY_HOME}/addrmap/hierarchy.v                  
 
 //add the .svh of env/uvc/testcase     
 ${VERIFY_HOME}/uvc/sysctrl/sysctrl_vif.sv    
@@ -93,6 +95,7 @@ ${VERIFY_HOME}/uvc/esc/esc_UvcTop.svh
 ${VERIFY_HOME}/uvc/gmac/gmac_vif.sv
 ${VERIFY_HOME}/uvc/gmac/gmac_UvcTop.svh
 
+${VERIFY_HOME}/sva/ahb_master_if.sv  
 //add the virtual interface            
 ${VERIFY_HOME}/sva/mpsoc_vif.sv           
                                        
