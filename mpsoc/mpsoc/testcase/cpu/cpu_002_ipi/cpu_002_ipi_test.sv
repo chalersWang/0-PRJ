@@ -19,8 +19,10 @@
 
 class cpu_002_ipi_test extends mpsoc_base_test;
 
-    string inst_pat = "cpu_002_ipi/inst.pat";
-    string data_pat = "cpu_002_ipi/data.pat";
+    string inst_pat0 = "cpu_002_ipi/kcore0/inst.pat";
+    string data_pat0 = "cpu_002_ipi/kcore0/data.pat";
+    string inst_pat1 = "cpu_002_ipi/kcore1/inst.pat";
+    string data_pat1 = "cpu_002_ipi/kcore1/data.pat";
 
     `uvm_component_utils(cpu_002_ipi_test)
 

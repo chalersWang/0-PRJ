@@ -19,8 +19,10 @@ class memset_test extends mpsoc_base_test;
     `uvm_component_utils(memset_test)
 
     // 同目录生成的 memory 初始化文件（供加载）
-    string inst_pat = "memset/inst.pat";
-    string data_pat = "memset/data.pat";
+    string inst_pat0 = "memset/kcore0/inst.pat";
+    string data_pat0 = "memset/kcore0/data.pat";
+    string inst_pat1 = "memset/kcore1/inst.pat";
+    string data_pat1 = "memset/kcore1/data.pat";
 
     function new(string name = "memset_test", uvm_component parent = null);
         super.new(name, parent);

@@ -19,8 +19,10 @@ class memcp_test extends mpsoc_base_test;
     `uvm_component_utils(memcp_test)
 
     // 同目录生成的 memory 初始化文件（供加载）
-    string inst_pat = "memcp/inst.pat";
-    string data_pat = "memcp/data.pat";
+    string inst_pat0 = "memcp/kcore0/inst.pat";
+    string data_pat0 = "memcp/kcore0/data.pat";
+    string inst_pat1 = "memcp/kcore1/inst.pat";
+    string data_pat1 = "memcp/kcore1/data.pat";
 
     function new(string name = "memcp_test", uvm_component parent = null);
         super.new(name, parent);

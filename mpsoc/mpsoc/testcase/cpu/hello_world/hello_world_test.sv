@@ -19,8 +19,10 @@ class hello_world_test extends mpsoc_base_test;
     `uvm_component_utils(hello_world_test)
 
     // 同目录生成的 memory 初始化文件（供加载）
-    string inst_pat = "hello_world/inst.pat";
-    string data_pat = "hello_world/data.pat";
+    string inst_pat0 = "hello_world/kcore0/inst.pat";
+    string data_pat0 = "hello_world/kcore0/data.pat";
+    string inst_pat1 = "hello_world/kcore1/inst.pat";
+    string data_pat1 = "hello_world/kcore1/data.pat";
 
     function new(string name = "hello_world_test", uvm_component parent = null);
         super.new(name, parent);

@@ -19,8 +19,10 @@
 
 class cpu_006_ahb_concurrent_test extends mpsoc_base_test;
 
-    string inst_pat = "cpu_006_ahb_concurrent/inst.pat";
-    string data_pat = "cpu_006_ahb_concurrent/data.pat";
+    string inst_pat0 = "cpu_006_ahb_concurrent/kcore0/inst.pat";
+    string data_pat0 = "cpu_006_ahb_concurrent/kcore0/data.pat";
+    string inst_pat1 = "cpu_006_ahb_concurrent/kcore1/inst.pat";
+    string data_pat1 = "cpu_006_ahb_concurrent/kcore1/data.pat";
 
     `uvm_component_utils(cpu_006_ahb_concurrent_test)
 

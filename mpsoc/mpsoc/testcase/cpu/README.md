@@ -12,14 +12,14 @@ testcase/
 │   └── bin/Srec2vmem               #   srec→pat 转换器
 └── cpu/                            # CPU 软件测试，每个用例一个子目录
     ├── hello_world/
-    │   ├── hello_world_main.c      # C 程序（来自 T-head-Semi/opene906）
     │   ├── hello_world_test.sv     # 配套 SV case（UVM test，待 RTL 接入）
     │   ├── Makefile                # 编译脚本（include 共享规则）
-    │   └── 编译后生成：
-    │       hello_world.elf         # ELF 可执行
-    │       hello_world.bin         # 裸二进制（objcopy -O binary）
-    │       inst.pat / data.pat     # 指令/数据 memory pattern（RTL $readmemh）
-    │       hello_world.obj / .hex  # 反汇编 / srec 中间产物
+    │   ├── kcore0/                 # CPU0 镜像
+    │   │   ├── hello_world_main.c  # C 程序（CPU0 版）
+    │   │   └── 编译后生成：.elf/.bin/inst.pat/data.pat/.obj/.hex
+    │   └── kcore1/                 # CPU1 镜像（同构）
+    │       ├── hello_world_main.c  # C 程序（CPU1 版）
+    │       └── 编译后生成：.elf/.bin/inst.pat/data.pat/.obj/.hex
     ├── memcp/                      # 内存拷贝（memcpy + cycles 统计）
     └── memset/                     # 内存置位（memset + cycles 统计）
 ```
@@ -32,24 +32,26 @@ testcase/
 1. 配置工具链路径（在 **Linux 服务器** 上，交叉编译器为 T-Head `riscv64-unknown-elf-*`）：
 
    ```bash
-   source testcase/sw/setup/setup_env.sh                  # 默认 /tools/riscv/riscv64-elf-x86_64/bin
+   source testcase/sw/setup/setup_env.sh                  # 默认 /home/edatools/Xuantie/gcc/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.2/bin
    # 或指定路径：
    source testcase/sw/setup/setup_env.sh /path/to/toolchain/bin
    ```
 
    （`SourceMe` 已自动 source 该脚本。）
 
-2. 编译用例（在用例目录就地生成产物）：
+2. 编译用例（双核独立编译，产物按核目录生成）：
 
    ```bash
-   make -C testcase/cpu/hello_world CPU_ARCH_FLAG_0=e906f
-   make -C testcase/cpu/memcp      CPU_ARCH_FLAG_0=e906f
-   make -C testcase/cpu/memset     CPU_ARCH_FLAG_0=e906f
+   make -C testcase/cpu/hello_world CPU_ARCH_FLAG_0=e906f          # 默认=编译 kcore0+kcore1
+   make -C testcase/cpu/hello_world CPU_ARCH_FLAG_0=e906f kcore0   # 仅编译 CPU0
+   make -C testcase/cpu/hello_world CPU_ARCH_FLAG_0=e906f kcore1   # 仅编译 CPU1
    ```
 
+   - 编译目标：`make`（=kcore，双核）/ `make kcore0` / `make kcore1`
+   - 产物位置：`kcore0/` 与 `kcore1/` 各自目录（.o/.elf/.hex/.pat/.bin）
    - `CPU_ARCH_FLAG_0`：`e906`（rv32imac）/ `e906f`（rv32imafc，默认）/ `e906d`（rv32imafdc）
    - `CPU_ARCH_FLAG_1`：`nodsp`（默认）/ `dsp`（加 `pzp64` DSP 扩展）
-   - 清理：`make -C testcase/cpu/hello_world clean`
+   - 清理：`make -C testcase/cpu/hello_world clean`（清理两个核目录）
 
 ## 编译产物链路
 
@@ -61,13 +63,14 @@ testcase/
 
 ## 新增用例
 
-复制任一套目录为模板，改三处即可：
+复制任一套目录为模板，改四处即可：
 
 ```bash
 cp -r testcase/cpu/hello_world testcase/cpu/<new_case>
-# 1) 放入你的 C 程序（替换 hello_world_main.c）
+# 1) 放入你的 C 程序（分别替换 kcore0/ 和 kcore1/ 下的 .c）
 # 2) 改 Makefile 的 FILE = <new_case>
 # 3) 把 hello_world_test.sv 改名并改写类名为 <new_case>_test
+# 4) SV test 中 inst_pat0/data_pat0/inst_pat1/data_pat1 路径改为 <new_case>/kcore*/
 ```
 
 ## SV case 接入 UVM（待 RTL 就绪）
