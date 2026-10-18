@@ -18,7 +18,7 @@
 #   source sw/setup/setup_env.sh                    # 使用默认路径
 #   source sw/setup/setup_env.sh /path/to/bin       # 指定工具链 bin 目录
 
-TOOL_EXTENSION_DEFAULT=/tools/riscv/riscv64-elf-x86_64/bin
+TOOL_EXTENSION_DEFAULT=/home/edatools/Xuantie/gcc/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.2/bin
 
 if [ -n "$1" ]; then
     TOOL_EXTENSION="$1"

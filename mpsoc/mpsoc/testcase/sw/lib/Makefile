@@ -22,14 +22,14 @@
 #   CPU_ARCH_FLAG_0 ?= e906f                    # e906 / e906f / e906d
 #   CPU_ARCH_FLAG_1 ?= nodsp                    # nodsp / dsp
 #   SW_LIB           = ../../sw/lib             # 本文件所在目录（相对 case 目录）
-#   TOOL_EXTENSION  ?= /tools/riscv/riscv64-elf-x86_64/bin
+#   TOOL_EXTENSION  ?= /home/edatools/Xuantie/gcc/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.2/bin
 
 # 显式指定默认目标:否则 make 无参数时会默认构建第一个显式目标 ${FILE}.elf,
 # 而不会走 all 的完整链(elf→hex→pat→obj→bin)
 .DEFAULT_GOAL := all
 
 # ---- 交叉工具链 ----
-TOOL_EXTENSION ?= /tools/riscv/riscv64-elf-x86_64/bin
+TOOL_EXTENSION ?= /home/edatools/Xuantie/gcc/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.2/bin
 CC       = $(TOOL_EXTENSION)/riscv64-unknown-elf-gcc
 AS       = $(TOOL_EXTENSION)/riscv64-unknown-elf-as
 LINK     = $(TOOL_EXTENSION)/riscv64-unknown-elf-ld
