@@ -12,12 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+/* 双核链接脚本：IRAM/DRAM 基址由 --defsym 按核传入。
+ *  kcore0 : __iram_base=0x00000000, __dram_base=0x10000000
+ *  kcore1 : __iram_base=0x20000000, __dram_base=0x30000000
+ *  Makefile 通过 -Wl,--defsym=__iram_base=... -Wl,--defsym=__dram_base=... 覆盖。
+ */
 MEMORY
 {
-MEM1(RWX)  : ORIGIN = 0x00000000,  LENGTH = 0x40000
-MEM2(RWX)  : ORIGIN = 0x20000000,  LENGTH = 0xc0000
+IRAM(RWX)  : ORIGIN = __iram_base,  LENGTH = 0x40000
+DRAM(RWX)  : ORIGIN = __dram_base,  LENGTH = 0xc0000
 }
-__kernel_stack = 0x200bfff8 ;
+__kernel_stack = __dram_base + 0xbfff8 ;
 
 ENTRY(__start)
 
@@ -27,13 +33,13 @@ SECTIONS {
         crt0.o (.text)
         *(.text*)
         . = ALIGN(0x10);
-    } >MEM1
+    } >IRAM
     .rodata :
     {
       *(.rodata*)
           . = ALIGN(0x4);
         __erodata = .;
-    } > MEM1
+    } > IRAM
     .data :
     {
       . = ALIGN(0x4);
@@ -42,7 +48,7 @@ SECTIONS {
         *(.eh_frame*)
           . = ALIGN(0x4);
         __data_end__ = .;
-    } >MEM2 AT > MEM1
+    } >DRAM AT > IRAM
     .bss :
     {
       . = ALIGN(0x4);
@@ -51,5 +57,5 @@ SECTIONS {
          . = ALIGN(0x4);
         __bss_end__ = .;
           *.(COMMON)
-    } >MEM2
+    } >DRAM
 }

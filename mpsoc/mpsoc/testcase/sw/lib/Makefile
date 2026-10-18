@@ -44,6 +44,20 @@ else
   OBJ_PREFIX :=
 endif
 
+# ---- 双核内存基址 (kcore0/kcore1, 经 --defsym 传入 linker.lcf) ----
+ifeq ($(CORE), kcore0)
+  IRAM_BASE = 0x0
+  DRAM_BASE = 0x10000000
+else ifeq ($(CORE), kcore1)
+  IRAM_BASE = 0x20000000
+  DRAM_BASE = 0x30000000
+else
+  IRAM_BASE = 0x0
+  DRAM_BASE = 0x20000000
+endif
+
+DEFSYM_FLAGS = -Wl,--defsym=__iram_base=$(IRAM_BASE) -Wl,--defsym=__dram_base=$(DRAM_BASE)
+
 # ---- 交叉工具链 ----
 TOOL_EXTENSION ?= /home/edatools/Xuantie/gcc/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.2/bin
 CC       = $(TOOL_EXTENSION)/riscv64-unknown-elf-gcc
@@ -103,7 +117,7 @@ else
 endif
 
 CFLAGS     = ${FLAG_MARCH} ${FLAG_ABI} -O2
-LINKFLAGS  = -T$(SW_LIB)/linker.lcf -nostartfiles ${FLAG_MARCH} ${FLAG_ABI}
+LINKFLAGS  = -T$(SW_LIB)/linker.lcf -nostartfiles ${DEFSYM_FLAGS} ${FLAG_MARCH} ${FLAG_ABI}
 LINKLIBS   = -lc -lgcc
 OBJDUMPFLAGS = -S -Mnumeric
 HEXFLAGS   = -O srec
