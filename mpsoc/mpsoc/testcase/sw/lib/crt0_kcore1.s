@@ -17,6 +17,9 @@ limitations under the License.
 .global	__start
 __start:
 
+  csrr a0, mhartid          # 读核 ID (0=CPU0, 1=CPU1)
+  la   t0, __core_id
+  sw   a0, 0(t0)            # 存到全局 __core_id, 供 C 代码区分核
 
 #enable btb & bht
 #  csrr x3, mhcr
@@ -175,4 +178,6 @@ __dummy:
   j __fail
   
   .data
+  .global __core_id
+__core_id:
   .long 0

@@ -8,7 +8,7 @@
 testcase/
 ├── sw/                             # 共享编译环境（工具链配置 + C库 + 编译规则 + 转换器）
 │   ├── setup/                      #   TOOL_EXTENSION 工具链配置（setup_env.sh）
-│   ├── lib/                        #   Makefile 编译规则 + linker.lcf + crt0.s + clib
+│   ├── lib/                        #   Makefile 编译规则 + linker_kcore*.lcf + crt0_kcore*.s + clib
 │   └── bin/Srec2vmem               #   srec→pat 转换器
 └── cpu/                            # CPU 软件测试，每个用例一个子目录
     ├── hello_world/
@@ -25,7 +25,7 @@ testcase/
 ```
 
 共享编译环境在 `testcase/sw/`：`lib/Makefile` 编译规则、`lib/clib` 最小C库、
-`lib/crt0.s` 启动代码、`lib/linker.lcf` 链接脚本、`bin/Srec2vmem` 转换器。
+`lib/crt0_kcore0.s` / `lib/crt0_kcore1.s` 启动代码、`lib/linker_kcore0.lcf` / `lib/linker_kcore1.lcf` 链接脚本、`bin/Srec2vmem` 转换器。
 
 ## 编译
 
@@ -56,7 +56,7 @@ testcase/
 ## 编译产物链路
 
 ```
-.c/.s ──gcc -c──▶ .o ──gcc -Tlinker.lcf -nostartfiles──▶ .elf
+.c/.s ──gcc -c──▶ .o ──gcc -Tlinker_kcore*.lcf -nostartfiles──▶ .elf
 .elf ──objcopy -O srec──▶ _inst.hex / _data.hex ──Srec2vmem──▶ inst.pat / data.pat
 .elf ──objcopy -O binary──▶ <name>.bin
 ```
