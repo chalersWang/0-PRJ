@@ -1,0 +1,26 @@
+// testcase/per 三级目录 +incdir
++incdir+${VERIFY_HOME}/testcase/per/per_001_gpio_io
++incdir+${VERIFY_HOME}/testcase/per/per_002_gpio_intr
++incdir+${VERIFY_HOME}/testcase/per/per_003_uart_loopback
++incdir+${VERIFY_HOME}/testcase/per/per_004_uart_flow_dma
++incdir+${VERIFY_HOME}/testcase/per/per_005_i2c_comm
++incdir+${VERIFY_HOME}/testcase/per/per_006_spi_master
++incdir+${VERIFY_HOME}/testcase/per/per_007_spi_slave
++incdir+${VERIFY_HOME}/testcase/per/per_008_tim_pwm
++incdir+${VERIFY_HOME}/testcase/per/per_009_wdt_timeout
++incdir+${VERIFY_HOME}/testcase/per/per_010_uc_slave
++incdir+${VERIFY_HOME}/testcase/per/per_011_gpio_debounce
++incdir+${VERIFY_HOME}/testcase/per/per_012_gpio_edge_intr
++incdir+${VERIFY_HOME}/testcase/per/per_013_gpio_port_sync
++incdir+${VERIFY_HOME}/testcase/per/per_014_uart_fractional_baud
++incdir+${VERIFY_HOME}/testcase/per/per_015_uart_16550_fifo
++incdir+${VERIFY_HOME}/testcase/per/per_016_uart_irda_rs485
++incdir+${VERIFY_HOME}/testcase/per/per_017_uart_loopback_shadow
++incdir+${VERIFY_HOME}/testcase/per/per_018_i2c_7_10bit
++incdir+${VERIFY_HOME}/testcase/per/per_019_i2c_hs_sync
++incdir+${VERIFY_HOME}/testcase/per/per_020_i2c_smbus
++incdir+${VERIFY_HOME}/testcase/per/per_021_i2c_bus_clear
++incdir+${VERIFY_HOME}/testcase/per/per_022_spi_dual_quad_ddr
++incdir+${VERIFY_HOME}/testcase/per/per_023_spi_microwire
++incdir+${VERIFY_HOME}/testcase/per/per_024_tim_count_mode
++incdir+${VERIFY_HOME}/testcase/per/per_025_wdt_prot_level

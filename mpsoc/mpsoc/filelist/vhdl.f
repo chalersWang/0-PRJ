@@ -1,0 +1,3 @@
+-f ${VERIFY_HOME}/../../filelist/ethercat/flist_vhdl.f
+-f ${VERIFY_HOME}/../../filelist/ext2apb/flist_vhdl.f
+-f ${VERIFY_HOME}/../../filelist/pn_switch/flist_vhdl.f
