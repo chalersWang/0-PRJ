@@ -30,6 +30,9 @@ interface mpsoc_vif(input clk,input rstn);
 //	`endif
 //
 
+	ahb_master_if ahb_m_vif(clk,rstn);
+	ahb_master_if ahb_m_vif_c1(clk,rstn);
+
 endinterface
 
 `endif

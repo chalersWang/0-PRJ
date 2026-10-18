@@ -105,7 +105,7 @@ class i2c_monitor extends uvm_monitor;
 	//=========================================================================
 		virtual task run_phase(uvm_phase phase);
 		i2c_trans tr;
-		bit [7:0] byte;
+		bit [7:0] byte_val;
 		bit ack;
 		bit stop_detected;
 		`uvm_info(get_type_name(), "run_phase begin", UVM_MEDIUM)
@@ -114,9 +114,9 @@ class i2c_monitor extends uvm_monitor;
 			mon_wait_start();
 			tr = i2c_trans::type_id::create("i2c_tr");
 			// 2. 地址字节（7-bit addr + R/W）
-			mon_sample_byte(byte);
-			tr.addr = byte[7:1];
-			tr.rnw  = byte[0];
+			mon_sample_byte(byte_val);
+			tr.addr = byte_val[7:1];
+			tr.rnw  = byte_val[0];
 			mon_sample_ack(ack);
 			// 3. 数据字节，直到 STOP（简化：不支持 repeated-START / 时钟拉伸）
 			tr.data = new[0];
@@ -124,10 +124,10 @@ class i2c_monitor extends uvm_monitor;
 			while (!stop_detected) begin
 				fork
 					begin
-						mon_sample_byte(byte);
+						mon_sample_byte(byte_val);
 						mon_sample_ack(ack);
 						tr.data = new[tr.data.size()+1](tr.data);
-						tr.data[tr.data.size()-1] = byte;
+						tr.data[tr.data.size()-1] = byte_val;
 					end
 					begin
 						mon_wait_stop();

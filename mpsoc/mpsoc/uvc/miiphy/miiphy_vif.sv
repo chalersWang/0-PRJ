@@ -8,8 +8,8 @@
 //=========================================================================
 interface miiphy_vif(input logic clk, input logic rstn);
 
-	// ===== DUT 信号声明（logic 类型） =====
-	logic [3:0] phy_rxd_i;
+	// ===== DUT 信号声明（logic 类型；phy_rxd_i 因 DUT 端口为 inout 需用 wire/net） =====
+	wire [3:0] phy_rxd_i;
 	logic phy_rxdv_i;
 	logic phy_rxer_i;
 	logic [3:0] phy_txd_o;

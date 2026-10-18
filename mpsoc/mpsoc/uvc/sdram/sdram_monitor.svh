@@ -35,11 +35,11 @@ class sdram_monitor extends uvm_monitor;
     ap = new("ap", this);
   endfunction
 
-  function void reset_phase(uvm_phase phase);
+  task reset_phase(uvm_phase phase);
     super.reset_phase(phase);
     collecting = 0;
     pend = null;
-  endfunction
+  endtask
 
   task run_phase(uvm_phase phase);
     forever begin

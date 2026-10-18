@@ -66,8 +66,8 @@ wire  i_efuse_cs;
 wire  i_efuse_wr;
 
 mpsoc DUT(
-.i_pad_clk			(TopVif.sysctrlvif.i_pad_clk			),
-.i_pad_rst_b			(TopVif.sysctrlvif.i_pad_rst_b			),
+.i_pad_clk            (/*TopVif.sysctrlvif.*/i_pad_clk            ),
+.i_pad_rst_n          (/*TopVif.sysctrlvif.*/i_pad_rst_b          ),
 .i_pad_boot_mode			(TopVif.sysctrlvif.i_pad_boot_mode			),
 .i_pad_host_if_mode			(TopVif.sysctrlvif.i_pad_host_if_mode			),
 .i_pad_bypass_secure			(TopVif.sysctrlvif.i_pad_bypass_secure			),
@@ -84,9 +84,9 @@ mpsoc DUT(
 .b_pad_gpio_porta			(TopVif.gpiovif.b_pad_gpio_porta			),
 .b_pad_gpio_portb			(TopVif.gpiovif.b_pad_gpio_portb			),
 .QSPI_CS0N_o			(TopVif.qspivif.QSPI_CS0N_o			),
-.QSPI_CS1N_o			(TopVif.qspivif.QSPI_CS1N_o			),
-.QSPI_CS2N_o			(TopVif.qspivif.QSPI_CS2N_o			),
-.QSPI_CS3N_o			(TopVif.qspivif.QSPI_CS3N_o			),
+//.QSPI_CS1N_o			(TopVif.qspivif.QSPI_CS1N_o			),
+//.QSPI_CS2N_o			(TopVif.qspivif.QSPI_CS2N_o			),
+//.QSPI_CS3N_o			(TopVif.qspivif.QSPI_CS3N_o			),
 .QSPI_DAT0			(TopVif.qspivif.QSPI_DAT0			),
 .QSPI_DAT1			(TopVif.qspivif.QSPI_DAT1			),
 .QSPI_DAT2			(TopVif.qspivif.QSPI_DAT2			),

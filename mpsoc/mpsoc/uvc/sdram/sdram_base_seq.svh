@@ -77,6 +77,10 @@ class sdram_act_read_seq extends uvm_sequence #(sdram_seq_item);
 
   `uvm_object_utils(sdram_act_read_seq)
 
+  function new(string name = "sdram_act_read_seq");
+    super.new(name);
+  endfunction
+
   rand bit [BANK_ADDR_WIDTH-1:0] bank;
   rand bit [ROW_ADDR_WIDTH-1:0]  row;
   rand bit [COL_ADDR_WIDTH-1:0]  col;
@@ -126,6 +130,10 @@ endclass
 class sdram_act_write_seq extends uvm_sequence #(sdram_seq_item);
 
   `uvm_object_utils(sdram_act_write_seq)
+
+  function new(string name = "sdram_act_write_seq");
+    super.new(name);
+  endfunction
 
   rand bit [BANK_ADDR_WIDTH-1:0] bank;
   rand bit [ROW_ADDR_WIDTH-1:0]  row;
@@ -178,6 +186,10 @@ class sdram_refresh_seq extends uvm_sequence #(sdram_seq_item);
 
   `uvm_object_utils(sdram_refresh_seq)
 
+  function new(string name = "sdram_refresh_seq");
+    super.new(name);
+  endfunction
+
   rand int n;
   rand int gap;
   constraint c_n    { n inside {[1:16]}; }
@@ -202,6 +214,10 @@ endclass
 class sdram_sr_seq extends uvm_sequence #(sdram_seq_item);
 
   `uvm_object_utils(sdram_sr_seq)
+
+  function new(string name = "sdram_sr_seq");
+    super.new(name);
+  endfunction
 
   rand int hold;   // 自刷新保持的 NOP 拍数
   constraint c_hold { hold inside {[1:64]}; }
