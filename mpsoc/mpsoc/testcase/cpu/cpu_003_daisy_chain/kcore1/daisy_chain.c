@@ -1,7 +1,8 @@
-/* TST-CPU-004 私有 TCM 读写
+/* 双核镜像: kcore1 (CPU1) */
+/* TST-CPU-003 菊花链级联通信
  * 来源: 依据飞书验证测试列表生成(参考 T-head-Semi/opene906 风格)
- * CPU0/CPU1 各自对 IRAM(16K)/DRAM(16K) 全地址执行棋盘/March 模式读写
- * 预期: 读写数据一致,边界地址无越界,无总线错误
+ * 按菊花链拓扑在 CPU0/CPU1 间下发任务、回收状态
+ * 预期: 数据按链序正确传递,不丢包、不错位、不乱序
  */
 #include "minilibc_stdio.h"
 
@@ -11,24 +12,24 @@
 #define PASS_MARK   0x5A5A5A5A
 #define FAIL_MARK   0xA5A5A5A5
 
-/* TODO: 实现 tcm_march 核心算法。
+/* TODO: 实现 daisy_chain 核心算法。
  * 本骨架仅占位,供 E906 工具链编译;实际测试逻辑待 RTL/软件联调时补充。
  */
-static int tcm_march(void)
+static int daisy_chain(void)
 {
     return 0;   /* 0 = PASS */
 }
 
 int main(void)
 {
-    printf("=== TST-CPU-004 私有 TCM 读写 ===\n");
-    int ret = tcm_march();
+    printf("=== TST-CPU-003 菊花链级联通信 ===\n");
+    int ret = daisy_chain();
     if (ret == 0) {
         *(volatile unsigned int *)PASS_ADDR = PASS_MARK;
-        printf("TST-CPU-004 PASS\n");
+        printf("TST-CPU-003 PASS\n");
     } else {
         *(volatile unsigned int *)FAIL_ADDR = FAIL_MARK;
-        printf("TST-CPU-004 FAIL\n");
+        printf("TST-CPU-003 FAIL\n");
     }
     while (1) { }
     return 0;

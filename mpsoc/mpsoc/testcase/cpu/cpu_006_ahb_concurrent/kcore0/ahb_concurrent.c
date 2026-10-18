@@ -1,3 +1,4 @@
+/* 双核镜像: kcore0 (CPU0) */
 /* TST-CPU-006 双核并发访问 AHB
  * 来源: 依据飞书验证测试列表生成(参考 T-head-Semi/opene906 风格)
  * 双核并发对 SRAM/SDRAM 执行读写压力测试,统计仲裁正确性
