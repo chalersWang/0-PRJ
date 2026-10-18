@@ -1,3 +1,4 @@
+/* 双核镜像: kcore0 (CPU0) */
 /* TST-DMA-004 DMA 与 CPU 竞争
  * 来源: 依据飞书验证测试列表生成(参考 T-head-Semi/opene906 风格)
  * DMA 搬运同时 CPU 读写同一区域,验证总线仲裁

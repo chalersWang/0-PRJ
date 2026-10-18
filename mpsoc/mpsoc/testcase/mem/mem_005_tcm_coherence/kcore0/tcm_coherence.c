@@ -1,3 +1,4 @@
+/* 双核镜像: kcore0 (CPU0) */
 /* TST-MEM-005 TCM 与总线一致性
  * 来源: 依据飞书验证测试列表生成(参考 T-head-Semi/opene906 风格)
  * CPU 写 TCM 后经 AHB 读回,双核经共享 SRAM 互访
