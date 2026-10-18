@@ -34,16 +34,12 @@
 class tim_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic [2:0] tim_int;
-		rand logic [2:0] tim_pwm;
-		rand logic [2:0] tim_in;
+		rand logic [3:0] timer_int;
 
-	// ===== 协议级字段 =====
-		rand int  channel;       // 定时器通道 0..2
-		rand int  pulse_count;   // 在 tim_in 产生的脉冲数
-		rand int  pulse_period;  // 脉宽/周期（clk 数）
-		bit       intr_seen;     // 观察到 tim_int 事件
-		constraint c_tim { channel inside {[0:2]}; pulse_count inside {[1:16]}; pulse_period inside {[1:64]}; }
+	// ===== 协议级字段（tim 无外部输入，driver 仅被动观察中断） =====
+		rand int  channel;       // 定时器通道 0..3
+		bit       intr_seen;     // 观察到 timer_int 事件
+		constraint c_tim { channel inside {[0:3]}; }
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -52,12 +48,8 @@ class tim_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(tim_trans)
-		`uvm_field_int(tim_int, UVM_ALL_ON)
-		`uvm_field_int(tim_pwm, UVM_ALL_ON)
-		`uvm_field_int(tim_in, UVM_ALL_ON)
+		`uvm_field_int(timer_int, UVM_ALL_ON)
 		`uvm_field_int(channel, UVM_ALL_ON)
-		`uvm_field_int(pulse_count, UVM_ALL_ON)
-		`uvm_field_int(pulse_period, UVM_ALL_ON)
 		`uvm_field_int(intr_seen, UVM_ALL_ON)
 	`uvm_object_utils_end
 

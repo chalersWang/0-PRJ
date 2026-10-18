@@ -19,8 +19,10 @@
 
 class mem_003_boot_rom_test extends mpsoc_base_test;
 
-    string inst_pat = "mem_003_boot_rom/inst.pat";
-    string data_pat = "mem_003_boot_rom/data.pat";
+    string inst_pat0 = "mem_003_boot_rom/kcore0/inst.pat";
+    string data_pat0 = "mem_003_boot_rom/kcore0/data.pat";
+    string inst_pat1 = "mem_003_boot_rom/kcore1/inst.pat";
+    string data_pat1 = "mem_003_boot_rom/kcore1/data.pat";
 
     `uvm_component_utils(mem_003_boot_rom_test)
 

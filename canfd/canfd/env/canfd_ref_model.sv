@@ -10,7 +10,8 @@
 class canfd_ref_model extends uvm_object;
 
     // ===== 内部状态镜像 =====
-    logic [31:0]  SRR, MSR, BRPR, BTR, ECR, ESR, SR, ISR, IER, ICR, TSR;
+    logic [31:0]  SRR, MSR, BRPR, BTR, ECR, ESR, SR, ISR, IER0, IER1, IER2, ICR, TSR;
+    logic [31:0]  IMCR, TS32, TXTS, RXTS, ECC0, ECC1, ECC2, ECC3;
     logic [31:0]  DP_BRPR, DP_BTR, TRR, TCR, TXE_FSR, TXE_WMR;
     logic [31:0]  RCS0, RCS1, RCS2, AFR, FSR, WMR;
 
@@ -99,7 +100,9 @@ class canfd_ref_model extends uvm_object;
     function void reset_state();
         SRR = 0; MSR = 0; BRPR = 0; BTR = 0; ECR = 0; ESR = 0;
         SR = 32'h1;  // CONFIG 位=1 (配置模式)
-        ISR = 0; IER = 0; TSR = 0;
+        ISR = 0; IER0 = 0; IER1 = 0; IER2 = 0; TSR = 0;
+        IMCR = 0; TS32 = 0; TXTS = 0; RXTS = 0;
+        ECC0 = 0; ECC1 = 0; ECC2 = 0; ECC3 = 0;
         DP_BRPR = 0; DP_BTR = 0; TRR = 0; TCR = 0;
         TXE_FSR = 0; TXE_WMR = 0;
         RCS0 = 0; RCS1 = 0; RCS2 = 0; AFR = 0; FSR = 0; WMR = 0;
@@ -128,9 +131,16 @@ class canfd_ref_model extends uvm_object;
             16'h0008: BRPR = data;
             16'h000C: BTR  = data;
             16'h0014: ESR &= ~data;  // W1C
-            16'h0020: IER  = data;
-            16'h0024: ISR &= ~data;  // ICR - W1C
-            16'h0028: TSR  = data;
+            16'h0020: IER0 = data;
+            16'h0024: IER1 = data;
+            16'h0028: IER2 = data;
+            16'h002C: ISR &= ~data;  // ICR - W1C (v2.0 移位)
+            16'h0030: IMCR = data;
+            16'h0034: TSR  = data;   // v2.0 移位
+            16'h0044: ECC0 = data;
+            16'h0048: ECC1 = data;
+            16'h004C: ECC2 = data;
+            16'h0050: ECC3 = data;
             16'h0088: DP_BRPR = data;
             16'h008C: DP_BTR  = data;
             16'h0090: begin
@@ -173,8 +183,19 @@ class canfd_ref_model extends uvm_object;
             16'h0014: return ESR;
             16'h0018: return compute_sr();             // SR — 动态
             16'h001C: return ISR;                      // ISR — 动态
-            16'h0020: return IER;
-            16'h0028: return TSR;
+            16'h0020: return IER0;
+            16'h0024: return IER1;
+            16'h0028: return IER2;
+            16'h002C: return 32'h0;                    // ICR — 只写，读 0
+            16'h0030: return IMCR;
+            16'h0034: return TSR;
+            16'h0038: return TS32;
+            16'h003C: return TXTS;
+            16'h0040: return RXTS;
+            16'h0044: return ECC0;
+            16'h0048: return ECC1;
+            16'h004C: return ECC2;
+            16'h0050: return ECC3;
             16'h0088: return DP_BRPR;
             16'h008C: return DP_BTR;
             16'h0090: return TRR;

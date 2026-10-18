@@ -19,8 +19,10 @@
 
 class cpu_001_dual_core_boot_test extends mpsoc_base_test;
 
-    string inst_pat = "cpu_001_dual_core_boot/inst.pat";
-    string data_pat = "cpu_001_dual_core_boot/data.pat";
+    string inst_pat0 = "cpu_001_dual_core_boot/kcore0/inst.pat";
+    string data_pat0 = "cpu_001_dual_core_boot/kcore0/data.pat";
+    string inst_pat1 = "cpu_001_dual_core_boot/kcore1/inst.pat";
+    string data_pat1 = "cpu_001_dual_core_boot/kcore1/data.pat";
 
     `uvm_component_utils(cpu_001_dual_core_boot_test)
 

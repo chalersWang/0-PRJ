@@ -61,8 +61,32 @@ class pn_irt_driver extends uvm_driver#(pn_irt_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-
+		// 复位阶段：驱动 DUT 输入为复位值（输出由 DUT 驱动）
+		vif.clock_125m = 'd0;
+		vif.reset_n = 'd0;
+		vif.rmii_p0_clock = 'd0;
+		vif.rmii_p0_carrier_rxenable = 'd0;
+		vif.rmii_p0_rx = 'd0;
+		vif.rmii_p1_clock = 'd0;
+		vif.rmii_p1_carrier_rxenable = 'd0;
+		vif.rmii_p1_rx = 'd0;
+		vif.mii_p0_collision = 'd0;
+		vif.mii_p0_carrier = 'd0;
+		vif.mii_p0_rxclk = 'd0;
+		vif.mii_p0_rxerr = 'd0;
+		vif.mii_p0_rxd = 'd0;
+		vif.mii_p0_rx_dv = 'd0;
+		vif.mii_p1_collision = 'd0;
+		vif.mii_p1_carrier = 'd0;
+		vif.mii_p1_rxclk = 'd0;
+		vif.mii_p1_rxerr = 'd0;
+		vif.mii_p1_rxd = 'd0;
+		vif.mii_p1_rx_dv = 'd0;
+		vif.mdio_in = 'd0;
+		vif.dma_datain_selector = 'd0;
+		vif.dma_dataout_selector = 'd0;
+		vif.dma_extin_intreq = 'd0;
+		vif.dma_extin_intclear = 'd0;
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 

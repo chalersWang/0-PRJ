@@ -34,8 +34,73 @@
 class pn_irt_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic [3:0] pn_sync;
-		rand logic [3:0] pn_irq;
+	// 系统与基础控制
+		rand logic        clock_125m;
+		rand logic        reset_n;
+	// 中断系统
+		rand logic        ins_control_irq;
+		rand logic        ins_acyclicp0_irq;
+	// RMII 接口 p0
+		rand logic        rmii_p0_clock;
+		rand logic        rmii_p0_carrier_rxenable;
+		rand logic [1:0]  rmii_p0_rx;
+		rand logic        rmii_p0_txenable;
+		rand logic [1:0]  rmii_p0_tx;
+	// RMII 接口 p1
+		rand logic        rmii_p1_clock;
+		rand logic        rmii_p1_carrier_rxenable;
+		rand logic [1:0]  rmii_p1_rx;
+		rand logic        rmii_p1_txenable;
+		rand logic [1:0]  rmii_p1_tx;
+	// MII 接口 p0
+		rand logic        mii_p0_collision;
+		rand logic        mii_p0_carrier;
+		rand logic [1:0]  mii_p0_speed;
+		rand logic        mii_p0_rxclk;
+		rand logic        mii_p0_rxerr;
+		rand logic [3:0]  mii_p0_rxd;
+		rand logic        mii_p0_rx_dv;
+		rand logic        mii_p0_txclk;
+		rand logic        mii_p0_txerr;
+		rand logic [3:0]  mii_p0_txd;
+		rand logic        mii_p0_txen;
+	// MII 接口 p1
+		rand logic        mii_p1_collision;
+		rand logic        mii_p1_carrier;
+		rand logic [1:0]  mii_p1_speed;
+		rand logic        mii_p1_rxclk;
+		rand logic        mii_p1_rxerr;
+		rand logic [3:0]  mii_p1_rxd;
+		rand logic        mii_p1_rx_dv;
+		rand logic        mii_p1_txclk;
+		rand logic        mii_p1_txerr;
+		rand logic [3:0]  mii_p1_txd;
+		rand logic        mii_p1_txen;
+	// MDIO 接口
+		rand logic        mdio_clock;
+		rand logic        mdio_in;
+		rand logic        mdio_out;
+		rand logic        mdio_outenable;
+		rand logic [1:0]  mdio_portselect;
+	// DMA 信号
+		rand logic [15:0] dma_datain_selector;
+		rand logic        dma_datain_allowed;
+		rand logic [15:0] dma_dataout_selector;
+		rand logic        dma_dataout_allowed;
+		rand logic        dma_extin_intreq;
+		rand logic        dma_extin_intclear;
+	// IRT（Profinet 相关）
+		rand logic        irt_sync;
+		rand logic [31:0] irt_sync_timestamp;
+		rand logic [15:0] pn_base_clk_31_25us;
+		rand logic [15:0] pn_cycle_counter;
+		rand logic [15:0] pn_cycle_timestamp;
+		rand logic        pn_consumer_update;
+		rand logic        pn_provider_update;
+		rand logic        cputx;
+		rand logic        cpurx;
+		rand logic [3:0]  pn_irq;
+		rand logic [3:0]  pn_sync;
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -44,8 +109,64 @@ class pn_irt_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(pn_irt_trans)
-		`uvm_field_int(pn_sync, UVM_ALL_ON)
+		`uvm_field_int(clock_125m, UVM_ALL_ON)
+		`uvm_field_int(reset_n, UVM_ALL_ON)
+		`uvm_field_int(ins_control_irq, UVM_ALL_ON)
+		`uvm_field_int(ins_acyclicp0_irq, UVM_ALL_ON)
+		`uvm_field_int(rmii_p0_clock, UVM_ALL_ON)
+		`uvm_field_int(rmii_p0_carrier_rxenable, UVM_ALL_ON)
+		`uvm_field_int(rmii_p0_rx, UVM_ALL_ON)
+		`uvm_field_int(rmii_p0_txenable, UVM_ALL_ON)
+		`uvm_field_int(rmii_p0_tx, UVM_ALL_ON)
+		`uvm_field_int(rmii_p1_clock, UVM_ALL_ON)
+		`uvm_field_int(rmii_p1_carrier_rxenable, UVM_ALL_ON)
+		`uvm_field_int(rmii_p1_rx, UVM_ALL_ON)
+		`uvm_field_int(rmii_p1_txenable, UVM_ALL_ON)
+		`uvm_field_int(rmii_p1_tx, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_collision, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_carrier, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_speed, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_rxclk, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_rxerr, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_rxd, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_rx_dv, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_txclk, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_txerr, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_txd, UVM_ALL_ON)
+		`uvm_field_int(mii_p0_txen, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_collision, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_carrier, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_speed, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_rxclk, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_rxerr, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_rxd, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_rx_dv, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_txclk, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_txerr, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_txd, UVM_ALL_ON)
+		`uvm_field_int(mii_p1_txen, UVM_ALL_ON)
+		`uvm_field_int(mdio_clock, UVM_ALL_ON)
+		`uvm_field_int(mdio_in, UVM_ALL_ON)
+		`uvm_field_int(mdio_out, UVM_ALL_ON)
+		`uvm_field_int(mdio_outenable, UVM_ALL_ON)
+		`uvm_field_int(mdio_portselect, UVM_ALL_ON)
+		`uvm_field_int(dma_datain_selector, UVM_ALL_ON)
+		`uvm_field_int(dma_datain_allowed, UVM_ALL_ON)
+		`uvm_field_int(dma_dataout_selector, UVM_ALL_ON)
+		`uvm_field_int(dma_dataout_allowed, UVM_ALL_ON)
+		`uvm_field_int(dma_extin_intreq, UVM_ALL_ON)
+		`uvm_field_int(dma_extin_intclear, UVM_ALL_ON)
+		`uvm_field_int(irt_sync, UVM_ALL_ON)
+		`uvm_field_int(irt_sync_timestamp, UVM_ALL_ON)
+		`uvm_field_int(pn_base_clk_31_25us, UVM_ALL_ON)
+		`uvm_field_int(pn_cycle_counter, UVM_ALL_ON)
+		`uvm_field_int(pn_cycle_timestamp, UVM_ALL_ON)
+		`uvm_field_int(pn_consumer_update, UVM_ALL_ON)
+		`uvm_field_int(pn_provider_update, UVM_ALL_ON)
+		`uvm_field_int(cputx, UVM_ALL_ON)
+		`uvm_field_int(cpurx, UVM_ALL_ON)
 		`uvm_field_int(pn_irq, UVM_ALL_ON)
+		`uvm_field_int(pn_sync, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name="pn_irt_trans");

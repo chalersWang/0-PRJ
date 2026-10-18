@@ -61,11 +61,14 @@ class uc_driver extends uvm_driver#(uc_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-		vif.uc_addr = 'd0;
-		vif.uc_data = 'd0;
-		vif.uc_cs = 'd0;
-		vif.uc_wr = 'd0;
+		// 复位阶段：驱动 DUT 输入（UC 物理接口），UC 输出（UC_DATA_OUT/UC_BUSY/IRQ）由 DUT 驱动
+		vif.UC_ADDR = 'd0;
+		vif.UC_DATA_IN = 'd0;
+		vif.UC_CS = 'd0;
+		vif.UC_RD = 'd0;
+		vif.UC_WR = 'd0;
+		vif.UC_ALE = 'd0;
+		vif.UC_NBHE = 'd0;
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 

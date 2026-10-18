@@ -61,8 +61,10 @@ class spi_driver extends uvm_driver#(spi_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-		vif.miso = 'd0;
+		// 复位阶段：SPI 主机侧驱动 DUT 输入（SPI_SEL/SPI_CLK/SPI_DI），SPI_DO 由 DUT 驱动
+		vif.SPI_SEL = 'd1;   // 片选释放
+		vif.SPI_CLK = 'd0;
+		vif.SPI_DI  = 'd0;
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 
@@ -114,8 +116,8 @@ class spi_driver extends uvm_driver#(spi_trans);
 		end
 	endfunction
 
-	// SPI slave 数据相位（模式 0：CPOL=0/CPHA=0，下降沿驱动、上升沿采样）
-	//   DUT 主机驱动 sclk/mosi/ss_n；本 driver 仅驱动 miso（slave 数据输出）
+	// SPI 主机数据相位（模式 0：CPOL=0/CPHA=0，下降沿驱动、上升沿采样）
+	//   DUT 为 SPI 从机；本 driver 为主机，驱动 SPI_SEL/SPI_CLK/SPI_DI，采样 SPI_DO
 	localparam int TIMEOUT_CYCLES = 10000;
 
 	//=========================================================================
@@ -129,29 +131,22 @@ class spi_driver extends uvm_driver#(spi_trans);
 	//     vif.valid = 1'b0;                             // 放下 valid
 	//=========================================================================
 			virtual task driver_one_pkt(spi_trans tr);
-		`uvm_info(get_type_name(), $sformatf("spi slave: ch=%0d frame_size=%0d tx=0x%0h",
-			tr.channel, tr.frame_size, tr.tx_data), UVM_HIGH)
+		`uvm_info(get_type_name(), $sformatf("spi master: frame_size=%0d tx=0x%0h",
+			tr.frame_size, tr.tx_data), UVM_HIGH)
 		tr.rx_data = '0;
-		// 等待主机片选并完成整帧传输；整体带超时，浮空 vif 下也能退出
-		fork
-			begin : xfer
-				wait(vif.ss_n[tr.channel] === 1'b0);
-				for (int i = tr.frame_size-1; i >= 0; i--) begin
-					@(negedge vif.sclk);
-					vif.miso = tr.tx_data[i];
-					@(posedge vif.sclk);
-					tr.rx_data[i] = vif.mosi;
-				end
-				wait(vif.ss_n[tr.channel] === 1'b1);
-			end
-			begin : timeout
-				repeat(TIMEOUT_CYCLES) @(posedge vif.clk);
-				`uvm_warning(get_type_name(), "spi slave: 等待主机传输超时，放弃本次传输")
-			end
-		join_any
-		disable fork;
-		vif.miso = 1'b0;   // 释放 miso（正常完成或超时）
-		`uvm_info(get_type_name(), $sformatf("spi slave: rx=0x%0h", tr.rx_data), UVM_HIGH)
+		// 主机：拉低片选，逐位经 SPI_DI 发送、从 SPI_DO 采样（模式 0）
+		vif.SPI_SEL = 1'b0;
+		for (int i = tr.frame_size-1; i >= 0; i--) begin
+			vif.SPI_DI = tr.tx_data[i];
+			vif.SPI_CLK = 1'b0;
+			@(posedge vif.clk);
+			vif.SPI_CLK = 1'b1;
+			@(posedge vif.clk);
+			tr.rx_data[i] = vif.SPI_DO;
+		end
+		vif.SPI_CLK = 1'b0;
+		vif.SPI_SEL = 1'b1;   // 释放片选
+		`uvm_info(get_type_name(), $sformatf("spi master: rx=0x%0h", tr.rx_data), UVM_HIGH)
 		`uvm_info(get_type_name(),"driver_one_pkt end ...",UVM_HIGH)
 	endtask : driver_one_pkt
 

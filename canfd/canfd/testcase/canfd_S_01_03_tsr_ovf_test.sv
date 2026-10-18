@@ -18,7 +18,7 @@ class canfd_S_01_03_tsr_ovf_test_seq extends uvm_sequence;
 
         // TSR 0xFFFF→0x0000溢出中断
         `ifdef REG_MODEL
-        rm.IER.write(st,32'h20,UVM_FRONTDOOR); // TSCNT_OFLW enable
+        rm.IER0.write(st,32'h20,UVM_FRONTDOOR); // TSCNT_OFLW enable
         rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         `uvm_info(get_type_name(),"TSR overflow interrupt: wait for 0xFFFF→0x0000 wrap",UVM_MEDIUM)
         repeat(500) @(posedge canfdvif.clk);

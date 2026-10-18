@@ -51,7 +51,7 @@ class mpsoc_scoreboard extends uvm_scoreboard;
 	uvm_analysis_imp_wdt #(wdt_trans, mpsoc_scoreboard) wdt_scb_imp;
 	uvm_analysis_imp_tim #(tim_trans, mpsoc_scoreboard) tim_scb_imp;
 	uvm_analysis_imp_uc #(uc_trans, mpsoc_scoreboard) uc_scb_imp;
-	uvm_analysis_imp_sdram #(sdram_trans, mpsoc_scoreboard) sdram_scb_imp;
+	uvm_analysis_imp_sdram #(sdram_seq_item, mpsoc_scoreboard) sdram_scb_imp;
 	uvm_analysis_imp_security #(security_trans, mpsoc_scoreboard) security_scb_imp;
 	uvm_analysis_imp_dma #(dma_trans, mpsoc_scoreboard) dma_scb_imp;
 	uvm_analysis_imp_pn_irt #(pn_irt_trans, mpsoc_scoreboard) pn_irt_scb_imp;
@@ -278,7 +278,7 @@ class mpsoc_scoreboard extends uvm_scoreboard;
 	endfunction : write_uc
 
 	// sdram 数据比对（由 sdram_scb_imp 回调）
-	function void write_sdram(sdram_trans tr);
+	function void write_sdram(sdram_seq_item tr);
 		`uvm_info(get_type_name(), $sformatf("sdram rcv trans: %s", tr.convert2string()), UVM_HIGH)
 		// TODO: 用户在此实现 sdram 的比对逻辑
 		// 典型比对流程：

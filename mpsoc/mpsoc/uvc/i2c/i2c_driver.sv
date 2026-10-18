@@ -62,8 +62,8 @@ class i2c_driver extends uvm_driver#(i2c_trans);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
 		// 复位：I2C 开漏总线空闲态（释放为高）
-		vif.scl = 'd1;
-		vif.sda = 'd1;
+		vif.ic_clk_in_a = 'd1;
+		vif.ic_data_in_a = 'd1;
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 
@@ -120,32 +120,32 @@ class i2c_driver extends uvm_driver#(i2c_trans);
 	//   每 bit：SCL 低 1 拍 -> SCL 高 1 拍（高电平中段采样）
 	//=========================================================================
 	task i2c_start();
-		vif.sda = 1'b1;
-		vif.scl = 1'b1;
+		vif.ic_data_in_a = 1'b1;
+		vif.ic_clk_in_a = 1'b1;
 		@(posedge vif.clk);
-		vif.sda = 1'b0;            // SCL 高时 SDA 下降 = START
+		vif.ic_data_in_a = 1'b0;            // SCL 高时 SDA 下降 = START
 		@(posedge vif.clk);
-		vif.scl = 1'b0;
+		vif.ic_clk_in_a = 1'b0;
 		@(posedge vif.clk);
 	endtask : i2c_start
 
 	task i2c_stop();
-		vif.scl = 1'b0;
-		vif.sda = 1'b0;
+		vif.ic_clk_in_a = 1'b0;
+		vif.ic_data_in_a = 1'b0;
 		@(posedge vif.clk);
-		vif.scl = 1'b1;
+		vif.ic_clk_in_a = 1'b1;
 		@(posedge vif.clk);
-		vif.sda = 1'b1;            // SCL 高时 SDA 上升 = STOP
+		vif.ic_data_in_a = 1'b1;            // SCL 高时 SDA 上升 = STOP
 		@(posedge vif.clk);
 	endtask : i2c_stop
 
 	task i2c_write_bit(input logic b);
-		vif.scl = 1'b0;
-		vif.sda = b;
+		vif.ic_clk_in_a = 1'b0;
+		vif.ic_data_in_a = b;
 		@(posedge vif.clk);
-		vif.scl = 1'b1;
+		vif.ic_clk_in_a = 1'b1;
 		@(posedge vif.clk);
-		vif.scl = 1'b0;
+		vif.ic_clk_in_a = 1'b0;
 		@(posedge vif.clk);
 	endtask : i2c_write_bit
 
@@ -153,26 +153,26 @@ class i2c_driver extends uvm_driver#(i2c_trans);
 		for (int i = 7; i >= 0; i--)
 			i2c_write_bit(d[i]);
 		// 释放 SDA，采样从机 ACK（0=ACK, 1=NACK）
-		vif.scl = 1'b0;
-		vif.sda = 1'b1;
+		vif.ic_clk_in_a = 1'b0;
+		vif.ic_data_in_a = 1'b1;
 		@(posedge vif.clk);
-		vif.scl = 1'b1;
+		vif.ic_clk_in_a = 1'b1;
 		@(posedge vif.clk);
-		ack = ~vif.sda;
-		vif.scl = 1'b0;
+		ack = ~vif.ic_data_in_a;
+		vif.ic_clk_in_a = 1'b0;
 		@(posedge vif.clk);
 	endtask : i2c_write_byte
 
 	task i2c_read_byte(output bit [7:0] d, input bit ack);
 		bit [7:0] tmp;
 		for (int i = 7; i >= 0; i--) begin
-			vif.scl = 1'b0;
-			vif.sda = 1'b1;        // 释放，由从机驱动
+			vif.ic_clk_in_a = 1'b0;
+			vif.ic_data_in_a = 1'b1;        // 释放，由从机驱动
 			@(posedge vif.clk);
-			vif.scl = 1'b1;
+			vif.ic_clk_in_a = 1'b1;
 			@(posedge vif.clk);
-			tmp[i] = vif.sda;
-			vif.scl = 1'b0;
+			tmp[i] = vif.ic_data_in_a;
+			vif.ic_clk_in_a = 1'b0;
 			@(posedge vif.clk);
 		end
 		d = tmp;

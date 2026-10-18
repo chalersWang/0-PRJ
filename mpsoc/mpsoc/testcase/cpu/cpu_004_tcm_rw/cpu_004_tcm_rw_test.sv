@@ -19,8 +19,10 @@
 
 class cpu_004_tcm_rw_test extends mpsoc_base_test;
 
-    string inst_pat = "cpu_004_tcm_rw/inst.pat";
-    string data_pat = "cpu_004_tcm_rw/data.pat";
+    string inst_pat0 = "cpu_004_tcm_rw/kcore0/inst.pat";
+    string data_pat0 = "cpu_004_tcm_rw/kcore0/data.pat";
+    string inst_pat1 = "cpu_004_tcm_rw/kcore1/inst.pat";
+    string data_pat1 = "cpu_004_tcm_rw/kcore1/data.pat";
 
     `uvm_component_utils(cpu_004_tcm_rw_test)
 

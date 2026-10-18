@@ -8,6 +8,18 @@ package mpsoc_TestTop;
 
 	//import the SVT UVM PKG
 	//import svt_uvm_pkg::*;
+	// ===== Synopsys DesignWare VIP 封装 package(接入时取消注释) =====
+	//import svt_i2c_UvcTop::*;
+	//import svt_spi_UvcTop::*;
+	//import svt_uart_UvcTop::*;
+	//import svt_axi_UvcTop::*;
+	//import svt_ahb_UvcTop::*;
+	//import svt_apb_UvcTop::*;
+	//import svt_gpio_UvcTop::*;
+	//import svt_wdt_UvcTop::*;
+	//import svt_timer_UvcTop::*;
+	//import svt_qspi_UvcTop::*;
+	//import svt_jtag_UvcTop::*;
 
 
 	import sysctrl_UvcTop::*;
@@ -23,7 +35,7 @@ import spi_UvcTop::*;
 import wdt_UvcTop::*;
 import tim_UvcTop::*;
 import uc_UvcTop::*;
-import sdram_UvcTop::*;
+import sdram_pkg::*;
 import security_UvcTop::*;
 import dma_UvcTop::*;
 import pn_irt_UvcTop::*;
@@ -37,6 +49,34 @@ import gmac_UvcTop::*;
 	`include "mpsoc_base_test.sv"
 
 	`include "mpsoc_demo_test.sv"
+
+	// ===== ESC 寄存器后门读写 demo case =====
+	`include "esc0_reg_backdoor_test.sv"
+	`include "esc1_reg_backdoor_test.sv"
+	`include "sysctrl_reg_backdoor_test.sv"
+	`include "gpio_reg_backdoor_test.sv"
+	`include "i2c_reg_backdoor_test.sv"
+	`include "spi_reg_backdoor_test.sv"
+	`include "uart_reg_backdoor_test.sv"
+	`include "wdt_reg_backdoor_test.sv"
+	`include "tim_reg_backdoor_test.sv"
+	`include "dma_reg_backdoor_test.sv"
+	`include "gmac_reg_backdoor_test.sv"
+	`include "qspi_reg_backdoor_test.sv"
+	`include "sdram_reg_backdoor_test.sv"
+
+	// ===== Synopsys DesignWare VIP demo case(接入时取消注释) =====
+	//`include "testcase/vip/svt_i2c_demo_test.sv"
+	//`include "testcase/vip/svt_spi_demo_test.sv"
+	//`include "testcase/vip/svt_uart_demo_test.sv"
+	//`include "testcase/vip/svt_axi_demo_test.sv"
+	//`include "testcase/vip/svt_ahb_demo_test.sv"
+	//`include "testcase/vip/svt_apb_demo_test.sv"
+	//`include "testcase/vip/svt_gpio_demo_test.sv"
+	//`include "testcase/vip/svt_wdt_demo_test.sv"
+	//`include "testcase/vip/svt_timer_demo_test.sv"
+	//`include "testcase/vip/svt_qspi_demo_test.sv"
+	//`include "testcase/vip/svt_jtag_demo_test.sv"
 
 	//====================================================================
 	// 飞书「验证测试列表」72 个测试 case(见 testcase/README.md)

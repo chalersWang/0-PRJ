@@ -28,6 +28,10 @@ class canfd_reg_reset_check_seq extends uvm_sequence;
         regmodel.get_registers(regs);
 
         foreach (regs[i]) begin
+            // 跳过动态寄存器：RO 状态/自由运行计数器、WO 只写，以及含自由运行
+            // TIMESTAMP_CNT 的 TSR —— 复位值无法静态比对
+            if (regs[i].get_access() == "RO" || regs[i].get_access() == "WO") continue;
+            if (regs[i].get_name() == "TSR") continue;
             regs[i].read(st, val, UVM_FRONTDOOR);
             if (st != UVM_IS_OK) begin
                 `uvm_error(get_type_name(), $sformatf("Read failed: %s", regs[i].get_full_name()))

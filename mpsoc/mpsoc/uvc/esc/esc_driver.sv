@@ -61,11 +61,48 @@ class esc_driver extends uvm_driver#(esc_trans);
 	virtual task reset_phase(uvm_phase phase);
 		super.reset_phase(phase);
 		`uvm_info(get_full_name(),"reset_phase begin ...",UVM_LOW)
-		// 复位阶段：将所有 DUT 输入/双向信号驱动为复位值（输出由 DUT 驱动）
-		vif.ecat_mii_rx_clk = 'd0;
-		vif.ecat_mii_rx_dv = 'd0;
-		vif.ecat_mii_rxd = 'd0;
-		vif.ecat_mii_tx_clk = 'd0;
+		// 复位阶段：驱动 DUT 输入为复位值（输出由 DUT 驱动；MDIO 双向释放为高阻）
+		vif.NRESET = 'd0;
+		vif.CLK2S = 'd0;
+		vif.CLK25_2NS = 'd0;
+		vif.CLK50 = 'd0;
+		vif.CLK100 = 'd0;
+		vif.CLK125 = 'd0;
+		vif.CLK125_90 = 'd0;
+		vif.CLK_PDI_EXT = 'd0;
+		vif.SEC_DEV_RESP_VALID = 'd0;
+		vif.SEC_DEV_RESP_DATA = 'd0;
+		vif.RGMII_LINK0 = 'd0;
+		vif.RGMII_RX_CLK0 = 'd0;
+		vif.RGMII_RX_CTL0 = 'd0;
+		vif.RGMII_RX_DATA0 = 'd0;
+		vif.NMII_LINK0 = 'd0;
+		vif.MII_RX_CLK0 = 'd0;
+		vif.MII_RX_DV0 = 'd0;
+		vif.MII_RX_DATA0 = 'd0;
+		vif.MII_RX_ERR0 = 'd0;
+		vif.MII_TX_CLK0 = 'd0;
+		vif.MII_TX_SHIFT0 = 'd0;
+		vif.NRMII_LINK0 = 'd0;
+		vif.RMII_RX_DV0 = 'd0;
+		vif.RMII_RX_DATA0 = 'd0;
+		vif.RMII_RX_ER0 = 'd0;
+		vif.MDIO = 'z;
+		vif.MDIO_DATA_IN = 'd0;
+		vif.PROM_CLK_IN = 'd0;
+		vif.PROM_DATA_IN = 'd0;
+		vif.PROM_SIZE = 'd0;
+		vif.PDI_SPI_SEL = 'd0;
+		vif.PDI_SPI_DI = 'd0;
+		vif.PDI_DIGI_DATA_IN0 = 'd0;
+		vif.PDI_DIGI_DATA_IN1 = 'd0;
+		vif.PDI_DIGI_DATA_IN2 = 'd0;
+		vif.PDI_DIGI_DATA_IN3 = 'd0;
+		vif.PDI_GPI = 'd0;
+		vif.P_MODE = 'd0;
+		vif.P_CONF = 'd0;
+		vif.LINKPOL = 'd0;
+		vif.Trans_Mode_Ena = 'd0;
 		`uvm_info(get_full_name(),"reset_phase end ...",UVM_LOW)
 	endtask
 

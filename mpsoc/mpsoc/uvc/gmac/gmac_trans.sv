@@ -34,12 +34,57 @@
 class gmac_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic gmac_rgmii_txc;
-		rand logic [3:0] gmac_rgmii_txd;
-		rand logic gmac_rgmii_tx_ctl;
-		rand logic gmac_rgmii_rxc;
-		rand logic [3:0] gmac_rgmii_rxd;
-		rand logic gmac_rgmii_rx_ctl;
+	// RGMII Interface
+		rand logic        RGMII_RXC_i;
+		rand logic        RGMII_TXC_i;
+		rand logic        RGMII_TXC_o;
+		rand logic        RGMII_TXC_oen;
+	// GMAC Control
+		rand logic [2:0]  gephy_ifsel;
+		rand logic        gmac_ack;
+		rand logic        gmac_areset_n;
+		rand logic        gmac_clk;
+		rand logic        gmac_pclk;
+		rand logic        gmac_preset_n;
+		rand logic        gmac_reset_n;
+	// GMII Interface
+		rand logic        gmii_mdc_o;
+		rand logic        gmii_mdc_oen;
+		rand logic        gmii_mdi_i;
+		rand logic        gmii_mdio_oen;
+		rand logic        gmii_mdo_o;
+		rand logic        lpi_intr_o;
+	// PCS Interface
+		rand logic        pcs_acquired_sync_o;
+		rand logic        pcs_en_cdet_o;
+		rand logic        pcs_ewrap_o;
+		rand logic        pcs_lck_ref_o;
+		rand logic        phy_col_i;
+		rand logic        phy_crs_i;
+		rand logic        phy_intr_i;
+		rand logic [7:0]  phy_rxd_i;
+		rand logic        phy_rxdv_i;
+		rand logic        phy_rxer_i;
+		rand logic [7:0]  phy_txd_o;
+		rand logic        phy_txd_oen;
+		rand logic        phy_txen_o;
+		rand logic        phy_txen_oen;
+		rand logic        phy_txer_o;
+		rand logic        phy_txerr_oen;
+	// PTP (1588)
+		rand logic        pmt_intr_o;
+		rand logic        ptp_aux_ts_trig_i;
+		rand logic        ptp_pps_o;
+		rand logic [63:0] ptp_timestamp_i;
+	// System & Power
+		rand logic        pwr_clamp_ctrl_i;
+		rand logic        pwr_down_ctrl_i;
+		rand logic        pwr_isolate_i;
+	// Debug/Test
+		rand logic        sbd_intr_o;
+		rand logic        sbd_pwr_down_ack_o;
+		rand logic        sbd_tx_clk_gating_ctrl_o;
+		rand logic [1:0]  sgmii_link_speed_o;
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -48,12 +93,50 @@ class gmac_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(gmac_trans)
-		`uvm_field_int(gmac_rgmii_txc, UVM_ALL_ON)
-		`uvm_field_int(gmac_rgmii_txd, UVM_ALL_ON)
-		`uvm_field_int(gmac_rgmii_tx_ctl, UVM_ALL_ON)
-		`uvm_field_int(gmac_rgmii_rxc, UVM_ALL_ON)
-		`uvm_field_int(gmac_rgmii_rxd, UVM_ALL_ON)
-		`uvm_field_int(gmac_rgmii_rx_ctl, UVM_ALL_ON)
+		`uvm_field_int(RGMII_RXC_i, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TXC_i, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TXC_o, UVM_ALL_ON)
+		`uvm_field_int(RGMII_TXC_oen, UVM_ALL_ON)
+		`uvm_field_int(gephy_ifsel, UVM_ALL_ON)
+		`uvm_field_int(gmac_ack, UVM_ALL_ON)
+		`uvm_field_int(gmac_areset_n, UVM_ALL_ON)
+		`uvm_field_int(gmac_clk, UVM_ALL_ON)
+		`uvm_field_int(gmac_pclk, UVM_ALL_ON)
+		`uvm_field_int(gmac_preset_n, UVM_ALL_ON)
+		`uvm_field_int(gmac_reset_n, UVM_ALL_ON)
+		`uvm_field_int(gmii_mdc_o, UVM_ALL_ON)
+		`uvm_field_int(gmii_mdc_oen, UVM_ALL_ON)
+		`uvm_field_int(gmii_mdi_i, UVM_ALL_ON)
+		`uvm_field_int(gmii_mdio_oen, UVM_ALL_ON)
+		`uvm_field_int(gmii_mdo_o, UVM_ALL_ON)
+		`uvm_field_int(lpi_intr_o, UVM_ALL_ON)
+		`uvm_field_int(pcs_acquired_sync_o, UVM_ALL_ON)
+		`uvm_field_int(pcs_en_cdet_o, UVM_ALL_ON)
+		`uvm_field_int(pcs_ewrap_o, UVM_ALL_ON)
+		`uvm_field_int(pcs_lck_ref_o, UVM_ALL_ON)
+		`uvm_field_int(phy_col_i, UVM_ALL_ON)
+		`uvm_field_int(phy_crs_i, UVM_ALL_ON)
+		`uvm_field_int(phy_intr_i, UVM_ALL_ON)
+		`uvm_field_int(phy_rxd_i, UVM_ALL_ON)
+		`uvm_field_int(phy_rxdv_i, UVM_ALL_ON)
+		`uvm_field_int(phy_rxer_i, UVM_ALL_ON)
+		`uvm_field_int(phy_txd_o, UVM_ALL_ON)
+		`uvm_field_int(phy_txd_oen, UVM_ALL_ON)
+		`uvm_field_int(phy_txen_o, UVM_ALL_ON)
+		`uvm_field_int(phy_txen_oen, UVM_ALL_ON)
+		`uvm_field_int(phy_txer_o, UVM_ALL_ON)
+		`uvm_field_int(phy_txerr_oen, UVM_ALL_ON)
+		`uvm_field_int(pmt_intr_o, UVM_ALL_ON)
+		`uvm_field_int(ptp_aux_ts_trig_i, UVM_ALL_ON)
+		`uvm_field_int(ptp_pps_o, UVM_ALL_ON)
+		`uvm_field_int(ptp_timestamp_i, UVM_ALL_ON)
+		`uvm_field_int(pwr_clamp_ctrl_i, UVM_ALL_ON)
+		`uvm_field_int(pwr_down_ctrl_i, UVM_ALL_ON)
+		`uvm_field_int(pwr_isolate_i, UVM_ALL_ON)
+		`uvm_field_int(sbd_intr_o, UVM_ALL_ON)
+		`uvm_field_int(sbd_pwr_down_ack_o, UVM_ALL_ON)
+		`uvm_field_int(sbd_tx_clk_gating_ctrl_o, UVM_ALL_ON)
+		`uvm_field_int(sgmii_link_speed_o, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name="gmac_trans");

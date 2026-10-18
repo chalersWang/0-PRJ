@@ -34,13 +34,13 @@
 class wdt_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic wdt_int;
-		rand logic wdt_rst;
+		rand logic wdt_intr;
+		rand logic wdt_sys_rst;
 
 	// ===== 协议级字段（WDT 无外部输入，driver 仅被动观察） =====
 		rand int  timeout_cycles; // 等待超时的时钟周期数
-		bit       int_seen;       // 观察到 wdt_int 事件
-		bit       rst_seen;       // 观察到 wdt_rst 事件
+		bit       int_seen;       // 观察到 wdt_intr 事件
+		bit       rst_seen;       // 观察到 wdt_sys_rst 事件
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -49,8 +49,8 @@ class wdt_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(wdt_trans)
-		`uvm_field_int(wdt_int, UVM_ALL_ON)
-		`uvm_field_int(wdt_rst, UVM_ALL_ON)
+		`uvm_field_int(wdt_intr, UVM_ALL_ON)
+		`uvm_field_int(wdt_sys_rst, UVM_ALL_ON)
 		`uvm_field_int(timeout_cycles, UVM_ALL_ON)
 		`uvm_field_int(int_seen, UVM_ALL_ON)
 		`uvm_field_int(rst_seen, UVM_ALL_ON)

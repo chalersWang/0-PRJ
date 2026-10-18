@@ -70,28 +70,28 @@ class i2c_monitor extends uvm_monitor;
 	// I2C 协议级采集辅助任务
 	task mon_wait_start();
 		forever begin
-			@(negedge vif.sda);
-			if (vif.scl === 1'b1) return;
+			@(negedge vif.ic_data_in_a);
+			if (vif.ic_clk_in_a === 1'b1) return;
 		end
 	endtask : mon_wait_start
 
 	task mon_sample_byte(output bit [7:0] b);
 		for (int i = 7; i >= 0; i--) begin
-			@(posedge vif.scl);
-			b[i] = vif.sda;
+			@(posedge vif.ic_clk_in_a);
+			b[i] = vif.ic_data_in_a;
 		end
 	endtask : mon_sample_byte
 
 	task mon_sample_ack(output bit a);
-		@(negedge vif.scl);
-		@(posedge vif.scl);
-		a = vif.sda;
+		@(negedge vif.ic_clk_in_a);
+		@(posedge vif.ic_clk_in_a);
+		a = vif.ic_data_in_a;
 	endtask : mon_sample_ack
 
 	task mon_wait_stop();
 		forever begin
-			@(posedge vif.sda);
-			if (vif.scl === 1'b1) return;
+			@(posedge vif.ic_data_in_a);
+			if (vif.ic_clk_in_a === 1'b1) return;
 		end
 	endtask : mon_wait_stop
 
@@ -137,9 +137,27 @@ class i2c_monitor extends uvm_monitor;
 				disable fork;
 			end
 			// 4. 快照原始信号并广播
-			tr.scl = vif.scl;
-			tr.sda = vif.sda;
-			tr.ic_intr = vif.ic_intr;
+			tr.ic_clk = vif.ic_clk;
+			tr.ic_clk_in_a = vif.ic_clk_in_a;
+			tr.ic_data_in_a = vif.ic_data_in_a;
+			tr.ic_rst_n = vif.ic_rst_n;
+			tr.dma_tx_req = vif.dma_tx_req;
+			tr.dma_tx_single = vif.dma_tx_single;
+			tr.dma_rx_req = vif.dma_rx_req;
+			tr.dma_rx_single = vif.dma_rx_single;
+			tr.dma_tx_ack = vif.dma_tx_ack;
+			tr.dma_rx_ack = vif.dma_rx_ack;
+			tr.ic_tx_over_intr = vif.ic_tx_over_intr;
+			tr.ic_rx_under_intr = vif.ic_rx_under_intr;
+			tr.ic_tx_abrt_intr = vif.ic_tx_abrt_intr;
+			tr.ic_rx_done_intr = vif.ic_rx_done_intr;
+			tr.ic_tx_empty_intr = vif.ic_tx_empty_intr;
+			tr.ic_activity_intr = vif.ic_activity_intr;
+			tr.ic_stop_det_intr = vif.ic_stop_det_intr;
+			tr.ic_start_det_intr = vif.ic_start_det_intr;
+			tr.ic_rd_req_intr = vif.ic_rd_req_intr;
+			tr.ic_rx_full_intr = vif.ic_rx_full_intr;
+			tr.ic_gen_call_intr = vif.ic_gen_call_intr;
 			mon_analysis_port.write(tr);
 		end
 	endtask : run_phase

@@ -19,8 +19,10 @@
 
 class bus_001_ahb_bw_test extends mpsoc_base_test;
 
-    string inst_pat = "bus_001_ahb_bw/inst.pat";
-    string data_pat = "bus_001_ahb_bw/data.pat";
+    string inst_pat0 = "bus_001_ahb_bw/kcore0/inst.pat";
+    string data_pat0 = "bus_001_ahb_bw/kcore0/data.pat";
+    string inst_pat1 = "bus_001_ahb_bw/kcore1/inst.pat";
+    string data_pat1 = "bus_001_ahb_bw/kcore1/data.pat";
 
     `uvm_component_utils(bus_001_ahb_bw_test)
 

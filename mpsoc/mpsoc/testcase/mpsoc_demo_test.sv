@@ -252,7 +252,7 @@ class mpsoc_demo_spi_sequence extends spi_base_sequence;
 		`uvm_info(get_full_name(),"body() begin ...",UVM_LOW)
 		     `uvm_create(req)
 		     //status=req.randomize();
-		     status=req.randomize with{ channel == 0; frame_size == 8; tx_data == 32'h5A; };
+		     status=req.randomize with{ frame_size == 8; tx_data == 32'h5A; };
 		     if(!status)`uvm_fatal(get_full_name,"Can't randomize a trans!!!")
 		     `uvm_send(req)
 		     //req.print();
@@ -304,7 +304,7 @@ class mpsoc_demo_tim_sequence extends tim_base_sequence;
 		`uvm_info(get_full_name(),"body() begin ...",UVM_LOW)
 		     `uvm_create(req)
 		     //status=req.randomize();
-		     status=req.randomize with{ channel == 0; pulse_count == 4; pulse_period == 10; };
+		     status=req.randomize with{ channel == 0; };
 		     if(!status)`uvm_fatal(get_full_name,"Can't randomize a trans!!!")
 		     `uvm_send(req)
 		     //req.print();
@@ -330,7 +330,7 @@ class mpsoc_demo_dma_sequence extends dma_base_sequence;
 		`uvm_info(get_full_name(),"body() begin ...",UVM_LOW)
 		     `uvm_create(req)
 		     //status=req.randomize();
-		     status=req.randomize with{ channel == 0; handshake_delay == 64; };
+		     status=req.randomize with{ channel == 0; };
 		     if(!status)`uvm_fatal(get_full_name,"Can't randomize a trans!!!")
 		     `uvm_send(req)
 		     //req.print();
@@ -340,7 +340,7 @@ class mpsoc_demo_dma_sequence extends dma_base_sequence;
 
 endclass
 
-class mpsoc_demo_sdram_sequence extends sdram_base_sequence;
+class mpsoc_demo_sdram_sequence extends uvm_sequence #(sdram_seq_item);
 
     integer status;
 
@@ -356,7 +356,7 @@ class mpsoc_demo_sdram_sequence extends sdram_base_sequence;
 		`uvm_info(get_full_name(),"body() begin ...",UVM_LOW)
 		     `uvm_create(req)
 		     //status=req.randomize();
-		     status=req.randomize with{ cmd == 4'b0101; bank == 2'b00; addr == 13'h100; };
+		     status=req.randomize with{ cmd == SDRAM_READ; bank == 2'b00; col == 9'h100; };
 		     if(!status)`uvm_fatal(get_full_name,"Can't randomize a trans!!!")
 		     `uvm_send(req)
 		     //req.print();
@@ -479,10 +479,83 @@ class mpsoc_demo_test extends mpsoc_base_test;
 		@(posedge mpsocvif.rstn);
 		mpsoc_demo_seq.start(env.mpsoc_vseqr);
 		#1us;
+		//sysctrl
+		std::randomize(data);
+		AHB_WRITE('h4001_7000,data);
+		AHB_READ ('h4001_7000,data);
+		//gpio
+		std::randomize(data);
+		AHB_WRITE('h4001_9000,data);
+		AHB_READ ('h4001_9000,data);
+		//i2c2
+		std::randomize(data);
+		AHB_WRITE('h4002_1000,data);
+		AHB_READ ('h4002_1000,data);
+		//uart0
+		std::randomize(data);
+		AHB_WRITE('h4001_5000,data);
+		AHB_READ ('h4001_5000,data);
+		//uart1
+		std::randomize(data);
+		AHB_WRITE('h4002_6000,data);
+		AHB_READ ('h4002_6000,data);
+		//uart2
+		std::randomize(data);
+		AHB_WRITE('h4002_5000,data);
+		AHB_READ ('h4002_5000,data);
+		//wdt
+		std::randomize(data);
+		AHB_WRITE('h4001_A000,data);
+		AHB_READ ('h4001_A000,data);
+		//timer0
+		std::randomize(data);
+		AHB_WRITE('h4001_8000,data);
+		AHB_READ ('h4001_8000,data);
+		//timer1
+		std::randomize(data);
+		AHB_WRITE('h4001_1000,data);
+		AHB_READ ('h4001_1000,data);
+		//spi
+		std::randomize(data);
+		AHB_WRITE('h4003_1000,data);
+		AHB_READ ('h4003_1000,data);
+		//dmac
+		std::randomize(data);
+		AHB_WRITE('h4200_0000,data);
+		AHB_READ ('h4200_0000,data);
+		//qspi
+		std::randomize(data);
+		AHB_WRITE('h4800_0000,data);
+		AHB_READ ('h4800_0000,data);
+		//pn-irt
+		std::randomize(data);
+		AHB_WRITE('h43C9_0000,data);
+		AHB_READ ('h43C9_0000,data);
+		//gmac
+		std::randomize(data);
+		AHB_WRITE('h4004_0000,data);
+		AHB_READ ('h4004_0000,data);
+		//esc
+		std::randomize(data);
+		AHB_WRITE('h4C0_0000,data);
+		AHB_READ ('h4C0_0000,data);
+		#1us;
 		phase.drop_objection(this);
 		`uvm_info(get_full_name(),"run_phase end ...",UVM_LOW)
 	endtask
-
+	
+	task AHB_WRITE(input bit[31:0]addr,input bit[31:0]data);
+		#100ns;
+		$display("[wr] addr %h wdata %h",addr,data);
+		mpsocvif.ahb_m_vif.write(addr,data);
+	endtask
+	
+	task AHB_READ (input bit[31:0]addr,input bit[31:0]data);
+		bit[31:0]actdata;
+		#100ns;
+		mpsocvif.ahb_m_vif.read(addr,actdata);
+		$display("[rd] addr %h rdata %h exp %h",addr,actdata,data);
+	endtask
 
 endclass
 

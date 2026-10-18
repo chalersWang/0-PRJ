@@ -33,16 +33,30 @@
 //=========================================================================
 class dma_trans extends uvm_sequence_item;
 
-	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic [7:0] dma_int;
-		rand logic [7:0] dma_req;
-		rand logic [7:0] dma_ack;
+	// ===== 随机化变量（对应 DUT 接口信号，均为 DUT 输出，driver 仅采样） =====
+	// AHB Manager Interface 1
+		rand logic [31:0] haddr1;
+		rand logic [31:0] hwdata1;
+		rand logic        hwriten1;
+		rand logic        hlock1;
+		rand logic [1:0]  htrans1;
+		rand logic [2:0]  hburst1;
+		rand logic [2:0]  hsize1;
+		rand logic [3:0]  hprot1;
+	// AHB Subordinate Interface
+		rand logic [31:0] hrdata;
+		rand logic        hready_resp;
+		rand logic [1:0]  hresp;
+	// Peripheral Handshaking Interface
+		rand logic [7:0]  dma_ack;
+		rand logic [7:0]  dma_finish;
+	// External Memory Interface
+		rand logic        int_combined;
 
 	// ===== 协议级字段 =====
 		rand int  channel;         // DMA 通道 0..7
-		rand int  handshake_delay; // 等待 ack 的超时周期
 		bit       ack_seen;        // 观察到 ack
-		constraint c_dma { channel inside {[0:7]}; handshake_delay inside {[1:256]}; }
+		constraint c_dma { channel inside {[0:7]}; }
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -51,11 +65,21 @@ class dma_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(dma_trans)
-		`uvm_field_int(dma_int, UVM_ALL_ON)
-		`uvm_field_int(dma_req, UVM_ALL_ON)
+		`uvm_field_int(haddr1, UVM_ALL_ON)
+		`uvm_field_int(hwdata1, UVM_ALL_ON)
+		`uvm_field_int(hwriten1, UVM_ALL_ON)
+		`uvm_field_int(hlock1, UVM_ALL_ON)
+		`uvm_field_int(htrans1, UVM_ALL_ON)
+		`uvm_field_int(hburst1, UVM_ALL_ON)
+		`uvm_field_int(hsize1, UVM_ALL_ON)
+		`uvm_field_int(hprot1, UVM_ALL_ON)
+		`uvm_field_int(hrdata, UVM_ALL_ON)
+		`uvm_field_int(hready_resp, UVM_ALL_ON)
+		`uvm_field_int(hresp, UVM_ALL_ON)
 		`uvm_field_int(dma_ack, UVM_ALL_ON)
+		`uvm_field_int(dma_finish, UVM_ALL_ON)
+		`uvm_field_int(int_combined, UVM_ALL_ON)
 		`uvm_field_int(channel, UVM_ALL_ON)
-		`uvm_field_int(handshake_delay, UVM_ALL_ON)
 		`uvm_field_int(ack_seen, UVM_ALL_ON)
 	`uvm_object_utils_end
 

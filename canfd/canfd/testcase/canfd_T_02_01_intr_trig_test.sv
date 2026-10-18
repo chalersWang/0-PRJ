@@ -18,7 +18,7 @@ class canfd_T_02_01_intr_trig_test_seq extends uvm_sequence;
 
         // 使能全部中断，触发各中断源，检查ISR
         `ifdef REG_MODEL
-        rm.IER.write(st,32'hFFFFFFFF,UVM_FRONTDOOR);
+        rm.IER0.write(st,32'hFFFFFFFF,UVM_FRONTDOOR);
         rm.SRR.write(st,0,UVM_FRONTDOOR); rm.BRPR.write(st,4,UVM_FRONTDOOR);
         rm.BTR.write(st,32'h1234,UVM_FRONTDOOR);
         rm.SRR.write(st,32'h2,UVM_FRONTDOOR);

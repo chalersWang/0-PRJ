@@ -34,12 +34,43 @@
 class uc_trans extends uvm_sequence_item;
 
 	// ===== 随机化变量（对应 DUT 接口信号） =====
-		rand logic [13:0] uc_addr;
-		rand logic [11:0] uc_data;
-		rand logic uc_busy;
-		rand logic uc_cs;
-		rand logic uc_wr;
-		rand logic uc_irq;
+	// UC 物理接口
+		rand logic        UC_CS;
+		rand logic        UC_RD;
+		rand logic        UC_WR;
+		rand logic [13:0] UC_ADDR;
+		rand logic [11:0] UC_DATA_IN;
+		rand logic [11:0] UC_DATA_OUT;
+		rand logic        UC_DATA_ENA;
+		rand logic        UC_BUSY;
+		rand logic        UC_IRQ_OUT_1;
+		rand logic        UC_IRQ_OUT_2;
+		rand logic        UC_ALE;
+		rand logic        UC_NBHE;
+	// 全局配置
+		rand logic        NRESET;
+		rand logic        CLK_PDI_EXT;
+		rand logic        ADDR_MASK_EN_CFG;
+		rand logic [2:0]  BUS_WIDTH_CFG;
+		rand logic [31:0] CONFIG_REG;
+	// 中断与状态
+		rand logic        IRQ_IN;
+		rand logic [2:0]  UC_IF_IRR;
+		rand logic        UC_IF_ACTIVE;
+		rand logic        UC_IF_IRQ;
+		rand logic [7:0]  READ_BYTE_SEL;
+		rand logic [1:0]  BUS_WIDTH_CODE;
+		rand logic [7:0]  WRITE_BYTE_ENA;
+	// 存储器桥
+		rand logic [13:0] MEM_ADDR_WRITE;
+		rand logic [31:0] MEM_DATA_OUT;
+		rand logic        MEM_WRITE_EN;
+		rand logic        MEM_WRITE_READY;
+		rand logic [13:0] MEM_ADDR_READ;
+		rand logic [31:0] MEM_DATA_IN;
+		rand logic        MEM_READ_EN;
+		rand logic        MEM_READ_READY;
+		rand logic        MEM_READ_ACK;
 
 	// ===== 约束（用户可通过 override 扩展） =====
 	// constraint c_default {
@@ -48,12 +79,39 @@ class uc_trans extends uvm_sequence_item;
 	// }
 
 	`uvm_object_utils_begin(uc_trans)
-		`uvm_field_int(uc_addr, UVM_ALL_ON)
-		`uvm_field_int(uc_data, UVM_ALL_ON)
-		`uvm_field_int(uc_busy, UVM_ALL_ON)
-		`uvm_field_int(uc_cs, UVM_ALL_ON)
-		`uvm_field_int(uc_wr, UVM_ALL_ON)
-		`uvm_field_int(uc_irq, UVM_ALL_ON)
+		`uvm_field_int(UC_CS, UVM_ALL_ON)
+		`uvm_field_int(UC_RD, UVM_ALL_ON)
+		`uvm_field_int(UC_WR, UVM_ALL_ON)
+		`uvm_field_int(UC_ADDR, UVM_ALL_ON)
+		`uvm_field_int(UC_DATA_IN, UVM_ALL_ON)
+		`uvm_field_int(UC_DATA_OUT, UVM_ALL_ON)
+		`uvm_field_int(UC_DATA_ENA, UVM_ALL_ON)
+		`uvm_field_int(UC_BUSY, UVM_ALL_ON)
+		`uvm_field_int(UC_IRQ_OUT_1, UVM_ALL_ON)
+		`uvm_field_int(UC_IRQ_OUT_2, UVM_ALL_ON)
+		`uvm_field_int(UC_ALE, UVM_ALL_ON)
+		`uvm_field_int(UC_NBHE, UVM_ALL_ON)
+		`uvm_field_int(NRESET, UVM_ALL_ON)
+		`uvm_field_int(CLK_PDI_EXT, UVM_ALL_ON)
+		`uvm_field_int(ADDR_MASK_EN_CFG, UVM_ALL_ON)
+		`uvm_field_int(BUS_WIDTH_CFG, UVM_ALL_ON)
+		`uvm_field_int(CONFIG_REG, UVM_ALL_ON)
+		`uvm_field_int(IRQ_IN, UVM_ALL_ON)
+		`uvm_field_int(UC_IF_IRR, UVM_ALL_ON)
+		`uvm_field_int(UC_IF_ACTIVE, UVM_ALL_ON)
+		`uvm_field_int(UC_IF_IRQ, UVM_ALL_ON)
+		`uvm_field_int(READ_BYTE_SEL, UVM_ALL_ON)
+		`uvm_field_int(BUS_WIDTH_CODE, UVM_ALL_ON)
+		`uvm_field_int(WRITE_BYTE_ENA, UVM_ALL_ON)
+		`uvm_field_int(MEM_ADDR_WRITE, UVM_ALL_ON)
+		`uvm_field_int(MEM_DATA_OUT, UVM_ALL_ON)
+		`uvm_field_int(MEM_WRITE_EN, UVM_ALL_ON)
+		`uvm_field_int(MEM_WRITE_READY, UVM_ALL_ON)
+		`uvm_field_int(MEM_ADDR_READ, UVM_ALL_ON)
+		`uvm_field_int(MEM_DATA_IN, UVM_ALL_ON)
+		`uvm_field_int(MEM_READ_EN, UVM_ALL_ON)
+		`uvm_field_int(MEM_READ_READY, UVM_ALL_ON)
+		`uvm_field_int(MEM_READ_ACK, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name="uc_trans");

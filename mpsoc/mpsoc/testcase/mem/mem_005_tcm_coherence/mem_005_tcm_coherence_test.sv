@@ -19,8 +19,10 @@
 
 class mem_005_tcm_coherence_test extends mpsoc_base_test;
 
-    string inst_pat = "mem_005_tcm_coherence/inst.pat";
-    string data_pat = "mem_005_tcm_coherence/data.pat";
+    string inst_pat0 = "mem_005_tcm_coherence/kcore0/inst.pat";
+    string data_pat0 = "mem_005_tcm_coherence/kcore0/data.pat";
+    string inst_pat1 = "mem_005_tcm_coherence/kcore1/inst.pat";
+    string data_pat1 = "mem_005_tcm_coherence/kcore1/data.pat";
 
     `uvm_component_utils(mem_005_tcm_coherence_test)
 

@@ -19,8 +19,10 @@
 
 class dma_004_dma_cpu_race_test extends mpsoc_base_test;
 
-    string inst_pat = "dma_004_dma_cpu_race/inst.pat";
-    string data_pat = "dma_004_dma_cpu_race/data.pat";
+    string inst_pat0 = "dma_004_dma_cpu_race/kcore0/inst.pat";
+    string data_pat0 = "dma_004_dma_cpu_race/kcore0/data.pat";
+    string inst_pat1 = "dma_004_dma_cpu_race/kcore1/inst.pat";
+    string data_pat1 = "dma_004_dma_cpu_race/kcore1/data.pat";
 
     `uvm_component_utils(dma_004_dma_cpu_race_test)
 

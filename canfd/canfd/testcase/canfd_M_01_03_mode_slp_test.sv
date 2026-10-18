@@ -19,7 +19,7 @@ class canfd_M_01_03_mode_slp_test_seq extends uvm_sequence;
         // Sleep进入→总线活动唤醒→SLEEP自动清零+WKUP中断
         `ifdef REG_MODEL
         rm.SRR.write(st,0,UVM_FRONTDOOR); rm.MSR.write(st,32'h1,UVM_FRONTDOOR); // SLEEP=1
-        rm.IER.write(st,32'h800,UVM_FRONTDOOR); // EWKUP
+        rm.IER0.write(st,32'h800,UVM_FRONTDOOR); // EWKUP
         rm.SRR.write(st,32'h2,UVM_FRONTDOOR);
         repeat(100) @(posedge canfdvif.clk);
         rm.SR.read(st,ev,UVM_FRONTDOOR);

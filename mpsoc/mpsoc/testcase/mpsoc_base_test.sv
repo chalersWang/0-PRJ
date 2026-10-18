@@ -46,7 +46,7 @@ class mpsoc_base_test extends uvm_test;
 	gmac_config            gmac_cfg;
 
 	`ifdef REG_MODEL;
-		mpsoc_reg_top  RegModel;
+		mpsoc_reg_block  RegModel;
 	`endif
 
 
@@ -78,13 +78,80 @@ class mpsoc_base_test extends uvm_test;
 		gmac_cfg=gmac_config::type_id::create("gmac_cfg");
 		
 		env=mpsoc_env::type_id::create("env",this);
-		`ifdef REG_MODEL;
-			RegModel=env.RegModel;
-		`endif
 		//UCP=uvm_cmdline_processor::get_inst();
 		//UCP.get_arg_value("+UVM_TESTNAME",mpsocvif.TestCaseName);
 		`uvm_info(get_full_name(),"new() end ...",UVM_LOW)
 	endfunction
+
+	// ==================== 双核内存后门访问 ====================
+	// 内存基址（与 linker_kcore*.lcf 一致）
+	localparam bit [31:0] KCORE0_IRAM_BASE = 32'h00000000;
+	localparam bit [31:0] KCORE0_DRAM_BASE = 32'h10000000;
+	localparam bit [31:0] KCORE1_IRAM_BASE = 32'h20000000;
+	localparam bit [31:0] KCORE1_DRAM_BASE = 32'h30000000;
+
+	// 内存层次路径（见 addrmap/hierarchy.v, iram/dram 各 16KB: mem_array[4095:0][31:0]）
+	string kcore0_iram_hier = "tb_top.DUT.x_cpu_sub_system_ahb.x_iahb_mem_ctrl.mem_x256y16d32_inst.mem_array";
+	string kcore0_dram_hier = "tb_top.DUT.x_cpu_sub_system_ahb.x_dahb_mem_ctrl.mem_x256y16d32_inst.mem_array";
+	string kcore1_iram_hier = "tb_top.DUT.x_cpu_sub_system_ahb_c1.x_iahb_mem_ctrl.mem_x256y16d32_inst.mem_array";
+	string kcore1_dram_hier = "tb_top.DUT.x_cpu_sub_system_ahb_c1.x_dahb_mem_ctrl.mem_x256y16d32_inst.mem_array";
+
+	// 后门写内存（mem_hier: 内存数组层次路径, addr: word 索引 0~4095）
+	function void backdoor_write_mem(string mem_hier, bit [31:0] addr, bit [31:0] data);
+		if (uvm_hdl_deposit($sformatf("%s[%0d]", mem_hier, addr), data) != 1)
+			`uvm_error(get_type_name(), $sformatf("backdoor write failed: %s[%0d] = 0x%08h", mem_hier, addr, data))
+	endfunction
+
+	// 后门读内存
+	function void backdoor_read_mem(string mem_hier, bit [31:0] addr, output bit [31:0] data);
+		if (uvm_hdl_read($sformatf("%s[%0d]", mem_hier, addr), data) != 1)
+			`uvm_error(get_type_name(), $sformatf("backdoor read failed: %s[%0d]", mem_hier, addr))
+	endfunction
+
+	// 后门加载 pat 文件到内存
+	// pat 内 @addr 为绝对字节地址, 减去 base_addr 后 >>2 得 word 索引
+	task load_pat_to_mem(string pat_file, string mem_hier, bit [31:0] base_addr);
+		int       fd;
+		string    line;
+		bit [31:0] word_addr = 0;
+		bit [31:0] data;
+
+		fd = $fopen(pat_file, "r");
+		if (fd == 0) begin
+			`uvm_error(get_type_name(), $sformatf("cannot open pat file: %s", pat_file))
+			return;
+		end
+
+		while ($fgets(line, fd) != 0) begin
+			// 去掉行尾 \n（Linux 行尾）
+			line = (line.len() >= 2) ? line.substr(0, line.len()-2) : "";
+			if (line == "") continue;
+			if (line[0] == "@") begin
+				word_addr = (line.substr(1).atohex() - base_addr) >> 2;
+			end else begin
+				data = line.atohex();
+				backdoor_write_mem(mem_hier, word_addr, data);
+				word_addr++;
+			end
+		end
+		$fclose(fd);
+		`uvm_info(get_type_name(), $sformatf("load pat done: %s -> %s", pat_file, mem_hier), UVM_MEDIUM)
+	endtask
+
+	// 后门加载指定核的 inst.pat(→iram) + data.pat(→dram)
+	task load_kcore_pat(int core, string inst_pat_file, string data_pat_file);
+		case (core)
+			0: begin
+				load_pat_to_mem(inst_pat_file, kcore0_iram_hier, KCORE0_IRAM_BASE);
+				load_pat_to_mem(data_pat_file, kcore0_dram_hier, KCORE0_DRAM_BASE);
+			end
+			1: begin
+				load_pat_to_mem(inst_pat_file, kcore1_iram_hier, KCORE1_IRAM_BASE);
+				load_pat_to_mem(data_pat_file, kcore1_dram_hier, KCORE1_DRAM_BASE);
+			end
+			default: `uvm_error(get_type_name(), $sformatf("invalid core id: %0d (only 0/1)", core))
+		endcase
+	endtask
 
 	//build_phase
 	virtual function void build_phase(uvm_phase phase);
@@ -144,6 +211,10 @@ class mpsoc_base_test extends uvm_test;
 		if(!uvm_config_db#(virtual mpsoc_vif)::get(this,"","mpsoc_vif",mpsocvif))
 			`uvm_fatal("mpsoc_vif","virtual interface must be set for it!!!");
 		
+		`ifdef REG_MODEL;
+			RegModel=env.RegModel;
+		`endif
+
 		/*Set the print redundancy threshold*/
 		/*typedef enum{UVM_NONE=0,UVM_LOW=100,UVM_MEDIUM=200,UVM_HIGH=300,UVM_FULL=400,UVM_DEBUG=500} uvm_verbosity;*/
 		//   $display("env.i_agt.drv.get_report_verbosity_level=%0d",env.i_agt.drv.get_report_verbosity_level());

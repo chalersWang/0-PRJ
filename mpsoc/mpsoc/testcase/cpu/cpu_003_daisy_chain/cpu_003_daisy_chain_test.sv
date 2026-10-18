@@ -19,8 +19,10 @@
 
 class cpu_003_daisy_chain_test extends mpsoc_base_test;
 
-    string inst_pat = "cpu_003_daisy_chain/inst.pat";
-    string data_pat = "cpu_003_daisy_chain/data.pat";
+    string inst_pat0 = "cpu_003_daisy_chain/kcore0/inst.pat";
+    string data_pat0 = "cpu_003_daisy_chain/kcore0/data.pat";
+    string inst_pat1 = "cpu_003_daisy_chain/kcore1/inst.pat";
+    string data_pat1 = "cpu_003_daisy_chain/kcore1/data.pat";
 
     `uvm_component_utils(cpu_003_daisy_chain_test)
 
