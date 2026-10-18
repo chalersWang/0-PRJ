@@ -31,9 +31,28 @@ class hello_world_test extends mpsoc_base_test;
     virtual task run_phase(uvm_phase phase);
         phase.raise_objection(this);
         `uvm_info(get_type_name(), "hello_world run_phase begin", UVM_LOW)
-        // TODO: RTL 就绪后在此加载 inst.pat/data.pat 到 CPU memory，
-        //       释放复位并启动 E906，轮询 PASS/FAIL 结果。
-        `uvm_info(get_type_name(), "load inst.pat/data.pat and run E906 (TODO)", UVM_LOW)
+
+        // ===== 1. 后门读写示例 =====
+        // 写 kcore0 IRAM word 0, 再读回验证后门访问正确性
+        begin
+            bit [31:0] wdata = 32'hDEADBEEF;
+            bit [31:0] rdata;
+            backdoor_write_mem(kcore0_iram_hier, 0, wdata);   // 后门写 kcore0 iram[0]
+            backdoor_read_mem (kcore0_iram_hier, 0, rdata);   // 后门读 kcore0 iram[0]
+            if (rdata === wdata)
+                `uvm_info(get_type_name(), $sformatf("backdoor rw PASS: kcore0 iram[0] = 0x%08h", rdata), UVM_LOW)
+            else
+                `uvm_error(get_type_name(), $sformatf("backdoor rw FAIL: exp=0x%08h got=0x%08h", wdata, rdata))
+        end
+
+        // ===== 2. 后门加载两个 kcore 的 inst.pat/data.pat =====
+        // kcore0: inst.pat → IRAM(0x00000000), data.pat → DRAM(0x10000000)
+        load_kcore_pat(0, inst_pat0, data_pat0);
+        // kcore1: inst.pat → IRAM(0x20000000), data.pat → DRAM(0x30000000)
+        load_kcore_pat(1, inst_pat1, data_pat1);
+
+        // TODO: RTL 就绪后在此释放复位、启动 E906，轮询 PASS/FAIL 结果。
+
         `uvm_info(get_type_name(), "hello_world run_phase end", UVM_LOW)
         phase.drop_objection(this);
     endtask : run_phase
