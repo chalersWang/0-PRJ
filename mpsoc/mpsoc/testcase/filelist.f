@@ -1,4 +1,5 @@
 // testcase 二级目录 +incdir
++incdir+${VERIFY_HOME}/testcase
 +incdir+${VERIFY_HOME}/testcase/sequence_lib
 +incdir+${VERIFY_HOME}/testcase/bus
 +incdir+${VERIFY_HOME}/testcase/cpu
