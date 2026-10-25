@@ -277,43 +277,122 @@ endclass
 
 ## 5. 双核软件编译（kcore0/kcore1）
 
-### 5.1 内存布局
+双核 RISC-V 子系统（E906）的软件测试，需要将 C 程序交叉编译成 `inst.pat`/`data.pat`，由 SV test 后门加载到各自 IRAM/DRAM 运行。
+
+### 5.1 前置条件
+
+- **Linux 服务器**（工具链是 Linux x86_64 静态程序，macOS 无法运行）
+- **工具链路径**：`/home/edatools/Xuantie/gcc/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.2/bin`（`riscv64-unknown-elf-*`）
+- **转换工具**：`testcase/sw/bin/Srec2vmem`（Linux x86_64 静态可执行文件）
+
+### 5.2 内存布局
 
 | 核 | IRAM | DRAM | 链接脚本 | 启动代码 |
 |----|------|------|---------|---------|
 | kcore0 | 0x00000000 | 0x10000000 | linker_kcore0.lcf | crt0_kcore0.s |
 | kcore1 | 0x20000000 | 0x30000000 | linker_kcore1.lcf | crt0_kcore1.s |
 
-IRAM/DRAM 各 16KB（`mem_array[4095:0][31:0]`）。
+IRAM/DRAM 各 16KB（`mem_array[4095:0][31:0]`）。crt0 启动时读 `mhartid` 存入全局 `__core_id`，供 C 代码区分核。
 
-### 5.2 编译目标
+### 5.3 编译命令
 
 ```bash
-source testcase/sw/setup/setup_env.sh    # 配置工具链
+# 1. 配置工具链（SourceMe 已自动 source）
+source testcase/sw/setup/setup_env.sh
+# 或指定工具链路径：
+source testcase/sw/setup/setup_env.sh /path/to/toolchain/bin
+
+# 2. 进入 case 目录（每个 case 一个目录，内含 kcore0/kcore1 两份 C 源码）
 cd testcase/cpu/hello_world
-make            # 编译双核 (kcore0 + kcore1)
+
+# 3. 编译（三选一）
+make            # 编译双核 (kcore0 + kcore1)，默认目标
 make kcore0     # 仅编译 CPU0，产物在 kcore0/
 make kcore1     # 仅编译 CPU1，产物在 kcore1/
+
+# 4. 指定 CPU 架构（默认 e906f）
+make kcore0 CPU_ARCH_FLAG_0=e906f CPU_ARCH_FLAG_1=nodsp
+
+# 5. 清理产物
+make clean
 ```
 
-### 5.3 编译产物链路
+**CPU 架构标志**：
+
+| 变量 | 取值 | 含义 |
+|------|------|------|
+| `CPU_ARCH_FLAG_0` | `e906` / `e906f`(默认) / `e906d` | rv32imac / rv32imafc / rv32imafdc |
+| `CPU_ARCH_FLAG_1` | `nodsp`(默认) / `dsp` | 不加 / 加 `pzp64` DSP 扩展 |
+
+### 5.4 编译产物链路
 
 ```
-.c/.s ──gcc -c──▶ .o ──gcc -Tlinker_kcore*.lcf -nostartfiles──▶ .elf
-.elf ──objcopy -O srec──▶ _inst.hex/_data.hex ──Srec2vmem──▶ inst.pat/data.pat
-.elf ──objcopy -O binary──▶ .bin
+kcore0/*.c + crt0_kcore0.s + clib/*.c
+        │ gcc -c -march=rv32imafc -mabi=ilp32f
+        ▼
+kcore0/*.o
+        │ gcc -T linker_kcore0.lcf -nostartfiles
+        ▼
+kcore0/<name>.elf
+        ├── objcopy -O srec -j .text*/.rodata* ──▶ kcore0/<name>_inst.hex ──Srec2vmem──▶ kcore0/inst.pat
+        ├── objcopy -O srec -j .data*/.bss      ──▶ kcore0/<name>_data.hex ──Srec2vmem──▶ kcore0/data.pat
+        ├── objcopy -O srec                     ──▶ kcore0/<name>.hex ──Srec2vmem──▶ kcore0/case.pat
+        └── objcopy -O binary                   ──▶ kcore0/<name>.bin
 ```
 
-最终生成 `kcore0/inst.pat`（指令→IRAM）、`kcore0/data.pat`（数据→DRAM）。
+### 5.5 编译产物清单
 
-### 5.4 后门加载（配合 SV test）
+| 产物 | 内容 | 用途 |
+|------|------|------|
+| `inst.pat` | 指令镜像（.text/.rodata） | 后门加载到 **IRAM** |
+| `data.pat` | 数据镜像（.data/.bss） | 后门加载到 **DRAM** |
+| `case.pat` | 完整镜像 | 调试用 |
+| `.elf` | 可执行文件 | 反汇编/调试 |
+| `.bin` | 裸二进制 | 烧写/加载 |
+| `.obj` | 反汇编 | 代码检查 |
+
+### 5.6 case 目录结构
+
+```
+testcase/cpu/hello_world/
+├── Makefile                    ← FILE=hello_world, include 共享规则
+├── hello_world_test.sv         ← SV test（含 inst_pat0/data_pat0/inst_pat1/data_pat1 路径）
+├── kcore0/
+│   ├── hello_world_main.c      ← CPU0 C 程序
+│   └── (编译产物: .o/.elf/.hex/.pat/.bin)
+└── kcore1/
+    ├── hello_world_main.c      ← CPU1 C 程序
+    └── (编译产物)
+```
+
+### 5.7 后门加载（配合 SV test）
 
 ```systemverilog
+// 在 run_phase 中调用（base_test 提供）
 load_kcore_pat(0, inst_pat0, data_pat0);  // kcore0: inst.pat→IRAM, data.pat→DRAM
 load_kcore_pat(1, inst_pat1, data_pat1);  // kcore1
 ```
 
-crt0 启动时读 `mhartid` 存入全局 `__core_id`，供 C 代码区分核。
+底层由 `backdoor_write_mem()`（`uvm_hdl_deposit` 写 `mem_array[addr]`）逐条加载。
+
+### 5.8 新增 case 步骤
+
+```bash
+cp -r testcase/cpu/hello_world testcase/cpu/<new_case>
+# 1) 放入 C 程序（分别替换 kcore0/ 和 kcore1/ 下的 .c）
+# 2) 改 Makefile 的 FILE = <new_case>
+# 3) 把 hello_world_test.sv 改名并改写类名为 <new_case>_test
+# 4) SV test 中 inst_pat0/data_pat0/inst_pat1/data_pat1 路径改为 <new_case>/kcore*/
+```
+
+### 5.9 常见问题排查
+
+| 问题 | 排查 |
+|------|------|
+| `riscv64-unknown-elf-gcc: not found` | 工具链路径不对，`source setup_env.sh` 或指定正确路径 |
+| `cannot open pat file` | 编译未执行或产物目录不对 |
+| `Srec2vmem: Permission denied` | `chmod +x testcase/sw/bin/Srec2vmem` |
+| `minilibc_stdio.h: No such file` | 检查 `-I` 路径是否包含 clib/newlib_wrap |
 
 ---
 
